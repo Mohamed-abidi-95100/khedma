@@ -1,0 +1,2195 @@
+Fichier: src\main\java\com\example\stage\model\CV.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\CV.java
+-----
+package com.example.stage.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CV {
+    private String name;
+    private String email;
+    private String phone;
+    private String address;
+    private String linkedin;
+    private String portfolio;
+    private String summary;
+    private List<Education> educations = new ArrayList<>();
+    private List<WorkExperience> workExperiences = new ArrayList<>();
+    private List<Project> projects = new ArrayList<>();
+    private List<Certificate> certificates = new ArrayList<>();
+    private List<Language> languages = new ArrayList<>();
+    private List<String> skills = new ArrayList<>();
+
+    // Getters and Setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
+    }
+
+    public String getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(String portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public List<Education> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<Education> educations) {
+        this.educations = educations;
+    }
+
+    public List<WorkExperience> getWorkExperiences() {
+        return workExperiences;
+    }
+
+    public void setWorkExperiences(List<WorkExperience> workExperiences) {
+        this.workExperiences = workExperiences;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    public List<Certificate> getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(List<Certificate> certificates) {
+        this.certificates = certificates;
+    }
+
+    public List<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<Language> languages) {
+        this.languages = languages;
+    }
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
+    }
+
+    public void setLinkedIn(String text) {
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\model\CVData.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\CVData.java
+-----
+package com.example.stage.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CVData {
+    private String fullName;
+    private String email;
+    private String phone;
+    private String address;
+    private String linkedin;
+    private String portfolio;
+    private String summary;
+    private List<Education> educations = new ArrayList<>();
+    private List<WorkExperience> workExperiences = new ArrayList<>();
+    private List<Project> projects = new ArrayList<>();
+    private List<Certificate> certificates = new ArrayList<>();
+    private List<Language> languages = new ArrayList<>();
+    private List<String> skills = new ArrayList<>();
+
+    // Getters and setters
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
+    }
+
+    public String getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(String portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public List<Education> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<Education> educations) {
+        this.educations = educations;
+    }
+
+    public List<WorkExperience> getWorkExperiences() {
+        return workExperiences;
+    }
+
+    public void setWorkExperiences(List<WorkExperience> workExperiences) {
+        this.workExperiences = workExperiences;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    public List<Certificate> getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(List<Certificate> certificates) {
+        this.certificates = certificates;
+    }
+
+    public List<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<Language> languages) {
+        this.languages = languages;
+    }
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\model\Language.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Language.java
+-----
+package com.example.stage.model;
+
+public class Language {
+    private String name; // Name of the language
+    private String proficiency; // Proficiency level of the language
+
+    // Constructor
+    public Language(String name, String proficiency) {
+        this.name = name;
+        this.proficiency = proficiency;
+    }
+
+    // Getters and Setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProficiency() {
+        return proficiency;
+    }
+
+    public void setProficiency(String proficiency) {
+        this.proficiency = proficiency;
+    }
+
+    @Override
+    public String toString() {
+        return "Language{" +
+                "name='" + name + '\'' +
+                ", proficiency='" + proficiency + '\'' +
+                '}';
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\model\Certificate.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Certificate.java
+-----
+package com.example.stage.model;
+
+import java.time.LocalDate;
+
+public class Certificate {
+    private String name; // Name of the certificate
+    private String institution; // Institution that issued the certificate
+    private LocalDate date; // Date of receiving the certificate
+
+    // Constructor
+    public Certificate(String name, String institution, LocalDate date) {
+        this.name = name;
+        this.institution = institution;
+        this.date = date;
+    }
+
+    // Getters and Setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(String institution) {
+        this.institution = institution;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Certificate{" +
+                "name='" + name + '\'' +
+                ", institution='" + institution + '\'' +
+                ", date=" + date +
+                '}';
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\model\Project.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Project.java
+-----
+package com.example.stage.model;
+
+public class Project {
+    private String projectName;
+    private String description;
+
+    public Project(String projectName, String description) {
+        this.projectName = projectName;
+        this.description = description;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "projectName='" + projectName + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\model\Education.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Education.java
+-----
+package com.example.stage.model;
+
+import java.time.LocalDate;
+
+public class Education {
+    private String degree;
+    private String institution;
+    private String graduationDate; // Peut être un String ou un objet Date
+
+    public Education(String degree, String institution, LocalDate graduationDate) {
+        this.degree = degree;
+        this.institution = institution;
+        this.graduationDate = graduationDate.toString();
+    }
+
+    public Education(String degree, String institution, String graduationDate) {
+        this.degree = degree;
+        this.institution = institution;
+        this.graduationDate = graduationDate;
+    }
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+
+    public String getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(String institution) {
+        this.institution = institution;
+    }
+
+    public String getGraduationDate() {
+        return graduationDate;
+    }
+
+    public void setGraduationDate(String graduationDate) {
+        this.graduationDate = graduationDate;
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\model\WorkExperience.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\WorkExperience.java
+-----
+package com.example.stage.model;
+
+public class WorkExperience {
+    private String jobTitle;
+    private String company;
+    private String startDate;
+    private String endDate;
+    private String description;
+
+    public WorkExperience(String jobTitle, String company) {
+        this.jobTitle = jobTitle;
+        this.company = company;
+    }
+
+    public WorkExperience(String jobTitle, String company, String startDate, String endDate, String description) {
+        this.jobTitle = jobTitle;
+        this.company = company;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+    }
+
+    public WorkExperience(String jobTitle, String company, String description) {
+        this.jobTitle = jobTitle;
+        this.company = company;
+        this.description = description;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkExperience{" +
+                "jobTitle='" + jobTitle + '\'' +
+                ", company='" + company + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\model\Competence.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Competence.java
+-----
+package com.example.stage.model;
+public class Competence {
+    private String name;
+    private String level; // (ex: "Débutant", "Intermédiaire", "Expert")
+
+    public Competence() {
+        // Constructeur par défaut (vide)
+    }
+
+    public Competence(String name, String level) {
+        this.name = name;
+        this.level = level;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\controller\Page1Controller.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\controller\Page1Controller.java
+-----
+package com.example.stage.controller;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+
+public class Page1Controller {
+
+    public TextField degreeField;
+    public TextField institutionField;
+    public DatePicker graduationDateField;
+    public TextField jobTitleField;
+    public TextField companyField;
+    public TextArea descriptionArea;
+    @FXML
+    private Button nextButton;
+    @FXML
+    private ComboBox<String> languageComboBox;
+    @FXML
+    private VBox educationContainer;
+    @FXML
+    private VBox workExperienceContainer;
+
+    // Labels and Buttons to be translated
+    @FXML
+    private Label personalInformationLabel;
+    @FXML
+    private Label fullNameLabel; // Ensure this is declared
+    @FXML
+    private Label emailLabel;
+    @FXML
+    private Label phoneLabel;
+    @FXML
+    private Label addressLabel;
+    @FXML
+    private Label linkedinLabel;
+    @FXML
+    private Label portfolioLabel;
+    @FXML
+    private Label summaryObjectiveLabel;
+    @FXML
+    private Label educationLabel;
+    @FXML
+    private Label workExperienceLabel;
+    @FXML
+    private Button addEducationButton;
+    @FXML
+    private Button addWorkExperienceButton;
+    @FXML
+    private Button translateButton;
+
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private TextField phoneField;
+    @FXML
+    private TextArea addressArea;
+    @FXML
+    private TextField linkedinField;
+    @FXML
+    private TextField portfolioField;
+    @FXML
+    private TextArea summaryArea;
+
+    @FXML
+    private void initialize() {
+        languageComboBox.getItems().addAll("English", "French", "German", "Arabic");
+        languageComboBox.setOnAction(e -> translatePage());
+        loadTranslations(Locale.ENGLISH);
+    }
+
+    @FXML
+    private void goToPage2() throws IOException {
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+        AnchorPane page2 = FXMLLoader.load(getClass().getResource("/com/example/stage/page2.fxml"));
+
+        Scene scene = new Scene(page2, 600, 900);
+        stage.setScene(scene);
+    }
+
+    @FXML
+    private void translatePage() {
+        String selectedLanguage = languageComboBox.getValue();
+        Locale locale;
+        switch (selectedLanguage) {
+            case "French":
+                locale = Locale.FRENCH;
+                break;
+            case "German":
+                locale = Locale.GERMAN;
+                break;
+            case "Arabic":
+                locale = Locale.forLanguageTag("ar");
+                break;
+            default:
+                locale = Locale.ENGLISH;
+                break;
+        }
+        loadTranslations(locale);
+    }
+
+    private void loadTranslations(Locale locale) {
+        ResourceBundle bundle = getBundle("messages", locale);
+        if (bundle != null) {
+            personalInformationLabel.setText(bundle.getString("personal_information"));
+            fullNameLabel.setText(bundle.getString("full_name"));
+            emailLabel.setText(bundle.getString("email"));
+            phoneLabel.setText(bundle.getString("phone"));
+            addressLabel.setText(bundle.getString("address"));
+            linkedinLabel.setText(bundle.getString("linkedin"));
+            portfolioLabel.setText(bundle.getString("portfolio"));
+            summaryObjectiveLabel.setText(bundle.getString("summary_objective"));
+            educationLabel.setText(bundle.getString("education"));
+            workExperienceLabel.setText(bundle.getString("work_experience"));
+            addEducationButton.setText(bundle.getString("add_education"));
+            addWorkExperienceButton.setText(bundle.getString("add_experience"));
+            nextButton.setText(bundle.getString("next"));
+            translateButton.setText(bundle.getString("translate"));
+        } else {
+            System.err.println(STR."Resource bundle is null for locale: \{locale}");
+        }
+    }
+
+    private ResourceBundle getBundle(String baseName, Locale locale) {
+        String resourceName = STR."\{baseName}_\{locale.getLanguage()}.properties";
+        String resourcePath = STR."/com/example/stage/\{resourceName}";
+        try (InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(resourcePath), StandardCharsets.UTF_8)) {
+            if (reader != null) {
+                return new PropertyResourceBundle(reader);
+            } else {
+                System.err.println(STR."Resource not found: \{resourcePath}");
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @FXML
+    private void addEducation() {GridPane educationEntry = new GridPane();
+        educationEntry.setHgap(5);
+        educationEntry.setVgap(5);
+
+        TextField degreeField = new TextField();
+        TextField institutionField = new TextField("ESPRIM");
+        DatePicker graduationDateField = new DatePicker();
+
+        educationEntry.add(new Label("Degree:"), 0, 0);
+        educationEntry.add(degreeField, 1, 0);
+        educationEntry.add(new Label("Institution:"), 0, 1);
+        educationEntry.add(institutionField, 1, 1);
+        educationEntry.add(new Label("Graduation Date:"), 0, 2);
+        educationEntry.add(graduationDateField, 1, 2);
+
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(e -> educationContainer.getChildren().remove(educationEntry));
+        educationEntry.add(removeButton, 1, 3);
+
+        educationContainer.getChildren().add(educationEntry);
+    }
+
+    @FXML
+    private void addWorkExperience() {
+        GridPane workExperienceEntry = new GridPane();
+        workExperienceEntry.setHgap(5);
+        workExperienceEntry.setVgap(5);
+
+        TextField jobTitleField = new TextField();
+        TextField companyField = new TextField();
+        TextArea descriptionArea = new TextArea();
+
+        workExperienceEntry.add(new Label("Job Title:"), 0, 0);
+        workExperienceEntry.add(jobTitleField, 1, 0);
+        workExperienceEntry.add(new Label("Company:"), 0, 1);
+        workExperienceEntry.add(companyField, 1, 1);
+        workExperienceEntry.add(new Label("Description:"), 0, 2);
+        workExperienceEntry.add(descriptionArea, 1, 2);
+
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(e -> workExperienceContainer.getChildren().remove(workExperienceEntry));
+        workExperienceEntry.add(removeButton, 1, 3);
+
+        workExperienceContainer.getChildren().add(workExperienceEntry);
+    }
+
+    @FXML
+    private void showSummaryHelp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Summary Help");
+        alert.setHeaderText(null);
+        alert.setContentText("Please provide a brief summary or objective for your CV.");
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void showDescriptionHelp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Description Help");
+        alert.setHeaderText(null);
+        alert.setContentText("Please provide a description of your role, responsibilities, and achievements.");
+        alert.showAndWait();
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\controller\Page2Controller.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\controller\Page2Controller.java
+-----
+package com.example.stage.controller;
+
+import com.example.stage.model.CV;
+import com.example.stage.model.Certificate;
+import com.example.stage.model.Education;
+import com.example.stage.model.Language;
+import com.example.stage.model.Project;
+import com.example.stage.service.PDFGenerationService;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+
+public class Page2Controller {
+
+    @FXML
+    private TextField skillsField;
+    @FXML
+    private VBox projectsContainer;
+    @FXML
+    private VBox certificatesContainer;
+    @FXML
+    private VBox languagesContainer;
+    @FXML
+    private Button backButton;
+    @FXML
+    private ComboBox<String> languageComboBox;
+    @FXML
+    private Button translateButton;
+    @FXML
+    private Button generatePDFButton;
+
+    // Labels to be translated
+    @FXML
+    private Label skillsLabel;
+    @FXML
+    private Label projectsLabel;
+    @FXML
+    private Label certificatesLabel;
+    @FXML
+    private Label languagesLabel;
+
+    private PDFGenerationService pdfGenerationService = new PDFGenerationService();
+
+    @FXML
+    private void initialize() {
+        languageComboBox.getItems().addAll("English", "French", "German", "Arabic");
+        languageComboBox.setOnAction(e -> translatePage());
+        loadTranslations(Locale.ENGLISH);
+    }
+
+    private void loadTranslations(Locale locale) {
+        ResourceBundle bundle = getBundle("messages", locale);
+        if (bundle != null) {
+            skillsLabel.setText(bundle.getString("skills"));
+            projectsLabel.setText(bundle.getString("projects"));
+            certificatesLabel.setText(bundle.getString("certificates"));
+            languagesLabel.setText(bundle.getString("languages"));
+            backButton.setText(bundle.getString("back"));
+            translateButton.setText(bundle.getString("translate"));
+            generatePDFButton.setText(bundle.getString("generate_pdf"));
+        } else {
+            System.err.println("Resource bundle is null for locale: " + locale);
+        }
+    }
+
+    private ResourceBundle getBundle(String baseName, Locale locale) {String resourceName = baseName + "_" + locale.getLanguage() + ".properties";
+        String resourcePath = STR."/com/example/stage/\{resourceName}";
+        try (InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(resourcePath), StandardCharsets.UTF_8)) {
+            if (reader != null) {
+                return new PropertyResourceBundle(reader);
+            } else {
+                System.err.println("Resource not found: " + resourcePath);
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @FXML
+    private void addProject() {
+        GridPane projectEntry = new GridPane();
+        projectEntry.setHgap(5);
+        projectEntry.setVgap(5);
+
+        TextField projectNameField = new TextField();
+        TextArea projectDescriptionArea = new TextArea();
+
+        projectEntry.add(new Label("Project Name:"), 0, 0);
+        projectEntry.add(projectNameField, 1, 0);
+        projectEntry.add(new Label("Project Description:"), 0, 1);
+        projectEntry.add(projectDescriptionArea, 1, 1);
+
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(e -> projectsContainer.getChildren().remove(projectEntry));
+        projectEntry.add(removeButton, 1, 2);
+
+        projectsContainer.getChildren().add(projectEntry);
+    }
+
+    @FXML
+    private void addCertificate() {
+        GridPane certificateEntry = new GridPane();
+        certificateEntry.setHgap(5);
+        certificateEntry.setVgap(5);
+
+        TextField certificateNameField = new TextField();
+        TextField certificateInstitutionField = new TextField();
+        DatePicker certificateDateField = new DatePicker();
+
+        certificateEntry.add(new Label("Certificate Name:"), 0, 0);
+        certificateEntry.add(certificateNameField, 1, 0);
+        certificateEntry.add(new Label("Institution:"), 0, 1);
+        certificateEntry.add(certificateInstitutionField, 1, 1);
+        certificateEntry.add(new Label("Date of Receipt:"), 0, 2);
+        certificateEntry.add(certificateDateField, 1, 2);
+
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(e -> certificatesContainer.getChildren().remove(certificateEntry));
+        certificateEntry.add(removeButton, 1, 3);
+
+        certificatesContainer.getChildren().add(certificateEntry);
+    }
+
+    @FXML
+    private void addLanguage() {
+        GridPane languageEntry = new GridPane();
+        languageEntry.setHgap(5);
+        languageEntry.setVgap(5);
+
+        TextField languageField = new TextField();
+        ComboBox<String> languageProficiencyField = new ComboBox<>();
+        languageProficiencyField.getItems().addAll("Beginner", "Intermediate", "Advanced", "Bilingual");
+
+        languageEntry.add(new Label("Language:"), 0, 0);
+        languageEntry.add(languageField, 1, 0);
+        languageEntry.add(new Label("Proficiency Level:"), 0, 1);
+        languageEntry.add(languageProficiencyField, 1, 1);
+
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(e -> languagesContainer.getChildren().remove(languageEntry));
+        languageEntry.add(removeButton, 1, 2);
+
+        languagesContainer.getChildren().add(languageEntry);
+    }
+
+    @FXML
+    private void showSkillsHelp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Skills Help");
+        alert.setHeaderText(null);
+        alert.setContentText("Please provide a list of your skills. Include any technical skills, soft skills, or other relevant abilities.");
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void showProjectHelp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Project Help");
+        alert.setHeaderText(null);
+        alert.setContentText("Please provide details about your projects. Include the project name, description, and any key achievements or technologies used.");
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void showCertificateHelp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Certificate Help");
+        alert.setHeaderText(null);
+        alert.setContentText("Please provide details about your certificates. Include the certificate name, institution, and date of receipt.");
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void showLanguageHelp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Language Help");
+        alert.setHeaderText(null);
+        alert.setContentText("Please provide details about your language skills. Include the language name and proficiency level.");
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void goToPage1() {
+        try {
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            AnchorPane page1 = FXMLLoader.load(getClass().getResource("/com/example/stage/page1.fxml"));
+
+            Scene scene = new Scene(page1, 600, 900);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void translatePage() {
+        String selectedLanguage = languageComboBox.getValue();
+        Locale locale;
+        switch (selectedLanguage) {
+            case "French":
+                locale = Locale.FRENCH;
+                break;
+            case "German":
+                locale = Locale.GERMAN;
+                break;
+            case "Arabic":
+                locale = new Locale("ar");
+                break;
+            default:
+                locale = Locale.ENGLISH;
+                break;
+        }
+        loadTranslations(locale);
+    }
+
+    @FXML
+    private void generatePDF(ActionEvent event) {
+        CV cv = new CV();
+
+        // Collect skills
+        List<String> skills = new ArrayList<>();
+        for (String skill : skillsField.getText().split(",")) {
+            skills.add(skill.trim());
+        }
+        cv.setSkills(skills);
+
+        // Collect projects
+        for (int i = 0; i < projectsContainer.getChildren().size(); i++) {
+            GridPane projectEntry = (GridPane) projectsContainer.getChildren().get(i);
+            TextField projectNameField = (TextField) projectEntry.getChildren().get(1);
+            TextArea projectDescriptionArea = (TextArea) ((HBox) projectEntry.getChildren().get(3)).getChildren().get(0);
+            Project project = new Project(projectNameField.getText(), projectDescriptionArea.getText());
+            cv.getProjects().add(project);
+        }
+
+        // Collect certificates
+        for (int i = 0; i < certificatesContainer.getChildren().size(); i++) {
+            GridPane certificateEntry = (GridPane) certificatesContainer.getChildren().get(i);
+            TextField certificateNameField = (TextField) certificateEntry.getChildren().get(1);
+            TextField certificateInstitutionField = (TextField) certificateEntry.getChildren().get(3);
+            DatePicker certificateDateField = (DatePicker) certificateEntry.getChildren().get(5);
+            Certificate certificate = new Certificate(certificateNameField.getText(), certificateInstitutionField.getText(), certificateDateField.getValue());
+            cv.getCertificates().add(certificate);
+        }
+
+        // Collect languages
+        for (int i = 0; i < languagesContainer.getChildren().size(); i++) {
+            GridPane languageEntry = (GridPane) languagesContainer.getChildren().get(i);
+            TextField languageField = (TextField) languageEntry.getChildren().get(1);
+            ComboBox<String> proficiencyField = (ComboBox<String>) languageEntry.getChildren().get(3);
+            Language language = new Language(languageField.getText(), proficiencyField.getValue());
+            cv.getLanguages().add(language);
+        }
+
+        // Dummy data for other sections
+        cv.getEducations().add(new Education("Bachelor of Science", "University A", "2020"));
+        cv.getWorkExperiences().add(new com.example.stage.model.WorkExperience("Software Engineer", "Company B", "Developed various applications"));
+
+        try {
+            // Ensure the output directory exists
+            File outputDir = new File("output");
+            if (!outputDir.exists()) {
+                outputDir.mkdir();
+            }
+            // Specify the path where the PDF will be saved
+            String filePath = "output/cv.pdf";
+            pdfGenerationService.generateCVPDF(cv, filePath);
+            showAlert(Alert.AlertType.INFORMATION, "Success", "CV PDF has been generated successfully. You can find it at: " + filePath);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while generating the CV PDF.");
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\controller\CVFormController.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\controller\CVFormController.java
+-----
+package com.example.stage.controller;
+
+import com.example.stage.model.CV;
+import com.example.stage.model.Certificate;
+import com.example.stage.model.Education;
+import com.example.stage.model.Language;
+import com.example.stage.model.Project;
+import com.example.stage.model.WorkExperience;
+import com.example.stage.service.CVImprovementService;
+import com.example.stage.service.UserService;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
+public class CVFormController {
+
+  /*  @FXML
+    private TextField nameField;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private TextField phoneField;
+    @FXML
+    private TextArea addressArea;
+    @FXML
+    private TextField linkedinField;
+    @FXML
+    private TextField portfolioField;
+    @FXML
+    private TextArea summaryArea;
+    @FXML
+    private VBox educationContainer;
+    @FXML
+    private VBox workExperienceContainer;
+    @FXML
+    private TextField skillsField;
+    @FXML
+    private VBox projectsContainer;
+    @FXML
+    private VBox certificatesContainer;
+    @FXML
+    private VBox languagesContainer;
+    @FXML
+    private ComboBox<String> templateComboBox;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private Label suggestionsLabel;
+
+    private CV cv = new CV();
+    private UserService userService = new UserService();
+    private CVImprovementService cvImprovementService = new CVImprovementService();
+
+    @FXML
+    private void initialize() {
+        loadUserData();
+        loadCVTemplates();
+
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            double deltaY = event.getDeltaY() * 0.01;
+            scrollPane.setVvalue(scrollPane.getVvalue() - deltaY / scrollPane.getContent().getBoundsInLocal().getHeight());
+        });
+    }
+
+    private void loadUserData() {
+        nameField.setText(userService.getUserName());
+        emailField.setText(userService.getUserEmail());
+        phoneField.setText(userService.getUserPhone());
+        addressArea.setText(userService.getUserAddress());
+        linkedinField.setText(userService.getUserLinkedIn());
+        portfolioField.setText(userService.getUserPortfolio());
+        summaryArea.setText(userService.getUserSummary());
+    }
+
+    private void loadCVTemplates() {
+        templateComboBox.getItems().addAll("Template 1", "Template 2", "Template 3");
+    }
+
+    @FXML
+    private void addEducation() {GridPane educationEntry = new GridPane();
+        educationEntry.setHgap(5);
+        educationEntry.setVgap(5);
+
+        TextField degreeField = new TextField();
+        TextField institutionField = new TextField("ESPRIM");
+        DatePicker graduationDateField = new DatePicker();
+
+        educationEntry.add(new Label("Degree:"), 0, 0);
+        educationEntry.add(degreeField, 1, 0);
+        educationEntry.add(new Label("Institution:"), 0, 1);
+        educationEntry.add(institutionField, 1, 1);
+        educationEntry.add(new Label("Graduation Date:"), 0, 2);
+        educationEntry.add(graduationDateField, 1, 2);
+
+        Button removeButton = new Button(   "Remove");
+        removeButton.setOnAction(e -> {
+            educationContainer.getChildren().remove(educationEntry);
+        });
+        educationEntry.add(removeButton, 1, 3);
+
+        educationContainer.getChildren().add(educationEntry);
+
+        //  Update the CV object:
+        String degree = degreeField.getText();
+        String institution = institutionField.getText();
+        LocalDate graduationDate = graduationDateField.getValue();
+
+        Education education = new Education(degree, institution, graduationDate);
+        cv.getEducations().add(education);
+    }
+
+    @FXML
+    private void addWorkExperience() {
+        GridPane workExperienceEntry = new GridPane();
+        workExperienceEntry.setHgap(5);
+        workExperienceEntry.setVgap(5);
+
+        TextField jobTitleField = new TextField();
+        TextField companyField = new TextField();
+        TextArea descriptionArea = new TextArea();
+
+        workExperienceEntry.add(new Label("Job Title:"), 0, 0);
+        workExperienceEntry.add(jobTitleField, 1, 0);
+        workExperienceEntry.add(new Label("Company:"), 0, 1);
+        workExperienceEntry.add(companyField, 1, 1);
+        workExperienceEntry.add(new Label("Description:"), 0, 2);
+        workExperienceEntry.add(descriptionArea, 1, 2);
+
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(e -> {
+            workExperienceContainer.getChildren().remove(workExperienceEntry);
+        });
+        workExperienceEntry.add(removeButton, 1, 3);
+
+        workExperienceContainer.getChildren().add(workExperienceEntry);
+    }
+
+    @FXML
+    private void addProject() {
+        GridPane projectEntry = new GridPane();
+        projectEntry.setHgap(5);
+        projectEntry.setVgap(5);
+
+        TextField projectNameField = new TextField();
+        TextArea projectDescriptionArea = new TextArea();
+
+        projectEntry.add(new Label("Project Name:"), 0, 0);
+        projectEntry.add(projectNameField, 1, 0);
+        projectEntry.add(new Label("Project Description:"), 0, 1);
+        projectEntry.add(projectDescriptionArea, 1, 1);
+
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(e -> {
+            projectsContainer.getChildren().remove(projectEntry);
+        });
+        projectEntry.add(removeButton, 1, 2);
+
+        projectsContainer.getChildren().add(projectEntry);
+    }
+
+    @FXML
+    private void addCertificate() {
+        GridPane certificateEntry = new GridPane();
+        certificateEntry.setHgap(5);
+        certificateEntry.setVgap(5);
+
+        TextField certificateNameField = new TextField();
+        TextField certificateInstitutionField = new TextField();
+        DatePicker certificateDateField = new DatePicker();
+
+        certificateEntry.add(new Label("Certificate Name:"), 0, 0);
+        certificateEntry.add(certificateNameField, 1, 0);
+        certificateEntry.add(new Label("Institution:"), 0, 1);
+        certificateEntry.add(certificateInstitutionField, 1, 1);
+        certificateEntry.add(new Label("Date of Receipt:"), 0, 2);
+        certificateEntry.add(certificateDateField, 1, 2);
+
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(e -> {
+            certificatesContainer.getChildren().remove(certificateEntry);
+        });
+        certificateEntry.add(removeButton, 1, 3);
+
+        certificatesContainer.getChildren().add(certificateEntry);
+    }
+
+    @FXML
+    private void addLanguage() {
+        GridPane languageEntry = new GridPane();
+        languageEntry.setHgap(5);
+        languageEntry.setVgap(5);
+
+        TextField languageField = new TextField();
+        ComboBox<String> languageProficiencyField = new ComboBox<>(FXCollections.observableArrayList("Beginner", "Intermediate", "Advanced", "Bilingual"));
+
+        languageEntry.add(new Label("Language:"), 0, 0);
+        languageEntry.add(languageField, 1, 0);
+        languageEntry.add(new Label("Proficiency Level:"), 0, 1);
+        languageEntry.add(languageProficiencyField, 1, 1);
+
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(e -> {
+            languagesContainer.getChildren().remove(languageEntry);
+        });
+        languageEntry.add(removeButton, 1, 2);
+
+        languagesContainer.getChildren().add(languageEntry);
+    }
+
+    @FXML
+    private void generateCV() {
+        System.out.println("Generating CV...");
+
+        // Gather all data from the form and update the cv object. This is crucial!
+        cv.setName(nameField.getText());
+        cv.setEmail(emailField.getText());
+        cv.setPhone(phoneField.getText());
+        cv.setAddress(addressArea.getText());
+        cv.setLinkedIn(linkedinField.getText());
+        cv.setPortfolio(portfolioField.getText());
+        cv.setSummary(summaryArea.getText());
+        cv.setSkills(Collections.singletonList(skillsField.getText())); // Add skills
+
+        // Gather Education, Work Experience, Projects, Certificates, and Languages
+        cv.getEducations().clear(); // Clear existing data before adding new ones
+        for (Node node : educationContainer.getChildren()) {
+            if (node instanceof GridPane) {
+                GridPane gridPane = (GridPane) node;
+                TextField degree = (TextField) gridPane.getChildren().get(1); // Assuming TextField is at index 1
+                TextField institution = (TextField) gridPane.getChildren().get(3); // Assuming TextField is at index 3
+                DatePicker graduationDate = (DatePicker) gridPane.getChildren().get(5); // Assuming DatePicker is at index 5
+
+                if (degree != null && institution != null && graduationDate != null) {
+                    cv.getEducations().add(new Education(degree.getText(), institution.getText(), graduationDate.getValue()));
+                }
+            }
+        }
+
+        cv.getWorkExperiences().clear();
+        for (Node node : workExperienceContainer.getChildren()) {
+            if (node instanceof GridPane) {
+                GridPane gridPane = (GridPane) node;
+                TextField jobTitle = (TextField) gridPane.getChildren().get(1);
+                TextField company = (TextField) gridPane.getChildren().get(3);
+                TextArea description = (TextArea) gridPane.getChildren().get(5);
+
+                if (jobTitle != null && company != null && description != null) {
+                    cv.getWorkExperiences().add(new WorkExperience(jobTitle.getText(), company.getText(), description.getText()));
+                }
+            }
+        }
+
+        cv.getProjects().clear();
+        for (Node node : projectsContainer.getChildren()) {
+            if (node instanceof GridPane) {
+                GridPane gridPane = (GridPane) node;
+                TextField projectName = (TextField) gridPane.getChildren().get(1);
+                TextArea projectDescription = (TextArea) gridPane.getChildren().get(3);
+
+                if (projectName != null && projectDescription != null) {
+                    cv.getProjects().add(new Project(projectName.getText(), projectDescription.getText()));
+                }
+            }
+        }
+
+        cv.getCertificates().clear();
+        for (Node node : certificatesContainer.getChildren()) {
+            if (node instanceof GridPane) {
+                GridPane gridPane = (GridPane) node;
+                TextField certificateName = (TextField) gridPane.getChildren().get(1);
+                TextField certificateInstitution = (TextField) gridPane.getChildren().get(3);
+                DatePicker certificateDate = (DatePicker) gridPane.getChildren().get(5);
+
+                if (certificateName != null && certificateInstitution != null && certificateDate != null) {
+                    cv.getCertificates().add(new Certificate(certificateName.getText(), certificateInstitution.getText(), certificateDate.getValue()));
+                }
+            }
+        }
+
+        cv.getLanguages().clear();
+        for (Node node : languagesContainer.getChildren()) {
+            if (node instanceof GridPane) {
+                GridPane gridPane = (GridPane) node;
+                TextField language = (TextField) gridPane.getChildren().get(1);
+                ComboBox<String> proficiency = (ComboBox<String>) gridPane.getChildren().get(3);
+
+                if (language != null && proficiency != null) {
+                    cv.getLanguages().add(new Language(language.getText(), proficiency.getValue()));
+                }
+            }
+        }
+
+        System.out.println(cv); // Now cv should have all the data
+
+        String selectedTemplate = templateComboBox.getValue();
+        if (selectedTemplate != null) {
+            System.out.println("Using template: " + selectedTemplate);
+            // Call your CV generation logic here, passing the 'cv' object and the selected template.
+        } else {
+            System.out.println("No template selected");
+        }
+    }
+
+    @FXML
+    private void improveCV() {
+        List<String> suggestions = cvImprovementService.getSuggestions(cv);
+        suggestionsLabel.setText(String.join("\n", suggestions));
+    }
+
+    @FXML
+    private void handleFullScreen(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setFullScreen(!stage.isFullScreen());
+    }*/
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\service\CVGenerationservice.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\service\CVGenerationservice.java
+-----
+package com.example.stage.service;
+
+import com.example.stage.model.CV;
+import com.example.stage.model.CVData;
+
+import java.io.IOException;
+
+public class CVGenerationservice {
+    private PDFGenerationService pdfGenerationService = new PDFGenerationService();
+
+    public void generateCV(CVData cvData, String filePath) throws IOException {
+        CV cv = new CV();
+        cv.setName(cvData.getFullName());
+        cv.setEmail(cvData.getEmail());
+        cv.setPhone(cvData.getPhone());
+        cv.setAddress(cvData.getAddress());
+        cv.setLinkedin(cvData.getLinkedin());
+        cv.setPortfolio(cvData.getPortfolio());
+        cv.setSummary(cvData.getSummary());
+        cv.setEducations(cvData.getEducations());
+        cv.setWorkExperiences(cvData.getWorkExperiences());
+        cv.setProjects(cvData.getProjects());
+        cv.setCertificates(cvData.getCertificates());
+        cv.setLanguages(cvData.getLanguages());
+        cv.setSkills(cvData.getSkills());
+
+        pdfGenerationService.generateCVPDF(cv, filePath);
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\service\PDFGenerationService.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\service\PDFGenerationService.java
+-----
+package com.example.stage.service;
+
+import com.example.stage.model.CV;
+import com.example.stage.model.Certificate;
+import com.example.stage.model.Education;
+import com.example.stage.model.Language;
+import com.example.stage.model.Project;
+import com.example.stage.model.WorkExperience;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import java.io.IOException;
+import java.util.List;
+
+import static org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA;
+import static org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA_BOLD;
+
+public class PDFGenerationService {
+
+    public void generateCVPDF(CV cv, String filePath) throws IOException {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+            contentStream.beginText();
+            contentStream.setFont(HELVETICA_BOLD, 18);
+            contentStream.newLineAtOffset(50, 750);
+            contentStream.showText("Curriculum Vitae");
+            contentStream.endText();
+
+            int yOffset = 730;
+
+            yOffset = addPersonalInformation(contentStream, cv, yOffset);
+            yOffset = addSection(contentStream, "Summary", cv.getSummary(), yOffset);
+            yOffset = addEducationSection(contentStream, cv.getEducations(), yOffset);
+            yOffset = addWorkExperienceSection(contentStream, cv.getWorkExperiences(), yOffset);
+            yOffset = addProjectsSection(contentStream, cv.getProjects(), yOffset);
+            yOffset = addCertificatesSection(contentStream, cv.getCertificates(), yOffset);
+            yOffset = addLanguagesSection(contentStream, cv.getLanguages(), yOffset);
+            addSkillsSection(contentStream, cv.getSkills(), yOffset);
+        }
+
+        document.save(filePath);
+        document.close();
+    }
+
+    private int addPersonalInformation(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
+        contentStream.beginText();
+        contentStream.setFont(HELVETICA, 12);
+        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.showText("Name: " + cv.getName());
+        contentStream.newLineAtOffset(0, -15);
+        contentStream.showText("Email: " + cv.getEmail());
+        contentStream.newLineAtOffset(0, -15);
+        contentStream.showText("Phone: " + cv.getPhone());
+        contentStream.newLineAtOffset(0, -15);
+        contentStream.showText("Address: " + cv.getAddress());
+        contentStream.newLineAtOffset(0, -15);
+        contentStream.showText("LinkedIn: " + cv.getLinkedin());
+        contentStream.newLineAtOffset(0, -15);
+        contentStream.showText("Portfolio: " + cv.getPortfolio());
+        contentStream.endText();
+        return yOffset - 90;
+    }
+
+    private int addSection(PDPageContentStream contentStream, String title, String content, int yOffset) throws IOException {
+        contentStream.beginText();
+        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.showText(title);
+        contentStream.endText();
+
+        yOffset -= 20;
+
+        if (content != null && !content.isEmpty()) {
+            contentStream.beginText();
+            contentStream.setFont(HELVETICA, 12);
+            contentStream.newLineAtOffset(50, yOffset);
+            contentStream.showText(content);
+            contentStream.endText();
+            yOffset -= 20;
+        }
+        return yOffset;
+    }
+
+    private int addEducationSection(PDPageContentStream contentStream, List<Education> educations, int yOffset) throws IOException {
+        contentStream.beginText();
+        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.showText("Education");
+        contentStream.endText();
+
+        yOffset -= 20;
+        contentStream.setFont(HELVETICA, 12);
+        for (Education education : educations) {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yOffset);
+            contentStream.showText(education.getDegree() + ", " + education.getInstitution() + ", " + education.getGraduationDate());
+            contentStream.endText();
+            yOffset -= 20;
+        }
+        return yOffset;
+    }
+
+    private int addWorkExperienceSection(PDPageContentStream contentStream, List<WorkExperience> workExperiences, int yOffset) throws IOException {
+        contentStream.beginText();
+        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.showText("Work Experience");
+        contentStream.endText();
+
+        yOffset -= 20;
+        contentStream.setFont(HELVETICA, 12);
+        for (WorkExperience workExperience : workExperiences) {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yOffset);
+            contentStream.showText(workExperience.getJobTitle() + ", " + workExperience.getCompany() + ", " + workExperience.getDescription());
+            contentStream.endText();
+            yOffset -= 20;
+        }
+        return yOffset;
+    }
+
+    private int addProjectsSection(PDPageContentStream contentStream, List<Project> projects, int yOffset) throws IOException {
+        contentStream.beginText();
+        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.showText("Projects");
+        contentStream.endText();
+
+        yOffset -= 20;
+        contentStream.setFont(HELVETICA, 12);
+        for (Project project : projects) {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yOffset);
+            contentStream.showText(project.getProjectName() + ", " + project.getDescription());
+            contentStream.endText();
+            yOffset -= 20;
+        }
+        return yOffset;
+    }
+
+    private int addCertificatesSection(PDPageContentStream contentStream, List<Certificate> certificates, int yOffset) throws IOException {
+        contentStream.beginText();
+        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.showText("Certificates");
+        contentStream.endText();
+
+        yOffset -= 20;
+        contentStream.setFont(HELVETICA, 12);
+        for (Certificate certificate : certificates) {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yOffset);
+            contentStream.showText(certificate.getName() + ", " + certificate.getInstitution() + ", " + certificate.getDate());
+            contentStream.endText();
+            yOffset -= 20;
+        }
+        return yOffset;
+    }
+
+    private int addLanguagesSection(PDPageContentStream contentStream, List<Language> languages, int yOffset) throws IOException {
+        contentStream.beginText();
+        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.showText("Languages");
+        contentStream.endText();
+
+        yOffset -= 20;
+        contentStream.setFont(HELVETICA, 12);
+        for (Language language : languages) {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yOffset);
+            contentStream.showText(language.getName() + ", " + language.getProficiency());
+            contentStream.endText();
+            yOffset -= 20;
+        }
+        return yOffset;
+    }
+
+    private void addSkillsSection(PDPageContentStream contentStream, List<String> skills, int yOffset) throws IOException {
+        contentStream.beginText();
+        Object PDType1Font = null;
+        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.showText("Skills");
+        contentStream.endText();
+
+        yOffset -= 20;
+        contentStream.setFont(HELVETICA, 12);
+        for (String skill : skills) {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yOffset);
+            contentStream.showText(skill);
+            contentStream.endText();
+            yOffset -= 20;
+        }
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\service\CVImprovementService.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\service\CVImprovementService.java
+-----
+package com.example.stage.service;
+
+import com.example.stage.model.CV;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CVImprovementService {
+
+    public List<String> getSuggestions(CV cv) {
+        List<String> suggestions = new ArrayList<>();
+
+        if (cv.getWorkExperiences().isEmpty()) {
+            suggestions.add("Ajouter plus de détails sur votre expérience professionnelle.");
+        } else {
+            suggestions.add("Inclure plus de projets pour montrer votre travail.");
+        }
+
+        if (cv.getSkills().isEmpty()) {
+            suggestions.add("Mettre en avant vos compétences clés.");
+        } else {
+            suggestions.add("Développer vos compétences pour donner plus de détails.");
+        }
+
+        if (cv.getEducations().isEmpty()) {
+            suggestions.add("Ajouter votre parcours éducatif.");
+        } else {
+            suggestions.add("Inclure des certifications ou des cours spéciaux.");
+        }
+
+        return suggestions;
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\util\TranslationService.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\util\TranslationService.java
+-----
+package com.example.stage.util;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
+public class TranslationService {
+
+    /**
+     * Charge le fichier de traduction pour une langue spécifique.
+     *
+     * @param baseName  Le nom de base du fichier d'internationalisation, sans suffixe.
+     * @param locale    La locale ciblée (ex : fr, en, de).
+     * @return          Le ResourceBundle contenant les traductions.
+     */
+    public static ResourceBundle loadBundle(String baseName, Locale locale) {
+        String resourceName = baseName + "_" + locale.getLanguage() + ".properties";
+        try (InputStreamReader reader = new InputStreamReader(
+                TranslationService.class.getResourceAsStream("/" + resourceName), StandardCharsets.UTF_8)) {
+            return new PropertyResourceBundle(reader);
+        } catch (IOException | NullPointerException e) {
+            throw new RuntimeException("Impossible de charger le fichier de ressources : " + resourceName, e);
+        }
+    }
+
+    /**
+     * Récupère une traduction basée sur une clé et une locale.
+     *
+     * @param key       La clé de traduction, telle que définie dans le fichier.
+     * @param baseName  Le nom de base du fichier de ressources (ex : "messages").
+     * @param locale    La locale ciblée (Langue à utiliser).
+     * @return          La traduction associée à la clé ou un texte par défaut si non trouvée.
+     */
+    public static String getTranslation(String baseName, String key, Locale locale) {
+        try {
+            ResourceBundle bundle = loadBundle(baseName, locale);
+            return bundle.getString(key);
+        } catch (Exception e) {
+            System.err.println("Erreur de traduction pour la clé : " + key);
+            return "[" + key + "]";
+        }
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\util\TranslationUtils.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\util\TranslationUtils.java
+-----
+package com.example.stage.util;
+
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+public class TranslationUtils {
+    public static String getSafeTranslation(ResourceBundle bundle, String key) {
+        try {
+            return bundle.getString(key);
+        } catch (MissingResourceException e) {
+            System.err.println("Translation key not found: " + key + " for locale " + bundle.getLocale());
+            return "[" + key + "]";
+        }
+    }
+}
+==================================================
+
+Fichier: src\main\resources\com\example\stage\page2.fxml
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\page2.fxml
+-----
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.DatePicker?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.Page2Controller">
+    <!-- Images at the top -->
+    <HBox alignment="CENTER" layoutX="557.0" layoutY="8.0" prefHeight="109.0" prefWidth="335.0" spacing="20" AnchorPane.leftAnchor="557.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
+
+        <!-- Logo Image Right -->
+        <ImageView fitHeight="46.0" fitWidth="119.0" layoutX="729.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0">
+            <image>
+                <Image url="@../../../images/esprim.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="99.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" />
+
+    </HBox>
+
+    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutY="126.0" prefHeight="464.0" prefWidth="888.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="126.0">
+        <VBox alignment="CENTER" prefHeight="630.0" prefWidth="859.0" spacing="10" style="-fx-padding: 20px;">
+            <GridPane alignment="CENTER" hgap="10" maxWidth="Infinity" prefHeight="598.0" prefWidth="825.0" vgap="10">
+                <!-- Section: Skills -->
+                <Label fx:id="skillsLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Skills" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+                <HBox GridPane.columnSpan="2" GridPane.rowIndex="1">
+                    <TextField fx:id="skillsField" />
+                    <Button onAction="#showSkillsHelp" style="-fx-background-color: #E31A22; -fx-text-fill: white; -fx-font-weight: bold;" text="?" />
+                </HBox>
+
+                <!-- Section: Projects -->
+                <Label fx:id="projectsLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Projects" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                <VBox fx:id="projectsContainer" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                    <GridPane hgap="5" vgap="5">
+                        <Label text="Project Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="projectNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Project Description:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <TextArea fx:id="projectDescriptionArea" prefHeight="60" />
+                            <Button onAction="#showProjectHelp" style="-fx-background-color: #E31A22; -fx-text-fill: white; -fx-font-weight: bold;" text="?" />
+                        </HBox>
+                        <Button onAction="#addProject" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Project" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                </VBox>
+
+                <!-- Section: Certificates -->
+                <Label fx:id="certificatesLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Certificates" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                <VBox fx:id="certificatesContainer" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                    <GridPane hgap="5" vgap="5">
+                        <Label text="Certificate Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="certificateNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Institution:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="certificateInstitutionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Date of Receipt:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="certificateDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button onAction="#addCertificate" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Certificate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                </VBox>
+
+                <!-- Section: Languages -->
+                <Label fx:id="languagesLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Languages" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+                <VBox fx:id="languagesContainer" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                    <GridPane hgap="5" vgap="5">
+                        <Label text="Language:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="languageField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Proficiency Level:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="languageProficiencyField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Beginner" />
+                                    <String fx:value="Intermediate" />
+                                    <String fx:value="Advanced" />
+                                    <String fx:value="Bilingual" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <Button onAction="#addLanguage" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Language" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                </VBox>
+
+                <!-- Back and Translate Buttons -->
+                <Button fx:id="backButton" onAction="#goToPage1" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Back" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                <ComboBox fx:id="languageComboBox" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                <Button fx:id="translateButton" onAction="#translatePage" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Translate" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+
+                <!-- Generate PDF Button -->
+                <Button fx:id="generatePDFButton" onAction="#generatePDF" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Generate PDF" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
+            </GridPane>
+        </VBox>
+    </ScrollPane>
+
+    <!-- Logo Image Left -->
+    <ImageView fitHeight="112.0" fitWidth="146.0" layoutX="-7.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../../../images/logo.png" />
+        </image>
+    </ImageView>
+</AnchorPane>
+==================================================
+
+Fichier: src\main\resources\com\example\stage\page1.fxml
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\page1.fxml
+-----
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.Page1Controller">
+    <ImageView fitHeight="109.0" fitWidth="140.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../../../images/logo.png" />
+        </image>
+    </ImageView>
+
+    <!-- Logo Image Right -->
+    <ImageView fitHeight="46.0" fitWidth="119.0" layoutX="729.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0">
+        <image>
+            <Image url="@../../../images/esprim.png" />
+        </image>
+    </ImageView>
+    <!-- Page Layout -->
+    <VBox spacing="10" layoutX="20" layoutY="20" fillWidth="true">
+
+        <!-- Language Selection -->
+        <HBox spacing="10">
+            <ComboBox fx:id="languageComboBox" prefWidth="200" />
+            <Button fx:id="translateButton" onAction="#translatePage" text="Translate" />
+        </HBox>
+
+        <!-- Personal Information Section -->
+        <VBox spacing="10">
+            <Label fx:id="personalInformationLabel" text="Personal Information" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" />
+            <GridPane hgap="10" vgap="10">
+                <!-- Full Name -->
+                <Label text="Full Name" />
+                <TextField fx:id="nameField" GridPane.columnIndex="1" />
+                <!-- Full Name Translation Output -->
+                <Label fx:id="fullNameLabel" text="" GridPane.columnIndex="2" style="-fx-text-fill: grey;" />
+                <!-- Email -->
+                <Label fx:id="emailLabel" text="Email" GridPane.rowIndex="1" />
+                <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <!-- Phone -->
+                <Label fx:id="phoneLabel" text="Phone" GridPane.rowIndex="2" />
+                <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <!-- Address -->
+                <Label fx:id="addressLabel" text="Address" GridPane.rowIndex="3" />
+                <TextArea fx:id="addressArea" prefHeight="60" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <!-- LinkedIn -->
+                <Label fx:id="linkedinLabel" text="LinkedIn" GridPane.rowIndex="4" />
+                <TextField fx:id="linkedinField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <!-- Portfolio -->
+                <Label fx:id="portfolioLabel" text="Portfolio" GridPane.rowIndex="5" />
+                <TextField fx:id="portfolioField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            </GridPane>
+        </VBox>
+
+        <!-- Summary Section -->
+        <VBox spacing="10">
+            <Label fx:id="summaryObjectiveLabel" text="Summary / Objective" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" />
+            <HBox spacing="10">
+                <TextArea fx:id="summaryArea" prefHeight="80" prefWidth="300" />
+                <Button onAction="#showSummaryHelp" text="ⓘ" style="-fx-text-fill: white; -fx-background-color: #E31A22;" />
+            </HBox>
+        </VBox>
+
+        <!-- Education Section -->
+        <VBox spacing="10">
+            <Label fx:id="educationLabel" text="Education" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" />
+            <VBox fx:id="educationContainer" spacing="5">
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Degree" />
+                    <TextField fx:id="degreeField" GridPane.columnIndex="1" />
+                    <Label text="Institution" GridPane.rowIndex="1" />
+                    <TextField fx:id="institutionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Graduation Date" GridPane.rowIndex="2" />
+                    <DatePicker fx:id="graduationDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                </GridPane>
+                <Button fx:id="addEducationButton" text="Add Education" onAction="#addEducation" style="-fx-background-color: #E31A22; -fx-text-fill: white;" />
+            </VBox>
+        </VBox>
+
+        <!-- Work Experience Section -->
+        <VBox spacing="10">
+            <Label fx:id="workExperienceLabel" text="Work Experience" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" />
+            <VBox fx:id="workExperienceContainer" spacing="5">
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Job Title" />
+                    <TextField fx:id="jobTitleField" GridPane.columnIndex="1" />
+                    <Label text="Company" GridPane.rowIndex="1" />
+                    <TextField fx:id="companyField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Description" GridPane.rowIndex="2" />
+                    <TextArea fx:id="descriptionArea" prefHeight="60" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                </GridPane>
+                <Button fx:id="addWorkExperienceButton" text="Add Work Experience" onAction="#addWorkExperience" style="-fx-background-color: #E31A22; -fx-text-fill: white;" />
+            </VBox>
+        </VBox>
+
+        <!-- Footer Buttons -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button fx:id="nextButton" onAction="#goToPage2" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Next" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+        </HBox>
+    </VBox>
+
+
+</AnchorPane>
+==================================================
+
+Fichier: src\main\resources\com\example\stage\messages_ar.properties
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_ar.properties
+-----
+translate=\u062A\u0631\u062C\u0645\u0629
+back=\u0631\u062C\u0648\u0639
+skills=\u0645\u0647\u0627\u0631\u0627\u062A
+projects=\u0645\u0634\u0627\u0631\u064A\u0639
+certificates=\u0634\u0647\u0627\u062F\u0627\u062A
+languages=\u0644\u063A\u0627\u062A
+generate_pdf=\u0625\u0646\u0634\u0627\u0621 PDF
+personal_information=\u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0634\u062E\u0635\u064A\u0629
+full_name=\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644
+email=\u0627\u0644\u0628\u0631\u064A\u062F \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A
+phone=\u0627\u0644\u0647\u0627\u062A\u0641
+address=\u0627\u0644\u0639\u0646\u0648\u0627\u0646
+linkedin=\u0644\u064A\u0646\u0643\u062F\u0625\u0646
+portfolio=\u0645\u0644\u0641 \u0627\u0644\u0623\u0639\u0645\u0627\u0644
+summary_objective=\u0627\u0644\u0645\u0644\u062E\u0635 / \u0627\u0644\u0647\u062F\u0641
+education=\u0627\u0644\u062A\u0639\u0644\u064A\u0645
+work_experience=\u0627\u0644\u062E\u0628\u0631\u0629 \u0627\u0644\u0639\u0645\u0644\u064A\u0629
+add_education=\u0625\u0636\u0627\u0641\u0629 \u062A\u0639\u0644\u064A\u0645
+add_experience=\u0625\u0636\u0627\u0641\u0629 \u062E\u0628\u0631\u0629
+next=Next
+==================================================
+
+Fichier: src\main\resources\com\example\stage\messages_de.properties
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_de.properties
+-----
+translate=Übersetzen
+back=Zurück
+skills=Fähigkeiten
+projects=Projekte
+certificates=Zertifikate
+languages=Sprachen
+generate_pdf=PDF Erstellen
+personal_information=Persönliche Informationen
+full_name=Vollständiger Name
+email=E-Mail
+phone=Telefon
+address=Adresse
+linkedin=LinkedIn
+portfolio=Portfolio
+summary_objective=Zusammenfassung / Ziel
+education=Bildung
+work_experience=Berufserfahrung
+add_education=Bildung Hinzufügen
+add_experience=Erfahrung Hinzufügen
+project_name=Projektname
+project_description=Projektbeschreibung
+certificate_name=Zertifikatname
+institution=Institution
+date_of_receipt=Empfangsdatum
+language=Sprache
+proficiency_level=Kompetenzniveau
+next=Weiter
+==================================================
+
+Fichier: src\main\resources\com\example\stage\messages_en.properties
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_en.properties
+-----
+translate=Translate
+back=Back
+skills=Skills
+projects=Projects
+certificates=Certificates
+languages=Languages
+generate_pdf=Generate PDF
+personal_information=Personal Information
+full_name=Full Name
+email=Email
+phone=Phone
+address=Address
+linkedin=LinkedIn
+portfolio=Portfolio
+summary_objective=Summary / Objective
+education=Education
+work_experience=Work Experience
+add_education=Add Education
+add_experience=Add Experience
+project_name=Project Name
+project_description=Project Description
+certificate_name=Certificate Name
+institution=Institution
+date_of_receipt=Date of Receipt
+language=Language
+proficiency_level=Proficiency Level
+next=Next
+==================================================
+
+Fichier: src\main\resources\com\example\stage\messages_fr.properties
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_fr.properties
+-----
+translate=Traduire
+back=Retour
+skills=Compétences
+projects=Projets
+certificates=Certificats
+languages=Langues
+generate_pdf=Générer PDF
+personal_information=Informations Personnelles
+full_name=Nom Complet
+email=Email
+phone=Téléphone
+address=Adresse
+linkedin=LinkedIn
+portfolio=Portfolio
+summary_objective=Résumé / Objectif
+education=Éducation
+work_experience=Expérience Professionnelle
+add_education=Ajouter Éducation
+add_experience=Ajouter Expérience
+project_name=Nom du Projet
+project_description=Description du Projet
+certificate_name=Nom du Certificat
+institution=Institution
+date_of_receipt=Date de Réception
+language=Langue
+proficiency_level=Niveau de Compétence
+next=Suivant
+==================================================
+
