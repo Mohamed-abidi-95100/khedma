@@ -1,574 +1,43 @@
-Fichier: src\main\java\com\example\stage\model\CV.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\CV.java
+Fichier: src\main\java\com\example\stage\service\CVImprovementService.java
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\java\com\example\stage\service\CVImprovementService.java
 -----
-package com.example.stage.model;
+package com.example.stage.service;
+
+import com.example.stage.model.CV;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CV {
-    private String name;
-    private String email;
-    private String phone;
-    private String address;
-    private String linkedin;
-    private String portfolio;
-    private String summary;
-    private List<Education> educations = new ArrayList<>();
-    private List<WorkExperience> workExperiences = new ArrayList<>();
-    private List<Project> projects = new ArrayList<>();
-    private List<Certificate> certificates = new ArrayList<>();
-    private List<Language> languages = new ArrayList<>();
-    private List<String> skills = new ArrayList<>();
-
-    // Getters and Setters
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getLinkedin() {
-        return linkedin;
-    }
-
-    public void setLinkedin(String linkedin) {
-        this.linkedin = linkedin;
-    }
-
-    public String getPortfolio() {
-        return portfolio;
-    }
-
-    public void setPortfolio(String portfolio) {
-        this.portfolio = portfolio;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public List<Education> getEducations() {
-        return educations;
-    }
-
-    public void setEducations(List<Education> educations) {
-        this.educations = educations;
-    }
-
-    public List<WorkExperience> getWorkExperiences() {
-        return workExperiences;
-    }
-
-    public void setWorkExperiences(List<WorkExperience> workExperiences) {
-        this.workExperiences = workExperiences;
-    }
-
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
-
-    public List<Certificate> getCertificates() {
-        return certificates;
-    }
-
-    public void setCertificates(List<Certificate> certificates) {
-        this.certificates = certificates;
-    }
-
-    public List<Language> getLanguages() {
-        return languages;
-    }
-
-    public void setLanguages(List<Language> languages) {
-        this.languages = languages;
-    }
-
-    public List<String> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(List<String> skills) {
-        this.skills = skills;
-    }
-
-    public void setLinkedIn(String text) {
-    }
-}
-==================================================
-
-Fichier: src\main\java\com\example\stage\model\CVData.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\CVData.java
------
-package com.example.stage.model;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class CVData {
-    private String fullName;
-    private String email;
-    private String phone;
-    private String address;
-    private String linkedin;
-    private String portfolio;
-    private String summary;
-    private List<Education> educations = new ArrayList<>();
-    private List<WorkExperience> workExperiences = new ArrayList<>();
-    private List<Project> projects = new ArrayList<>();
-    private List<Certificate> certificates = new ArrayList<>();
-    private List<Language> languages = new ArrayList<>();
-    private List<String> skills = new ArrayList<>();
-
-    // Getters and setters
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getLinkedin() {
-        return linkedin;
-    }
-
-    public void setLinkedin(String linkedin) {
-        this.linkedin = linkedin;
-    }
-
-    public String getPortfolio() {
-        return portfolio;
-    }
-
-    public void setPortfolio(String portfolio) {
-        this.portfolio = portfolio;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public List<Education> getEducations() {
-        return educations;
-    }
-
-    public void setEducations(List<Education> educations) {
-        this.educations = educations;
-    }
-
-    public List<WorkExperience> getWorkExperiences() {
-        return workExperiences;
-    }
-
-    public void setWorkExperiences(List<WorkExperience> workExperiences) {
-        this.workExperiences = workExperiences;
-    }
-
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
-
-    public List<Certificate> getCertificates() {
-        return certificates;
-    }
-
-    public void setCertificates(List<Certificate> certificates) {
-        this.certificates = certificates;
-    }
-
-    public List<Language> getLanguages() {
-        return languages;
-    }
-
-    public void setLanguages(List<Language> languages) {
-        this.languages = languages;
-    }
-
-    public List<String> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(List<String> skills) {
-        this.skills = skills;
-    }
-}
-==================================================
-
-Fichier: src\main\java\com\example\stage\model\Language.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Language.java
------
-package com.example.stage.model;
-
-public class Language {
-    private String name; // Name of the language
-    private String proficiency; // Proficiency level of the language
-
-    // Constructor
-    public Language(String name, String proficiency) {
-        this.name = name;
-        this.proficiency = proficiency;
-    }
-
-    // Getters and Setters
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getProficiency() {
-        return proficiency;
-    }
-
-    public void setProficiency(String proficiency) {
-        this.proficiency = proficiency;
-    }
-
-    @Override
-    public String toString() {
-        return "Language{" +
-                "name='" + name + '\'' +
-                ", proficiency='" + proficiency + '\'' +
-                '}';
-    }
-}
-==================================================
-
-Fichier: src\main\java\com\example\stage\model\Certificate.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Certificate.java
------
-package com.example.stage.model;
-
-import java.time.LocalDate;
-
-public class Certificate {
-    private String name; // Name of the certificate
-    private String institution; // Institution that issued the certificate
-    private LocalDate date; // Date of receiving the certificate
-
-    // Constructor
-    public Certificate(String name, String institution, LocalDate date) {
-        this.name = name;
-        this.institution = institution;
-        this.date = date;
-    }
-
-    // Getters and Setters
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getInstitution() {
-        return institution;
-    }
-
-    public void setInstitution(String institution) {
-        this.institution = institution;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "Certificate{" +
-                "name='" + name + '\'' +
-                ", institution='" + institution + '\'' +
-                ", date=" + date +
-                '}';
-    }
-}
-==================================================
-
-Fichier: src\main\java\com\example\stage\model\Project.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Project.java
------
-package com.example.stage.model;
-
-public class Project {
-    private String projectName;
-    private String description;
-
-    public Project(String projectName, String description) {
-        this.projectName = projectName;
-        this.description = description;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "Project{" +
-                "projectName='" + projectName + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
-}
-==================================================
-
-Fichier: src\main\java\com\example\stage\model\Education.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Education.java
------
-package com.example.stage.model;
-
-import java.time.LocalDate;
-
-public class Education {
-    private String degree;
-    private String institution;
-    private String graduationDate; // Peut être un String ou un objet Date
-
-    public Education(String degree, String institution, LocalDate graduationDate) {
-        this.degree = degree;
-        this.institution = institution;
-        this.graduationDate = graduationDate.toString();
-    }
-
-    public Education(String degree, String institution, String graduationDate) {
-        this.degree = degree;
-        this.institution = institution;
-        this.graduationDate = graduationDate;
-    }
-
-    public String getDegree() {
-        return degree;
-    }
-
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-
-    public String getInstitution() {
-        return institution;
-    }
-
-    public void setInstitution(String institution) {
-        this.institution = institution;
-    }
-
-    public String getGraduationDate() {
-        return graduationDate;
-    }
-
-    public void setGraduationDate(String graduationDate) {
-        this.graduationDate = graduationDate;
-    }
-}
-==================================================
-
-Fichier: src\main\java\com\example\stage\model\WorkExperience.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\WorkExperience.java
------
-package com.example.stage.model;
-
-public class WorkExperience {
-    private String jobTitle;
-    private String company;
-    private String startDate;
-    private String endDate;
-    private String description;
-
-    public WorkExperience(String jobTitle, String company) {
-        this.jobTitle = jobTitle;
-        this.company = company;
-    }
-
-    public WorkExperience(String jobTitle, String company, String startDate, String endDate, String description) {
-        this.jobTitle = jobTitle;
-        this.company = company;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.description = description;
-    }
-
-    public WorkExperience(String jobTitle, String company, String description) {
-        this.jobTitle = jobTitle;
-        this.company = company;
-        this.description = description;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "WorkExperience{" +
-                "jobTitle='" + jobTitle + '\'' +
-                ", company='" + company + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
-}
-==================================================
-
-Fichier: src\main\java\com\example\stage\model\Competence.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Competence.java
------
-package com.example.stage.model;
-public class Competence {
-    private String name;
-    private String level; // (ex: "Débutant", "Intermédiaire", "Expert")
-
-    public Competence() {
-        // Constructeur par défaut (vide)
-    }
-
-    public Competence(String name, String level) {
-        this.name = name;
-        this.level = level;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
+public class CVImprovementService {
+
+    public List<String> getSuggestions(CV cv) {
+        List<String> suggestions = new ArrayList<>();
+
+        if (cv.getWorkExperiences().isEmpty()) {
+            suggestions.add("Ajouter plus de détails sur votre expérience professionnelle.");
+        } else {
+            suggestions.add("Inclure plus de projets pour montrer votre travail.");
+        }
+
+        if (cv.getSkills().isEmpty()) {
+            suggestions.add("Mettre en avant vos compétences clés.");
+        } else {
+            suggestions.add("Développer vos compétences pour donner plus de détails.");
+        }
+
+        if (cv.getEducations().isEmpty()) {
+            suggestions.add("Ajouter votre parcours éducatif.");
+        } else {
+            suggestions.add("Inclure des certifications ou des cours spéciaux.");
+        }
+
+        return suggestions;
     }
 }
 ==================================================
 
 Fichier: src\main\java\com\example\stage\controller\Page1Controller.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\controller\Page1Controller.java
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\java\com\example\stage\controller\Page1Controller.java
 -----
 package com.example.stage.controller;
 
@@ -804,9 +273,9 @@ public class Page1Controller {
         nameField.setText("Mohamed Abidi");
         emailField.setText("mohamed.abidi@example.com");
         phoneField.setText("+21612345678");
-        addressArea.setText("123 Rue de Tunis, Tunis, Tunisia");
+        addressArea.setText("123 Rue Omrane, Monastir, Tunisia");
         linkedinField.setText("linkedin.com/in/mohamedabidi");
-        portfolioField.setText("mohamedabidi.com");
+        portfolioField.setText("mohamedabidi@esprim.tn");
         summaryArea.setText("Experienced software engineer with a strong background in developing scalable web applications.");
 
         // Add example education
@@ -838,8 +307,157 @@ public class Page1Controller {
 }
 ==================================================
 
+Fichier: src\main\resources\com\example\stage\page1.fxml
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\resources\com\example\stage\page1.fxml
+-----
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.Page1Controller">
+    <ImageView fitHeight="109.0" fitWidth="140.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../../../images/logo.png" />
+        </image>
+    </ImageView>
+
+    <!-- Logo Image Right -->
+    <ImageView fitHeight="46.0" fitWidth="119.0" layoutX="729.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0">
+        <image>
+            <Image url="@../../../images/esprim.png" />
+        </image>
+    </ImageView>
+
+    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="126.0">
+        <VBox fillWidth="true" spacing="10" style="-fx-padding: 20px;">
+            <!-- Language Selection -->
+            <HBox spacing="10">
+                <ComboBox fx:id="languageComboBox" prefHeight="21.0" prefWidth="113.0" />
+                <Button fx:id="translateButton" onAction="#translatePage" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Translate" />
+            </HBox>
+
+            <!-- Personal Information Section -->
+            <VBox spacing="10">
+                <Label fx:id="personalInformationLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Personal Information" />
+                <GridPane hgap="10" vgap="10">
+                    <Label fx:id="fullNameLabel" text="Full Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="nameField" prefHeight="22.0" prefWidth="471.0" text="Mohamed Abidi" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label fx:id="emailLabel" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="emailField" text="mohamed.abidi@example.com" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label fx:id="phoneLabel" text="Phone" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="phoneField" text="+21612345678" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                    <Label fx:id="addressLabel" text="Address" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextArea fx:id="addressArea" text="123 Rue de Tunis, Tunis, Tunisia" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                    <Label fx:id="linkedinLabel" text="LinkedIn" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <TextField fx:id="linkedinField" text="linkedin.com/in/mohamedabidi" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                    <Label fx:id="portfolioLabel" text="Portfolio" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <TextField fx:id="portfolioField" text="mohamedabidi.com" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <columnConstraints>
+                        <ColumnConstraints maxWidth="104.0" minWidth="59.0" prefWidth="104.0" />
+                        <ColumnConstraints maxWidth="473.0" minWidth="428.0" prefWidth="428.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                </GridPane>
+            </VBox>
+
+            <!-- Summary Section -->
+            <VBox spacing="10">
+                <Label fx:id="summaryObjectiveLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Summary / Objective" />
+                <HBox spacing="10">
+                    <TextArea fx:id="summaryArea" prefHeight="40.0" prefWidth="541.0" text="Experienced software engineer with a strong background in developing scalable web applications." />
+                    <Button onAction="#showSummaryHelp" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="ⓘ" />
+                </HBox>
+            </VBox>
+
+            <!-- Education Section -->
+            <VBox spacing="10">
+                <Label fx:id="educationLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Education" />
+                <VBox fx:id="educationContainer" spacing="5">
+                    <GridPane hgap="10" vgap="10">
+                        <Label text="Degree" GridPane.rowIndex="0" />
+                        <TextField fx:id="degreeField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Institution" GridPane.rowIndex="1" />
+                        <TextField fx:id="institutionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Graduation Date" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="graduationDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <columnConstraints>
+                            <ColumnConstraints maxWidth="109.0" minWidth="93.0" prefWidth="106.0" />
+                            <ColumnConstraints maxWidth="169.0" minWidth="153.0" prefWidth="156.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                </VBox>
+                <Button fx:id="addEducationButton" onAction="#addEducation" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Education" />
+            </VBox>
+
+            <!-- Work Experience Section -->
+            <VBox spacing="10">
+                <Label fx:id="workExperienceLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Work Experience" />
+                <VBox fx:id="workExperienceContainer" spacing="5">
+                    <GridPane hgap="10" vgap="10">
+                        <Label text="Job Title" />
+                        <TextField fx:id="jobTitleField" GridPane.columnIndex="1" />
+                        <Label text="Company" GridPane.rowIndex="1" />
+                        <TextField fx:id="companyField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Description" GridPane.rowIndex="2" />
+                        <TextArea fx:id="descriptionArea" prefHeight="60" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                </VBox>
+                <Button fx:id="addWorkExperienceButton" onAction="#addWorkExperience" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Work Experience" />
+            </VBox>
+
+            <!-- Footer Buttons -->
+            <HBox alignment="CENTER" spacing="10">
+                <Button fx:id="autoFillButton" onAction="#autoFillForm" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Auto Fill" />
+                <Button fx:id="nextButton" onAction="#goToPage2" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Next" />
+            </HBox>
+        </VBox>
+    </ScrollPane>
+</AnchorPane>
+
+==================================================
+
 Fichier: src\main\java\com\example\stage\controller\Page2Controller.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\controller\Page2Controller.java
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\java\com\example\stage\controller\Page2Controller.java
 -----
 package com.example.stage.controller;
 
@@ -1193,377 +811,252 @@ public class Page2Controller {
 }
 ==================================================
 
-Fichier: src\main\java\com\example\stage\controller\CVFormController.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\controller\CVFormController.java
+Fichier: src\main\resources\com\example\stage\page2.fxml
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\resources\com\example\stage\page2.fxml
 -----
-package com.example.stage.controller;
+<?xml version="1.0" encoding="UTF-8"?>
 
-import com.example.stage.model.CV;
-import com.example.stage.model.Certificate;
-import com.example.stage.model.Education;
-import com.example.stage.model.Language;
-import com.example.stage.model.Project;
-import com.example.stage.model.WorkExperience;
-import com.example.stage.service.CVImprovementService;
-import com.example.stage.service.UserService;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.DatePicker?>
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.Page2Controller">
+    <!-- Images at the top -->
+    <HBox alignment="CENTER" layoutX="557.0" layoutY="8.0" prefHeight="109.0" prefWidth="335.0" spacing="20" AnchorPane.leftAnchor="557.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
 
-public class CVFormController {
+        <!-- Logo Image Right -->
+        <ImageView fitHeight="46.0" fitWidth="119.0" layoutX="729.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0">
+            <image>
+                <Image url="@../../../images/esprim.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="99.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" />
 
-  /*  @FXML
-    private TextField nameField;
-    @FXML
-    private TextField emailField;
-    @FXML
-    private TextField phoneField;
-    @FXML
-    private TextArea addressArea;
-    @FXML
-    private TextField linkedinField;
-    @FXML
-    private TextField portfolioField;
-    @FXML
-    private TextArea summaryArea;
-    @FXML
-    private VBox educationContainer;
-    @FXML
-    private VBox workExperienceContainer;
-    @FXML
-    private TextField skillsField;
-    @FXML
-    private VBox projectsContainer;
-    @FXML
-    private VBox certificatesContainer;
-    @FXML
-    private VBox languagesContainer;
-    @FXML
-    private ComboBox<String> templateComboBox;
-    @FXML
-    private ScrollPane scrollPane;
-    @FXML
-    private Label suggestionsLabel;
+    </HBox>
 
-    private CV cv = new CV();
-    private UserService userService = new UserService();
-    private CVImprovementService cvImprovementService = new CVImprovementService();
+    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutY="126.0" prefHeight="464.0" prefWidth="888.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="126.0">
+        <VBox alignment="CENTER" prefHeight="630.0" prefWidth="859.0" spacing="10" style="-fx-padding: 20px;">
+            <GridPane alignment="CENTER" hgap="10" maxWidth="Infinity" prefHeight="598.0" prefWidth="825.0" vgap="10">
+                <!-- Section: Skills -->
+                <Label fx:id="skillsLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Skills" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+                <HBox GridPane.columnSpan="2" GridPane.rowIndex="1">
+                    <TextField fx:id="skillsField" />
+                    <Button onAction="#showSkillsHelp" style="-fx-background-color: #E31A22; -fx-text-fill: white; -fx-font-weight: bold;" text="?" />
+                </HBox>
 
-    @FXML
-    private void initialize() {
-        loadUserData();
-        loadCVTemplates();
+                <!-- Section: Projects -->
+                <Label fx:id="projectsLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Projects" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                <VBox fx:id="projectsContainer" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                    <GridPane hgap="5" vgap="5">
+                        <Label text="Project Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="projectNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Project Description:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <TextArea fx:id="projectDescriptionArea" prefHeight="60" />
+                            <Button onAction="#showProjectHelp" style="-fx-background-color: #E31A22; -fx-text-fill: white; -fx-font-weight: bold;" text="?" />
+                        </HBox>
+                        <Button onAction="#addProject" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Project" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                </VBox>
 
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                <!-- Section: Certificates -->
+                <Label fx:id="certificatesLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Certificates" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                <VBox fx:id="certificatesContainer" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                    <GridPane hgap="5" vgap="5">
+                        <Label text="Certificate Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="certificateNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Institution:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="certificateInstitutionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Date of Receipt:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="certificateDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button onAction="#addCertificate" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Certificate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                </VBox>
 
-        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
-            double deltaY = event.getDeltaY() * 0.01;
-            scrollPane.setVvalue(scrollPane.getVvalue() - deltaY / scrollPane.getContent().getBoundsInLocal().getHeight());
-        });
-    }
+                <!-- Section: Languages -->
+                <Label fx:id="languagesLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Languages" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+                <VBox fx:id="languagesContainer" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                    <GridPane hgap="5" vgap="5">
+                        <Label text="Language:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="languageField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Proficiency Level:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="languageProficiencyField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Beginner" />
+                                    <String fx:value="Intermediate" />
+                                    <String fx:value="Advanced" />
+                                    <String fx:value="Bilingual" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <Button onAction="#addLanguage" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Language" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                </VBox>
 
-    private void loadUserData() {
-        nameField.setText(userService.getUserName());
-        emailField.setText(userService.getUserEmail());
-        phoneField.setText(userService.getUserPhone());
-        addressArea.setText(userService.getUserAddress());
-        linkedinField.setText(userService.getUserLinkedIn());
-        portfolioField.setText(userService.getUserPortfolio());
-        summaryArea.setText(userService.getUserSummary());
-    }
+                <!-- Back and Translate Buttons -->
+                <Button fx:id="backButton" onAction="#goToPage1" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Back" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                <ComboBox fx:id="languageComboBox" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                <Button fx:id="translateButton" onAction="#translatePage" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Translate" GridPane.columnIndex="1" GridPane.rowIndex="9" />
 
-    private void loadCVTemplates() {
-        templateComboBox.getItems().addAll("Template 1", "Template 2", "Template 3");
-    }
+                <!-- Generate PDF Button -->
+                <Button fx:id="generatePDFButton" onAction="#generatePDF" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Generate PDF" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                <Button fx:id="autoFillButton" text="Auto Fill" onAction="#autoFillForm" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
+            </GridPane>
+        </VBox>
+    </ScrollPane>
 
-    @FXML
-    private void addEducation() {GridPane educationEntry = new GridPane();
-        educationEntry.setHgap(5);
-        educationEntry.setVgap(5);
-
-        TextField degreeField = new TextField();
-        TextField institutionField = new TextField("ESPRIM");
-        DatePicker graduationDateField = new DatePicker();
-
-        educationEntry.add(new Label("Degree:"), 0, 0);
-        educationEntry.add(degreeField, 1, 0);
-        educationEntry.add(new Label("Institution:"), 0, 1);
-        educationEntry.add(institutionField, 1, 1);
-        educationEntry.add(new Label("Graduation Date:"), 0, 2);
-        educationEntry.add(graduationDateField, 1, 2);
-
-        Button removeButton = new Button(   "Remove");
-        removeButton.setOnAction(e -> {
-            educationContainer.getChildren().remove(educationEntry);
-        });
-        educationEntry.add(removeButton, 1, 3);
-
-        educationContainer.getChildren().add(educationEntry);
-
-        //  Update the CV object:
-        String degree = degreeField.getText();
-        String institution = institutionField.getText();
-        LocalDate graduationDate = graduationDateField.getValue();
-
-        Education education = new Education(degree, institution, graduationDate);
-        cv.getEducations().add(education);
-    }
-
-    @FXML
-    private void addWorkExperience() {
-        GridPane workExperienceEntry = new GridPane();
-        workExperienceEntry.setHgap(5);
-        workExperienceEntry.setVgap(5);
-
-        TextField jobTitleField = new TextField();
-        TextField companyField = new TextField();
-        TextArea descriptionArea = new TextArea();
-
-        workExperienceEntry.add(new Label("Job Title:"), 0, 0);
-        workExperienceEntry.add(jobTitleField, 1, 0);
-        workExperienceEntry.add(new Label("Company:"), 0, 1);
-        workExperienceEntry.add(companyField, 1, 1);
-        workExperienceEntry.add(new Label("Description:"), 0, 2);
-        workExperienceEntry.add(descriptionArea, 1, 2);
-
-        Button removeButton = new Button("Remove");
-        removeButton.setOnAction(e -> {
-            workExperienceContainer.getChildren().remove(workExperienceEntry);
-        });
-        workExperienceEntry.add(removeButton, 1, 3);
-
-        workExperienceContainer.getChildren().add(workExperienceEntry);
-    }
-
-    @FXML
-    private void addProject() {
-        GridPane projectEntry = new GridPane();
-        projectEntry.setHgap(5);
-        projectEntry.setVgap(5);
-
-        TextField projectNameField = new TextField();
-        TextArea projectDescriptionArea = new TextArea();
-
-        projectEntry.add(new Label("Project Name:"), 0, 0);
-        projectEntry.add(projectNameField, 1, 0);
-        projectEntry.add(new Label("Project Description:"), 0, 1);
-        projectEntry.add(projectDescriptionArea, 1, 1);
-
-        Button removeButton = new Button("Remove");
-        removeButton.setOnAction(e -> {
-            projectsContainer.getChildren().remove(projectEntry);
-        });
-        projectEntry.add(removeButton, 1, 2);
-
-        projectsContainer.getChildren().add(projectEntry);
-    }
-
-    @FXML
-    private void addCertificate() {
-        GridPane certificateEntry = new GridPane();
-        certificateEntry.setHgap(5);
-        certificateEntry.setVgap(5);
-
-        TextField certificateNameField = new TextField();
-        TextField certificateInstitutionField = new TextField();
-        DatePicker certificateDateField = new DatePicker();
-
-        certificateEntry.add(new Label("Certificate Name:"), 0, 0);
-        certificateEntry.add(certificateNameField, 1, 0);
-        certificateEntry.add(new Label("Institution:"), 0, 1);
-        certificateEntry.add(certificateInstitutionField, 1, 1);
-        certificateEntry.add(new Label("Date of Receipt:"), 0, 2);
-        certificateEntry.add(certificateDateField, 1, 2);
-
-        Button removeButton = new Button("Remove");
-        removeButton.setOnAction(e -> {
-            certificatesContainer.getChildren().remove(certificateEntry);
-        });
-        certificateEntry.add(removeButton, 1, 3);
-
-        certificatesContainer.getChildren().add(certificateEntry);
-    }
-
-    @FXML
-    private void addLanguage() {
-        GridPane languageEntry = new GridPane();
-        languageEntry.setHgap(5);
-        languageEntry.setVgap(5);
-
-        TextField languageField = new TextField();
-        ComboBox<String> languageProficiencyField = new ComboBox<>(FXCollections.observableArrayList("Beginner", "Intermediate", "Advanced", "Bilingual"));
-
-        languageEntry.add(new Label("Language:"), 0, 0);
-        languageEntry.add(languageField, 1, 0);
-        languageEntry.add(new Label("Proficiency Level:"), 0, 1);
-        languageEntry.add(languageProficiencyField, 1, 1);
-
-        Button removeButton = new Button("Remove");
-        removeButton.setOnAction(e -> {
-            languagesContainer.getChildren().remove(languageEntry);
-        });
-        languageEntry.add(removeButton, 1, 2);
-
-        languagesContainer.getChildren().add(languageEntry);
-    }
-
-    @FXML
-    private void generateCV() {
-        System.out.println("Generating CV...");
-
-        // Gather all data from the form and update the cv object. This is crucial!
-        cv.setName(nameField.getText());
-        cv.setEmail(emailField.getText());
-        cv.setPhone(phoneField.getText());
-        cv.setAddress(addressArea.getText());
-        cv.setLinkedIn(linkedinField.getText());
-        cv.setPortfolio(portfolioField.getText());
-        cv.setSummary(summaryArea.getText());
-        cv.setSkills(Collections.singletonList(skillsField.getText())); // Add skills
-
-        // Gather Education, Work Experience, Projects, Certificates, and Languages
-        cv.getEducations().clear(); // Clear existing data before adding new ones
-        for (Node node : educationContainer.getChildren()) {
-            if (node instanceof GridPane) {
-                GridPane gridPane = (GridPane) node;
-                TextField degree = (TextField) gridPane.getChildren().get(1); // Assuming TextField is at index 1
-                TextField institution = (TextField) gridPane.getChildren().get(3); // Assuming TextField is at index 3
-                DatePicker graduationDate = (DatePicker) gridPane.getChildren().get(5); // Assuming DatePicker is at index 5
-
-                if (degree != null && institution != null && graduationDate != null) {
-                    cv.getEducations().add(new Education(degree.getText(), institution.getText(), graduationDate.getValue()));
-                }
-            }
-        }
-
-        cv.getWorkExperiences().clear();
-        for (Node node : workExperienceContainer.getChildren()) {
-            if (node instanceof GridPane) {
-                GridPane gridPane = (GridPane) node;
-                TextField jobTitle = (TextField) gridPane.getChildren().get(1);
-                TextField company = (TextField) gridPane.getChildren().get(3);
-                TextArea description = (TextArea) gridPane.getChildren().get(5);
-
-                if (jobTitle != null && company != null && description != null) {
-                    cv.getWorkExperiences().add(new WorkExperience(jobTitle.getText(), company.getText(), description.getText()));
-                }
-            }
-        }
-
-        cv.getProjects().clear();
-        for (Node node : projectsContainer.getChildren()) {
-            if (node instanceof GridPane) {
-                GridPane gridPane = (GridPane) node;
-                TextField projectName = (TextField) gridPane.getChildren().get(1);
-                TextArea projectDescription = (TextArea) gridPane.getChildren().get(3);
-
-                if (projectName != null && projectDescription != null) {
-                    cv.getProjects().add(new Project(projectName.getText(), projectDescription.getText()));
-                }
-            }
-        }
-
-        cv.getCertificates().clear();
-        for (Node node : certificatesContainer.getChildren()) {
-            if (node instanceof GridPane) {
-                GridPane gridPane = (GridPane) node;
-                TextField certificateName = (TextField) gridPane.getChildren().get(1);
-                TextField certificateInstitution = (TextField) gridPane.getChildren().get(3);
-                DatePicker certificateDate = (DatePicker) gridPane.getChildren().get(5);
-
-                if (certificateName != null && certificateInstitution != null && certificateDate != null) {
-                    cv.getCertificates().add(new Certificate(certificateName.getText(), certificateInstitution.getText(), certificateDate.getValue()));
-                }
-            }
-        }
-
-        cv.getLanguages().clear();
-        for (Node node : languagesContainer.getChildren()) {
-            if (node instanceof GridPane) {
-                GridPane gridPane = (GridPane) node;
-                TextField language = (TextField) gridPane.getChildren().get(1);
-                ComboBox<String> proficiency = (ComboBox<String>) gridPane.getChildren().get(3);
-
-                if (language != null && proficiency != null) {
-                    cv.getLanguages().add(new Language(language.getText(), proficiency.getValue()));
-                }
-            }
-        }
-
-        System.out.println(cv); // Now cv should have all the data
-
-        String selectedTemplate = templateComboBox.getValue();
-        if (selectedTemplate != null) {
-            System.out.println("Using template: " + selectedTemplate);
-            // Call your CV generation logic here, passing the 'cv' object and the selected template.
-        } else {
-            System.out.println("No template selected");
-        }
-    }
-
-    @FXML
-    private void improveCV() {
-        List<String> suggestions = cvImprovementService.getSuggestions(cv);
-        suggestionsLabel.setText(String.join("\n", suggestions));
-    }
-
-    @FXML
-    private void handleFullScreen(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setFullScreen(!stage.isFullScreen());
-    }*/
-}
+    <!-- Logo Image Left -->
+    <ImageView fitHeight="112.0" fitWidth="146.0" layoutX="-7.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../../../images/logo.png" />
+        </image>
+    </ImageView>
+</AnchorPane>
 ==================================================
 
-Fichier: src\main\java\com\example\stage\service\CVGenerationservice.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\service\CVGenerationservice.java
+Fichier: src\main\java\com\example\stage\CVBuilder.java
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\java\com\example\stage\CVBuilder.java
 -----
-package com.example.stage.service;
+package com.example.stage;
 
-import com.example.stage.model.CV;
-import com.example.stage.model.CVData;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CVGenerationservice {
-    private PDFGenerationService pdfGenerationService = new PDFGenerationService();
+public class CVBuilder extends Application {
 
-    public void generateCV(CVData cvData, String filePath) throws IOException {
-        CV cv = new CV();
-        cv.setName(cvData.getFullName());
-        cv.setEmail(cvData.getEmail());
-        cv.setPhone(cvData.getPhone());
-        cv.setAddress(cvData.getAddress());
-        cv.setLinkedin(cvData.getLinkedin());
-        cv.setPortfolio(cvData.getPortfolio());
-        cv.setSummary(cvData.getSummary());
-        cv.setEducations(cvData.getEducations());
-        cv.setWorkExperiences(cvData.getWorkExperiences());
-        cv.setProjects(cvData.getProjects());
-        cv.setCertificates(cvData.getCertificates());
-        cv.setLanguages(cvData.getLanguages());
-        cv.setSkills(cvData.getSkills());
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("page1.fxml"));
+        primaryStage.setTitle("CV Builder");
+        primaryStage.setScene(new Scene(root, 600, 900));
+        primaryStage.show();
+    }
 
-        pdfGenerationService.generateCVPDF(cv, filePath);
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\util\TranslationService.java
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\java\com\example\stage\util\TranslationService.java
+-----
+package com.example.stage.util;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
+public class TranslationService {
+
+    /**
+     * Charge le fichier de traduction pour une langue spécifique.
+     *
+     * @param baseName  Le nom de base du fichier d'internationalisation, sans suffixe.
+     * @param locale    La locale ciblée (ex : fr, en, de).
+     * @return          Le ResourceBundle contenant les traductions.
+     */
+    public static ResourceBundle loadBundle(String baseName, Locale locale) {
+        String resourceName = baseName + "_" + locale.getLanguage() + ".properties";
+        try (InputStreamReader reader = new InputStreamReader(
+                TranslationService.class.getResourceAsStream("/" + resourceName), StandardCharsets.UTF_8)) {
+            return new PropertyResourceBundle(reader);
+        } catch (IOException | NullPointerException e) {
+            throw new RuntimeException("Impossible de charger le fichier de ressources : " + resourceName, e);
+        }
+    }
+
+    /**
+     * Récupère une traduction basée sur une clé et une locale.
+     *
+     * @param key       La clé de traduction, telle que définie dans le fichier.
+     * @param baseName  Le nom de base du fichier de ressources (ex : "messages").
+     * @param locale    La locale ciblée (Langue à utiliser).
+     * @return          La traduction associée à la clé ou un texte par défaut si non trouvée.
+     */
+    public static String getTranslation(String baseName, String key, Locale locale) {
+        try {
+            ResourceBundle bundle = loadBundle(baseName, locale);
+            return bundle.getString(key);
+        } catch (Exception e) {
+            System.err.println("Erreur de traduction pour la clé : " + key);
+            return "[" + key + "]";
+        }
     }
 }
 ==================================================
 
 Fichier: src\main\java\com\example\stage\service\PDFGenerationService.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\service\PDFGenerationService.java
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\java\com\example\stage\service\PDFGenerationService.java
 -----
 package com.example.stage.service;
 
@@ -1768,430 +1261,138 @@ public class PDFGenerationService {
 }
 ==================================================
 
-Fichier: src\main\java\com\example\stage\service\CVImprovementService.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\service\CVImprovementService.java
+Fichier: src\main\java\com\example\stage\model\CVData.java
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\java\com\example\stage\model\CVData.java
 -----
-package com.example.stage.service;
-
-import com.example.stage.model.CV;
+package com.example.stage.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CVImprovementService {
+public class CVData {
+    private String fullName;
+    private String email;
+    private String phone;
+    private String address;
+    private String linkedin;
+    private String portfolio;
+    private String summary;
+    private List<Education> educations = new ArrayList<>();
+    private List<WorkExperience> workExperiences = new ArrayList<>();
+    private List<Project> projects = new ArrayList<>();
+    private List<Certificate> certificates = new ArrayList<>();
+    private List<Language> languages = new ArrayList<>();
+    private List<String> skills = new ArrayList<>();
 
-    public List<String> getSuggestions(CV cv) {
-        List<String> suggestions = new ArrayList<>();
+    // Getters and setters
+    public String getFullName() {
+        return fullName;
+    }
 
-        if (cv.getWorkExperiences().isEmpty()) {
-            suggestions.add("Ajouter plus de détails sur votre expérience professionnelle.");
-        } else {
-            suggestions.add("Inclure plus de projets pour montrer votre travail.");
-        }
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-        if (cv.getSkills().isEmpty()) {
-            suggestions.add("Mettre en avant vos compétences clés.");
-        } else {
-            suggestions.add("Développer vos compétences pour donner plus de détails.");
-        }
+    public String getEmail() {
+        return email;
+    }
 
-        if (cv.getEducations().isEmpty()) {
-            suggestions.add("Ajouter votre parcours éducatif.");
-        } else {
-            suggestions.add("Inclure des certifications ou des cours spéciaux.");
-        }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-        return suggestions;
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
+    }
+
+    public String getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(String portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public List<Education> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<Education> educations) {
+        this.educations = educations;
+    }
+
+    public List<WorkExperience> getWorkExperiences() {
+        return workExperiences;
+    }
+
+    public void setWorkExperiences(List<WorkExperience> workExperiences) {
+        this.workExperiences = workExperiences;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    public List<Certificate> getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(List<Certificate> certificates) {
+        this.certificates = certificates;
+    }
+
+    public List<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<Language> languages) {
+        this.languages = languages;
+    }
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
     }
 }
-==================================================
-
-Fichier: src\main\java\com\example\stage\util\TranslationService.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\util\TranslationService.java
------
-package com.example.stage.util;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
-import java.io.InputStreamReader;
-import java.io.IOException;
-
-public class TranslationService {
-
-    /**
-     * Charge le fichier de traduction pour une langue spécifique.
-     *
-     * @param baseName  Le nom de base du fichier d'internationalisation, sans suffixe.
-     * @param locale    La locale ciblée (ex : fr, en, de).
-     * @return          Le ResourceBundle contenant les traductions.
-     */
-    public static ResourceBundle loadBundle(String baseName, Locale locale) {
-        String resourceName = baseName + "_" + locale.getLanguage() + ".properties";
-        try (InputStreamReader reader = new InputStreamReader(
-                TranslationService.class.getResourceAsStream("/" + resourceName), StandardCharsets.UTF_8)) {
-            return new PropertyResourceBundle(reader);
-        } catch (IOException | NullPointerException e) {
-            throw new RuntimeException("Impossible de charger le fichier de ressources : " + resourceName, e);
-        }
-    }
-
-    /**
-     * Récupère une traduction basée sur une clé et une locale.
-     *
-     * @param key       La clé de traduction, telle que définie dans le fichier.
-     * @param baseName  Le nom de base du fichier de ressources (ex : "messages").
-     * @param locale    La locale ciblée (Langue à utiliser).
-     * @return          La traduction associée à la clé ou un texte par défaut si non trouvée.
-     */
-    public static String getTranslation(String baseName, String key, Locale locale) {
-        try {
-            ResourceBundle bundle = loadBundle(baseName, locale);
-            return bundle.getString(key);
-        } catch (Exception e) {
-            System.err.println("Erreur de traduction pour la clé : " + key);
-            return "[" + key + "]";
-        }
-    }
-}
-==================================================
-
-Fichier: src\main\java\com\example\stage\util\TranslationUtils.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\util\TranslationUtils.java
------
-package com.example.stage.util;
-
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
-public class TranslationUtils {
-    public static String getSafeTranslation(ResourceBundle bundle, String key) {
-        try {
-            return bundle.getString(key);
-        } catch (MissingResourceException e) {
-            System.err.println("Translation key not found: " + key + " for locale " + bundle.getLocale());
-            return "[" + key + "]";
-        }
-    }
-}
-==================================================
-
-Fichier: src\main\resources\com\example\stage\page2.fxml
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\page2.fxml
------
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.DatePicker?>
-
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.Page2Controller">
-    <!-- Images at the top -->
-    <HBox alignment="CENTER" layoutX="557.0" layoutY="8.0" prefHeight="109.0" prefWidth="335.0" spacing="20" AnchorPane.leftAnchor="557.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
-
-        <!-- Logo Image Right -->
-        <ImageView fitHeight="46.0" fitWidth="119.0" layoutX="729.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0">
-            <image>
-                <Image url="@../../../images/esprim.png" />
-            </image>
-        </ImageView>
-        <ImageView fitHeight="99.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" />
-
-    </HBox>
-
-    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutY="126.0" prefHeight="464.0" prefWidth="888.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="126.0">
-        <VBox alignment="CENTER" prefHeight="630.0" prefWidth="859.0" spacing="10" style="-fx-padding: 20px;">
-            <GridPane alignment="CENTER" hgap="10" maxWidth="Infinity" prefHeight="598.0" prefWidth="825.0" vgap="10">
-                <!-- Section: Skills -->
-                <Label fx:id="skillsLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Skills" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-                <HBox GridPane.columnSpan="2" GridPane.rowIndex="1">
-                    <TextField fx:id="skillsField" />
-                    <Button onAction="#showSkillsHelp" style="-fx-background-color: #E31A22; -fx-text-fill: white; -fx-font-weight: bold;" text="?" />
-                </HBox>
-
-                <!-- Section: Projects -->
-                <Label fx:id="projectsLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Projects" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                <VBox fx:id="projectsContainer" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                    <GridPane hgap="5" vgap="5">
-                        <Label text="Project Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="projectNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label text="Project Description:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <TextArea fx:id="projectDescriptionArea" prefHeight="60" />
-                            <Button onAction="#showProjectHelp" style="-fx-background-color: #E31A22; -fx-text-fill: white; -fx-font-weight: bold;" text="?" />
-                        </HBox>
-                        <Button onAction="#addProject" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Project" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <columnConstraints>
-                            <ColumnConstraints />
-                            <ColumnConstraints />
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints />
-                            <RowConstraints />
-                            <RowConstraints />
-                        </rowConstraints>
-                    </GridPane>
-                </VBox>
-
-                <!-- Section: Certificates -->
-                <Label fx:id="certificatesLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Certificates" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-                <VBox fx:id="certificatesContainer" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="5">
-                    <GridPane hgap="5" vgap="5">
-                        <Label text="Certificate Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="certificateNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label text="Institution:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="certificateInstitutionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Date of Receipt:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <DatePicker fx:id="certificateDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Button onAction="#addCertificate" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Certificate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <columnConstraints>
-                            <ColumnConstraints />
-                            <ColumnConstraints />
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints />
-                            <RowConstraints />
-                            <RowConstraints />
-                            <RowConstraints />
-                        </rowConstraints>
-                    </GridPane>
-                </VBox>
-
-                <!-- Section: Languages -->
-                <Label fx:id="languagesLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Languages" GridPane.columnSpan="2" GridPane.rowIndex="6" />
-                <VBox fx:id="languagesContainer" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="7">
-                    <GridPane hgap="5" vgap="5">
-                        <Label text="Language:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="languageField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label text="Proficiency Level:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="languageProficiencyField" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Beginner" />
-                                    <String fx:value="Intermediate" />
-                                    <String fx:value="Advanced" />
-                                    <String fx:value="Bilingual" />
-                                </FXCollections>
-                            </items>
-                        </ComboBox>
-                        <Button onAction="#addLanguage" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Language" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <columnConstraints>
-                            <ColumnConstraints />
-                            <ColumnConstraints />
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints />
-                            <RowConstraints />
-                            <RowConstraints />
-                        </rowConstraints>
-                    </GridPane>
-                </VBox>
-
-                <!-- Back and Translate Buttons -->
-                <Button fx:id="backButton" onAction="#goToPage1" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Back" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-                <ComboBox fx:id="languageComboBox" GridPane.columnIndex="0" GridPane.rowIndex="9" />
-                <Button fx:id="translateButton" onAction="#translatePage" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Translate" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-
-                <!-- Generate PDF Button -->
-                <Button fx:id="generatePDFButton" onAction="#generatePDF" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Generate PDF" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                <Button fx:id="autoFillButton" text="Auto Fill" onAction="#autoFillForm" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                <columnConstraints>
-                    <ColumnConstraints />
-                    <ColumnConstraints />
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                </rowConstraints>
-            </GridPane>
-        </VBox>
-    </ScrollPane>
-
-    <!-- Logo Image Left -->
-    <ImageView fitHeight="112.0" fitWidth="146.0" layoutX="-7.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-        <image>
-            <Image url="@../../../images/logo.png" />
-        </image>
-    </ImageView>
-</AnchorPane>
-==================================================
-
-Fichier: src\main\resources\com\example\stage\page1.fxml
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\page1.fxml
------
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.Page1Controller">
-    <ImageView fitHeight="109.0" fitWidth="140.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
-        <image>
-            <Image url="@../../../images/logo.png" />
-        </image>
-    </ImageView>
-
-    <!-- Logo Image Right -->
-    <ImageView fitHeight="46.0" fitWidth="119.0" layoutX="729.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0">
-        <image>
-            <Image url="@../../../images/esprim.png" />
-        </image>
-    </ImageView>
-
-    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="126.0">
-        <VBox fillWidth="true" spacing="10" style="-fx-padding: 20px;">
-            <!-- Language Selection -->
-            <HBox spacing="10">
-                <ComboBox fx:id="languageComboBox" prefHeight="21.0" prefWidth="113.0" />
-                <Button fx:id="translateButton" onAction="#translatePage" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Translate" />
-            </HBox>
-
-            <!-- Personal Information Section -->
-            <VBox spacing="10">
-                <Label fx:id="personalInformationLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Personal Information" />
-                <GridPane hgap="10" vgap="10">
-                    <Label fx:id="fullNameLabel" text="Full Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="nameField" prefHeight="22.0" prefWidth="471.0" text="Mohamed Abidi" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                    <Label fx:id="emailLabel" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="emailField" text="mohamed.abidi@example.com" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                    <Label fx:id="phoneLabel" text="Phone" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <TextField fx:id="phoneField" text="+21612345678" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-                    <Label fx:id="addressLabel" text="Address" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextArea fx:id="addressArea" text="123 Rue de Tunis, Tunis, Tunisia" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-                    <Label fx:id="linkedinLabel" text="LinkedIn" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <TextField fx:id="linkedinField" text="linkedin.com/in/mohamedabidi" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
-                    <Label fx:id="portfolioLabel" text="Portfolio" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <TextField fx:id="portfolioField" text="mohamedabidi.com" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-               <columnConstraints>
-                  <ColumnConstraints maxWidth="104.0" minWidth="59.0" prefWidth="104.0" />
-                  <ColumnConstraints maxWidth="473.0" minWidth="428.0" prefWidth="428.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
-                </GridPane>
-            </VBox>
-
-            <!-- Summary Section -->
-            <VBox spacing="10">
-                <Label fx:id="summaryObjectiveLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Summary / Objective" />
-                <HBox spacing="10">
-                    <TextArea fx:id="summaryArea" prefHeight="40.0" prefWidth="541.0" text="Experienced software engineer with a strong background in developing scalable web applications." />
-                    <Button onAction="#showSummaryHelp" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="ⓘ" />
-                </HBox>
-            </VBox>
-
-            <!-- Education Section -->
-            <VBox spacing="10">
-                <Label fx:id="educationLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Education" />
-                <VBox fx:id="educationContainer" spacing="5">
-                    <GridPane hgap="10" vgap="10">
-                        <Label text="Degree" GridPane.rowIndex="0" />
-                        <TextField fx:id="degreeField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label text="Institution" GridPane.rowIndex="1" />
-                        <TextField fx:id="institutionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Graduation Date" GridPane.rowIndex="2" />
-                        <DatePicker fx:id="graduationDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <columnConstraints>
-                     <ColumnConstraints maxWidth="109.0" minWidth="93.0" prefWidth="106.0" />
-                     <ColumnConstraints maxWidth="169.0" minWidth="153.0" prefWidth="156.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                     <RowConstraints />
-                     <RowConstraints />
-                     <RowConstraints />
-                  </rowConstraints>
-                    </GridPane>
-                </VBox>
-                <Button fx:id="addEducationButton" onAction="#addEducation" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Education" />
-            </VBox>
-
-            <!-- Work Experience Section -->
-            <VBox spacing="10">
-                <Label fx:id="workExperienceLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Work Experience" />
-                <VBox fx:id="workExperienceContainer" spacing="5">
-                    <GridPane hgap="10" vgap="10">
-                        <Label text="Job Title" />
-                        <TextField fx:id="jobTitleField" GridPane.columnIndex="1" />
-                        <Label text="Company" GridPane.rowIndex="1" />
-                        <TextField fx:id="companyField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Description" GridPane.rowIndex="2" />
-                        <TextArea fx:id="descriptionArea" prefHeight="60" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <columnConstraints>
-                     <ColumnConstraints />
-                     <ColumnConstraints />
-                  </columnConstraints>
-                  <rowConstraints>
-                     <RowConstraints />
-                     <RowConstraints />
-                     <RowConstraints />
-                  </rowConstraints>
-                    </GridPane>
-                </VBox>
-                <Button fx:id="addWorkExperienceButton" onAction="#addWorkExperience" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Work Experience" />
-            </VBox>
-
-            <!-- Footer Buttons -->
-            <HBox alignment="CENTER" spacing="10">
-                <Button fx:id="autoFillButton" onAction="#autoFillForm" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Auto Fill" />
-                <Button fx:id="nextButton" onAction="#goToPage2" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Next" />
-            </HBox>
-        </VBox>
-    </ScrollPane>
-</AnchorPane>
-
 ==================================================
 
 Fichier: src\main\resources\com\example\stage\messages_ar.properties
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_ar.properties
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\resources\com\example\stage\messages_ar.properties
 -----
 translate=\u062A\u0631\u062C\u0645\u0629
 back=\u0631\u062C\u0648\u0639
@@ -2217,7 +1418,7 @@ auto_fill=autofill
 ==================================================
 
 Fichier: src\main\resources\com\example\stage\messages_de.properties
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_de.properties
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\resources\com\example\stage\messages_de.properties
 -----
 translate=Übersetzen
 back=Zurück
@@ -2250,7 +1451,7 @@ auto_fill=autofill
 ==================================================
 
 Fichier: src\main\resources\com\example\stage\messages_en.properties
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_en.properties
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\resources\com\example\stage\messages_en.properties
 -----
 translate=Translate
 back=Back
@@ -2283,7 +1484,7 @@ auto_fill=autofill
 ==================================================
 
 Fichier: src\main\resources\com\example\stage\messages_fr.properties
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_fr.properties
+Chemin complet: C:\Users\Sh-Pc\esprim\esprimcareer\src\main\resources\com\example\stage\messages_fr.properties
 -----
 translate=Traduire
 back=Retour
