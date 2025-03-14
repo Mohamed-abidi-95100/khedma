@@ -622,6 +622,11 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
             </HBox>
         </VBox>
     </ScrollPane>
+    <ImageView fitHeight="100.0" fitWidth="150.0" layoutX="231.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../../../images/tunisie-removebg-preview.png" />
+        </image>
+    </ImageView>
 </AnchorPane>
 ==================================================
 
@@ -634,6 +639,7 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
@@ -646,20 +652,24 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.DatePicker?>
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.Page2Controller">
     <!-- Images at the top -->
+    <ImageView fitHeight="109.0" fitWidth="140.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../../../images/logo.png" />
+        </image>
+    </ImageView>
+
+    <!-- Logo Image Right -->
+    <ImageView fitHeight="46.0" fitWidth="119.0" layoutX="729.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0">
+        <image>
+            <Image url="@../../../images/esprim.png" />
+        </image>
+    </ImageView>
+
     <HBox alignment="CENTER" layoutX="557.0" layoutY="8.0" prefHeight="109.0" prefWidth="335.0" spacing="20" AnchorPane.leftAnchor="557.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
-
         <!-- Logo Image Right -->
-        <ImageView fitHeight="46.0" fitWidth="119.0" layoutX="729.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0">
-            <image>
-                <Image url="@../../../images/esprim.png" />
-            </image>
-        </ImageView>
-        <ImageView fitHeight="99.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" />
-
     </HBox>
 
     <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutY="126.0" prefHeight="464.0" prefWidth="888.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="126.0">
@@ -784,9 +794,10 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
     </ScrollPane>
 
     <!-- Logo Image Left -->
-    <ImageView fitHeight="112.0" fitWidth="146.0" layoutX="-7.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+
+    <ImageView fitHeight="100.0" fitWidth="150.0" layoutX="231.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
         <image>
-            <Image url="@../../../images/logo.png" />
+            <Image url="@../../../images/tunisie-removebg-preview.png" />
         </image>
     </ImageView>
 </AnchorPane>
@@ -797,7 +808,6 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
 -----
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -814,35 +824,33 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
         <!-- Background Rectangle -->
         <Rectangle fill="#ffffff" height="600.0" width="900.0" />
 
-        <!-- Rotating Gear Animation -->
-        <ImageView fx:id="loadingGear" fitHeight="80.0" fitWidth="80.0" StackPane.alignment="BOTTOM_CENTER">
-            <image>
-                <Image url="@../../../images/gear.png" />
-            </image>
-            <StackPane.margin>
-                <Insets bottom="50.0" />
-            </StackPane.margin>
-        </ImageView>
-
         <!-- Top Logos -->
         <HBox alignment="CENTER" spacing="20.0" style="-fx-padding: 20px;">
-            <GridPane prefHeight="560.0" prefWidth="530.0">
+            <GridPane prefHeight="586.0" prefWidth="930.0">
                 <columnConstraints>
-                    <ColumnConstraints />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="10.0" prefWidth="170.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="351.0" minWidth="10.0" prefWidth="266.0" />
-               <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.0" minWidth="10.0" prefWidth="92.0" />
+                    <ColumnConstraints maxWidth="129.0" minWidth="0.0" prefWidth="82.0" />
+                    <ColumnConstraints maxWidth="134.0" minWidth="0.0" prefWidth="96.0" />
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="354.0" minWidth="0.0" prefWidth="138.0" />
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="516.0" minWidth="10.0" prefWidth="353.0" />
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.0" minWidth="10.0" prefWidth="191.0" />
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints maxHeight="139.0" minHeight="10.0" prefHeight="139.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="205.0" minHeight="10.0" prefHeight="122.0" vgrow="SOMETIMES" />
-               <RowConstraints maxHeight="341.0" minHeight="10.0" prefHeight="121.0" vgrow="SOMETIMES" />
-               <RowConstraints maxHeight="324.0" minHeight="0.0" prefHeight="184.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="195.0" minHeight="10.0" prefHeight="107.0" />
+               <RowConstraints maxHeight="184.0" minHeight="10.0" prefHeight="101.0" />
+                    <RowConstraints maxHeight="184.0" minHeight="0.0" prefHeight="100.0" />
+                    <RowConstraints maxHeight="139.0" minHeight="10.0" prefHeight="83.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="205.0" minHeight="10.0" prefHeight="82.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="341.0" minHeight="10.0" prefHeight="79.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="324.0" minHeight="0.0" prefHeight="64.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="324.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <ImageView fitHeight="203.0" fitWidth="221.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                <ImageView fitHeight="96.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowSpan="2" GridPane.valignment="TOP">
+                    <image>
+                        <Image url="@../../../images/tunisie-removebg-preview.png" />
+                    </image>
+                </ImageView>
+                    <ImageView fitHeight="217.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                         <image>
                             <Image url="@../../../images/esprit-removebg-preview.png" />
                         </image>
@@ -850,26 +858,44 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
                             <Rectangle2D />
                         </viewport>
                     </ImageView>
-                    <ImageView fitHeight="79.0" fitWidth="209.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                    <ImageView fitHeight="75.0" fitWidth="212.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                         <image>
                             <Image url="@../../../images/esprim.png" />
                         </image>
                     </ImageView>
-                    <ImageView fitHeight="273.0" fitWidth="259.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                    <ImageView fitHeight="152.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                        <image>
+                            <Image url="@../../../images/unnamed-removebg-preview.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fitHeight="213.0" fitWidth="203.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                         <image>
                             <Image url="@../../../images/espritprepa-removebg-preview.png" />
                         </image>
                     </ImageView>
-                  <ImageView fitHeight="155.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <ImageView fitHeight="124.0" fitWidth="210.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+
                       <image>
                           <Image url="@../../../images/logo.png" />
                       </image>
+                  <viewport>
+                     <Rectangle2D />
+                  </viewport>
                   </ImageView>
+                    <ImageView fitHeight="103.0" fitWidth="187.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                        <image>
+                            <Image url="@../../../images/espritesb.png" />
+                      </image>
+                  </ImageView>
+
+                 <!-- Rotating Gear Animation -->
+                 <ImageView fx:id="loadingGear" fitHeight="80.0" fitWidth="80.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+                     <image>
+                         <Image url="@../../../images/gear.png" />
+                     </image>
+                 </ImageView>
                 </children>
             </GridPane>
-
-            <!-- School Organization Images -->
-            <HBox alignment="CENTER" spacing="20.0" style="-fx-padding: 20px;" />
         </HBox>
     </StackPane>
 </AnchorPane>
@@ -1230,6 +1256,10 @@ public class Page2Controller {
     @FXML
     private VBox languagesContainer;
     @FXML
+    private VBox educationContainer; // Declared education container
+    @FXML
+    private VBox workExperienceContainer; // Declared work experience container
+    @FXML
     private Button backButton;
     @FXML
     private ComboBox<String> languageComboBox;
@@ -1397,7 +1427,7 @@ public class Page2Controller {
                 locale = Locale.GERMAN;
                 break;
             case "Arabic":
-                locale = new Locale("ar");
+                locale = Locale.forLanguageTag("ar");
                 break;
             default:
                 locale = Locale.ENGLISH;
@@ -1451,12 +1481,12 @@ public class Page2Controller {
 
         try {
             // Ensure the output directory exists
-            File outputDir = new File("output");
+            File outputDir = new File("src/output");
             if (!outputDir.exists()) {
-                outputDir.mkdir();
+                outputDir.mkdirs();
             }
             // Specify the path where the PDF will be saved
-            String filePath = "output/cv.pdf";
+            String filePath = "src/output/cv.pdf";
             pdfGenerationService.generateCVPDF(cv, filePath);
             showAlert(Alert.AlertType.INFORMATION, "Success", "CV PDF has been generated successfully. You can find it at: " + filePath);
         } catch (IOException e) {
@@ -1532,6 +1562,75 @@ public class Page2Controller {
             languageField.setText("Language " + i);
             proficiencyField.setValue("Intermediate");
         }
+
+        // Add example education
+        educationContainer.getChildren().clear();
+        for (int i = 1; i <= 2; i++) {
+            addEducation();
+            GridPane educationEntry = (GridPane) educationContainer.getChildren().get(i-1);
+            TextField degreeField = (TextField) educationEntry.getChildren().get(1);
+            TextField institutionField = (TextField) educationEntry.getChildren().get(3);
+            DatePicker graduationDateField = (DatePicker) educationEntry.getChildren().get(5);
+            degreeField.setText("Degree " + i);
+            institutionField.setText("University " + i);
+            graduationDateField.setValue(java.time.LocalDate.of(2020, 1, i));
+        }
+
+        // Add example work experience
+        workExperienceContainer.getChildren().clear();
+        for (int i = 1; i <= 2; i++) {
+            addWorkExperience();
+            GridPane workExperienceEntry = (GridPane) workExperienceContainer.getChildren().get(i-1);
+
+            TextField jobTitleField = (TextField) workExperienceEntry.getChildren().get(1);
+            TextField companyField = (TextField) workExperienceEntry.getChildren().get(3);
+            TextArea descriptionArea = (TextArea) workExperienceEntry.getChildren().get(5);
+            jobTitleField.setText("Job Title " + i);
+            companyField.setText("Company " + i);
+            descriptionArea.setText("Description of job " + i);
+        }
+    }
+
+    @FXML
+    private void addEducation() {
+        GridPane educationEntry = new GridPane();
+        educationEntry.setHgap(5);
+        educationEntry.setVgap(5);
+
+        TextField degreeField = new TextField();
+        TextField institutionField = new TextField();
+        DatePicker graduationDateField = new DatePicker();
+
+        educationEntry.add(new Label("Degree:"), 0, 0);
+        educationEntry.add(degreeField, 1, 0);
+        educationEntry.add(new Label("Institution:"), 0, 1);
+        educationEntry.add(institutionField, 1, 1);
+        educationEntry.add(new Label("Graduation Date:"), 0, 2);
+        educationEntry.add(graduationDateField, 1, 2);
+        educationEntry.add(createRemoveButton(educationEntry), 1, 3);
+
+        educationContainer.getChildren().add(educationEntry);
+    }
+
+    @FXML
+    private void addWorkExperience() {
+        GridPane workExperienceEntry = new GridPane();
+        workExperienceEntry.setHgap(5);
+        workExperienceEntry.setVgap(5);
+
+        TextField jobTitleField = new TextField();
+        TextField companyField = new TextField();
+        TextArea descriptionArea = new TextArea();
+
+        workExperienceEntry.add(new Label("Job Title:"), 0, 0);
+        workExperienceEntry.add(jobTitleField, 1, 0);
+        workExperienceEntry.add(new Label("Company:"), 0, 1);
+        workExperienceEntry.add(companyField, 1, 1);
+        workExperienceEntry.add(new Label("Description:"), 0, 2);
+        workExperienceEntry.add(descriptionArea, 1, 2);
+        workExperienceEntry.add(createRemoveButton(workExperienceEntry), 1, 3);
+
+        workExperienceContainer.getChildren().add(workExperienceEntry);
     }
 }
 ==================================================
@@ -1606,9 +1705,6 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.IOException;
 import java.util.List;
 
-import static org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA;
-import static org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA_BOLD;
-
 public class PDFGenerationService {
 
     public void generateCVPDF(CV cv, String filePath) throws IOException {
@@ -1617,11 +1713,16 @@ public class PDFGenerationService {
         document.addPage(page);
 
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+            contentStream.setLeading(14.5f);
+
+            // Add header
             contentStream.beginText();
-            contentStream.setFont(HELVETICA_BOLD, 18);
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
             contentStream.newLineAtOffset(50, 750);
             contentStream.showText("Curriculum Vitae");
             contentStream.endText();
+            contentStream.addRect(50, 745, 500, 1);
+            contentStream.stroke();
 
             int yOffset = 730;
 
@@ -1641,154 +1742,206 @@ public class PDFGenerationService {
 
     private int addPersonalInformation(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
         contentStream.beginText();
-        contentStream.setFont(HELVETICA, 12);
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
         contentStream.newLineAtOffset(50, yOffset);
-        contentStream.showText("Name: " + cv.getName());
-        contentStream.newLineAtOffset(0, -15);
-        contentStream.showText("Email: " + cv.getEmail());
-        contentStream.newLineAtOffset(0, -15);
-        contentStream.showText("Phone: " + cv.getPhone());
-        contentStream.newLineAtOffset(0, -15);
-        contentStream.showText("Address: " + cv.getAddress());
-        contentStream.newLineAtOffset(0, -15);
-        contentStream.showText("LinkedIn: " + cv.getLinkedin());
-        contentStream.newLineAtOffset(0, -15);
-        contentStream.showText("Portfolio: " + cv.getPortfolio());
+
+        if (cv.getName() != null) {
+            contentStream.showText("Name: " + cv.getName());
+            contentStream.newLine();
+        }
+
+        if (cv.getEmail() != null) {
+            contentStream.showText("Email: " + cv.getEmail());
+            contentStream.newLine();
+        }
+
+        if (cv.getPhone() != null) {
+            contentStream.showText("Phone: " + cv.getPhone());
+            contentStream.newLine();
+        }
+
+        if (cv.getAddress() != null) {
+            contentStream.showText("Address: " + cv.getAddress());
+            contentStream.newLine();
+        }
+
+        if (cv.getLinkedin() != null) {
+            contentStream.showText("LinkedIn: " + cv.getLinkedin());
+            contentStream.newLine();
+        }
+
+        if (cv.getPortfolio() != null) {
+            contentStream.showText("Portfolio: " + cv.getPortfolio());
+            contentStream.newLine();
+        }
+
         contentStream.endText();
-        return yOffset - 90;
+        return yOffset - 80;
     }
 
     private int addSection(PDPageContentStream contentStream, String title, String content, int yOffset) throws IOException {
+        if (content == null || content.isEmpty()) {
+            return yOffset;
+        }
+
         contentStream.beginText();
-        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
         contentStream.newLineAtOffset(50, yOffset);
         contentStream.showText(title);
         contentStream.endText();
 
-        yOffset -= 20;
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
+        contentStream.newLineAtOffset(50, yOffset - 15);
+        contentStream.showText(content);
+        contentStream.endText();
 
-        if (content != null && !content.isEmpty()) {
-            contentStream.beginText();
-            contentStream.setFont(HELVETICA, 12);
-            contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(content);
-            contentStream.endText();
-            yOffset -= 20;
-        }
-        return yOffset;
+        return yOffset - 30;
     }
 
     private int addEducationSection(PDPageContentStream contentStream, List<Education> educations, int yOffset) throws IOException {
+        if (educations.isEmpty()) {
+            return yOffset;
+        }
+
         contentStream.beginText();
-        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
         contentStream.newLineAtOffset(50, yOffset);
         contentStream.showText("Education");
         contentStream.endText();
+        yOffset -= 15;
 
-        yOffset -= 20;
-        contentStream.setFont(HELVETICA, 12);
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (Education education : educations) {
-            contentStream.beginText();
             contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(education.getDegree() + ", " + education.getInstitution() + ", " + education.getGraduationDate());
-            contentStream.endText();
-            yOffset -= 20;
+            contentStream.showText(education.getDegree() + " - " + education.getInstitution() + " (" + education.getGraduationDate() + ")");
+            contentStream.newLine();
+            yOffset -= 15;
         }
-        return yOffset;
+        contentStream.endText();
+        return yOffset - 15;
     }
 
     private int addWorkExperienceSection(PDPageContentStream contentStream, List<WorkExperience> workExperiences, int yOffset) throws IOException {
+        if (workExperiences.isEmpty()) {
+            return yOffset;
+        }
+
         contentStream.beginText();
-        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
         contentStream.newLineAtOffset(50, yOffset);
         contentStream.showText("Work Experience");
         contentStream.endText();
+        yOffset -= 15;
 
-        yOffset -= 20;
-        contentStream.setFont(HELVETICA, 12);
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (WorkExperience workExperience : workExperiences) {
-            contentStream.beginText();
             contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(workExperience.getJobTitle() + ", " + workExperience.getCompany() + ", " + workExperience.getDescription());
-            contentStream.endText();
-            yOffset -= 20;
+            contentStream.showText(workExperience.getJobTitle() + " - " + workExperience.getCompany() + " (" + workExperience.getStartDate() + " - " + workExperience.getEndDate() + ")");
+            contentStream.newLineAtOffset(0, -15);
+            contentStream.showText(workExperience.getDescription());
+            yOffset -= 30;
         }
-        return yOffset;
+        contentStream.endText();
+        return yOffset - 15;
     }
 
     private int addProjectsSection(PDPageContentStream contentStream, List<Project> projects, int yOffset) throws IOException {
+        if (projects.isEmpty()) {
+            return yOffset;
+        }
+
         contentStream.beginText();
-        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
         contentStream.newLineAtOffset(50, yOffset);
         contentStream.showText("Projects");
         contentStream.endText();
+        yOffset -= 15;
 
-        yOffset -= 20;
-        contentStream.setFont(HELVETICA, 12);
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (Project project : projects) {
-            contentStream.beginText();
             contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(project.getProjectName() + ", " + project.getDescription());
-            contentStream.endText();
-            yOffset -= 20;
+            contentStream.showText(project.getProjectName());
+            contentStream.newLineAtOffset(0, -15);
+            contentStream.showText(project.getDescription());
+            yOffset -= 30;
         }
-        return yOffset;
+        contentStream.endText();
+        return yOffset - 15;
     }
 
     private int addCertificatesSection(PDPageContentStream contentStream, List<Certificate> certificates, int yOffset) throws IOException {
+        if (certificates.isEmpty()) {
+            return yOffset;
+        }
+
         contentStream.beginText();
-        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
         contentStream.newLineAtOffset(50, yOffset);
         contentStream.showText("Certificates");
         contentStream.endText();
+        yOffset -= 15;
 
-        yOffset -= 20;
-        contentStream.setFont(HELVETICA, 12);
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (Certificate certificate : certificates) {
-            contentStream.beginText();
             contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(certificate.getName() + ", " + certificate.getInstitution() + ", " + certificate.getDate());
-            contentStream.endText();
-            yOffset -= 20;
+            contentStream.showText(certificate.getName() + " - " + certificate.getInstitution() + " (" + certificate.getDate() + ")");
+            contentStream.newLine();
+            yOffset -= 15;
         }
-        return yOffset;
+        contentStream.endText();
+        return yOffset - 15;
     }
 
     private int addLanguagesSection(PDPageContentStream contentStream, List<Language> languages, int yOffset) throws IOException {
+        if (languages.isEmpty()) {
+            return yOffset;
+        }
+
         contentStream.beginText();
-        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
         contentStream.newLineAtOffset(50, yOffset);
         contentStream.showText("Languages");
         contentStream.endText();
+        yOffset -= 15;
 
-        yOffset -= 20;
-        contentStream.setFont(HELVETICA, 12);
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (Language language : languages) {
-            contentStream.beginText();
             contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(language.getName() + ", " + language.getProficiency());
-            contentStream.endText();
-            yOffset -= 20;
+            contentStream.showText(language.getName() + " - " + language.getProficiency());
+            contentStream.newLine();
+            yOffset -= 15;
         }
-        return yOffset;
+        contentStream.endText();
+        return yOffset - 15;
     }
 
     private void addSkillsSection(PDPageContentStream contentStream, List<String> skills, int yOffset) throws IOException {
+        if (skills.isEmpty()) {
+            return;
+        }
+
         contentStream.beginText();
-        contentStream.setFont(HELVETICA_BOLD, 14);
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
         contentStream.newLineAtOffset(50, yOffset);
         contentStream.showText("Skills");
         contentStream.endText();
+        yOffset -= 15;
 
-        yOffset -= 20;
-        contentStream.setFont(HELVETICA, 12);
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (String skill : skills) {
-            contentStream.beginText();
             contentStream.newLineAtOffset(50, yOffset);
             contentStream.showText(skill);
-            contentStream.endText();
-            yOffset -= 20;
+            contentStream.newLine();
+            yOffset -= 15;
         }
+        contentStream.endText();
     }
 }
 ==================================================
