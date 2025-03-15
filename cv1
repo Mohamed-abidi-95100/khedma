@@ -1839,6 +1839,7 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
                 </VBox>
 
                 <!-- Back and Translate Buttons -->
+
                 <Button fx:id="backButton" onAction="#goToPage1" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Back" GridPane.columnIndex="0" GridPane.rowIndex="8" />
                 <ComboBox fx:id="languageComboBox" GridPane.columnIndex="0" GridPane.rowIndex="9" />
                 <Button fx:id="translateButton" onAction="#translatePage" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Translate" GridPane.columnIndex="1" GridPane.rowIndex="9" />
@@ -4758,8 +4759,8 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
 </project>
 ==================================================
 
-Fichier: src\main\resources\com\example\stage\messages_en.properties
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_en.properties
+Fichier: src\main\resources\com\example\stage\i18n\messages_en.properties
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\i18n\messages_en.properties
 -----
 # English translations
 translate=Translate
@@ -4813,8 +4814,8 @@ invalid_linkedin=Invalid LinkedIn URL format
 summary_help=Write a brief overview of your professional background and career objectives
 ==================================================
 
-Fichier: src\main\resources\com\example\stage\messages_ar.properties
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_ar.properties
+Fichier: src\main\resources\com\example\stage\i18n\messages_ar.properties
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\i18n\messages_ar.properties
 -----
 # Arabic translations
 translate=ØªØ±Ø¬Ù…Ø©
@@ -4872,8 +4873,8 @@ direction=rtl
 text.align=right
 ==================================================
 
-Fichier: src\main\resources\com\example\stage\messages_de.properties
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_de.properties
+Fichier: src\main\resources\com\example\stage\i18n\messages_de.properties
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\i18n\messages_de.properties
 -----
 # German translations
 translate=Übersetzen
@@ -4927,63 +4928,41 @@ invalid_linkedin=Ungültige LinkedIn-URL
 summary_help=Schreiben Sie eine kurze Übersicht über Ihren beruflichen Werdegang und Ihre Karriereziele
 ==================================================
 
-Fichier: src\main\resources\com\example\stage\messages_fr.properties
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_fr.properties
+Fichier: src\main\resources\com\example\stage\i18n\messages_fr.properties
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\i18n\messages_fr.properties
 -----
-# French translations
 translate=Traduire
 back=Retour
-skills=Compétences
+skills=CompÃƒÂ©tences
 projects=Projets
 certificates=Certificats
 languages=Langues
-generate_pdf=Générer PDF
+generate_pdf=GÃƒÂ©nÃƒÂ©rer PDF
 personal_information=Informations Personnelles
 full_name=Nom Complet
-email=E-mail
-phone=Téléphone
+email=Email
+phone=TÃƒÂ©lÃƒÂ©phone
 address=Adresse
 linkedin=LinkedIn
 portfolio=Portfolio
-summary_objective=Résumé / Objectif
-education=Formation
-work_experience=Expérience Professionnelle
-add_education=Ajouter Formation
-add_experience=Ajouter Expérience
+summary_objective=RÃƒÂ©sumÃƒÂ© / Objectif
+education=ÃƒÂ‰ducation
+work_experience=ExpÃƒÂ©rience Professionnelle
+add_education=Ajouter ÃƒÂ‰ducation
+add_experience=Ajouter ExpÃƒÂ©rience
 project_name=Nom du Projet
 project_description=Description du Projet
 certificate_name=Nom du Certificat
 institution=Institution
-date_of_receipt=Date de Réception
+date_of_receipt=Date de RÃƒÂ©ception
 language=Langue
-proficiency_level=Niveau de Compétence
+proficiency_level=Niveau de CompÃƒÂ©tence
 next=Suivant
-auto_fill=Remplissage Automatique
-
-# Additional translations
-degree=Diplôme
-graduation_date=Date d'Obtention
-job_title=Poste
-company=Entreprise
-start_date=Date de Début
-end_date=Date de Fin
-description=Description
-add_work_experience=Ajouter Expérience Professionnelle
-
-# Validation messages
-name_required=Le nom est requis
-email_required=L'e-mail est requis
-phone_required=Le numéro de téléphone est requis
-invalid_email=Format d'e-mail invalide
-invalid_phone=Format de téléphone invalide
-invalid_linkedin=Format URL LinkedIn invalide
-
-# Help messages
-summary_help=Rédigez un bref aperçu de votre parcours professionnel et de vos objectifs de carrière
+auto_fill=autofill
 ==================================================
 
-Fichier: src\main\resources\com\example\stage\messages_en.properties
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_en.properties
+Fichier: src\main\resources\com\example\stage\i18n\messages_en.properties
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\i18n\messages_en.properties
 -----
 # English translations
 translate=Translate
