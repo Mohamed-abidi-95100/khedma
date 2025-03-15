@@ -554,26 +554,54 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\examp
 package com.example.stage.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Certificate {
-    private String name; // Name of the certificate
-    private String institution; // Institution that issued the certificate
-    private LocalDate date; // Date of receiving the certificate
+    // Constants for validation
+    private static final int MIN_NAME_LENGTH = 2;
+    private static final int MAX_NAME_LENGTH = 200;
+    private static final int MIN_INSTITUTION_LENGTH = 2;
+    private static final int MAX_INSTITUTION_LENGTH = 100;
 
-    // Constructor
-    public Certificate(String name, String institution, LocalDate date) {
-        this.name = name;
-        this.institution = institution;
-        this.date = date;
+    // Private fields
+    private String name;
+    private String institution;
+    private LocalDate dateReceived;
+    private LocalDate expirationDate;
+    private String credentialId;
+    private String credentialUrl;
+    private String description;
+    private boolean isExpirable;
+
+    // Constructors
+    public Certificate(String name, String institution, LocalDate dateReceived) {
+        setName(name);
+        setInstitution(institution);
+        setDateReceived(dateReceived);
     }
 
-    // Getters and Setters
+    public Certificate(String name, String institution, LocalDate dateReceived,
+                       LocalDate expirationDate, String credentialId, String credentialUrl) {
+        this(name, institution, dateReceived);
+        setExpirationDate(expirationDate);
+        setCredentialId(credentialId);
+        setCredentialUrl(credentialUrl);
+    }
+
+    // Getters and Setters with validation
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Certificate name cannot be null or empty");
+        }
+        if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException("Certificate name length must be between " +
+                    MIN_NAME_LENGTH + " and " + MAX_NAME_LENGTH + " characters");
+        }
+        this.name = name.trim();
     }
 
     public String getInstitution() {
@@ -581,28 +609,152 @@ public class Certificate {
     }
 
     public void setInstitution(String institution) {
-        this.institution = institution;
+        if (institution == null || institution.trim().isEmpty()) {
+            throw new IllegalArgumentException("Institution name cannot be null or empty");
+        }
+        if (institution.length() < MIN_INSTITUTION_LENGTH ||
+                institution.length() > MAX_INSTITUTION_LENGTH) {
+            throw new IllegalArgumentException("Institution name length must be between " +
+                    MIN_INSTITUTION_LENGTH + " and " + MAX_INSTITUTION_LENGTH + " characters");
+        }
+        this.institution = institution.trim();
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getDateReceived() {
+        return dateReceived;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDateReceived(LocalDate dateReceived) {
+        if (dateReceived == null) {
+            throw new IllegalArgumentException("Date received cannot be null");
+        }
+        if (dateReceived.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Date received cannot be in the future");
+        }
+        if (expirationDate != null && dateReceived.isAfter(expirationDate)) {
+            throw new IllegalArgumentException("Date received cannot be after expiration date");
+        }
+        this.dateReceived = dateReceived;
+    }
+
+    public LocalDate getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDate expirationDate) {
+        if (expirationDate != null) {
+            if (dateReceived != null && expirationDate.isBefore(dateReceived)) {
+                throw new IllegalArgumentException("Expiration date cannot be before date received");
+            }
+        }
+        this.expirationDate = expirationDate;
+        this.isExpirable = (expirationDate != null);
+    }
+
+    public String getCredentialId() {
+        return credentialId;
+    }
+
+    public void setCredentialId(String credentialId) {
+        this.credentialId = credentialId != null ? credentialId.trim() : null;
+    }
+
+    public String getCredentialUrl() {
+        return credentialUrl;
+    }
+
+    public void setCredentialUrl(String credentialUrl) {
+        this.credentialUrl = credentialUrl != null ? credentialUrl.trim() : null;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description != null ? description.trim() : null;
+    }
+
+    public boolean isExpirable() {
+        return isExpirable;
+    }
+
+    // Utility methods
+    public boolean isExpired() {
+        if (!isExpirable || expirationDate == null) {
+            return false;
+        }
+        return expirationDate.isBefore(LocalDate.now());
+    }
+
+    public boolean isValid() {
+        return name != null && !name.trim().isEmpty() &&
+                institution != null && !institution.trim().isEmpty() &&
+                dateReceived != null &&
+                (expirationDate == null || !expirationDate.isBefore(dateReceived));
+    }
+
+    public String getStatus() {
+        if (!isExpirable) {
+            return "No Expiration";
+        }
+        return isExpired() ? "Expired" : "Valid";
+    }
+
+    // Override methods
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Certificate that = (Certificate) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(institution, that.institution) &&
+                Objects.equals(dateReceived, that.dateReceived) &&
+                Objects.equals(credentialId, that.credentialId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, institution, dateReceived, credentialId);
     }
 
     @Override
     public String toString() {
-        return "Certificate{" +
-                "name='" + name + '\'' +
-                ", institution='" + institution + '\'' +
-                ", date=" + date +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(name).append(" from ").append(institution);
+        sb.append(" (Received: ").append(dateReceived);
+        if (isExpirable) {
+            sb.append(", ").append(getStatus());
+        }
+        if (credentialId != null) {
+            sb.append(", ID: ").append(credentialId);
+        }
+        sb.append(")");
+        return sb.toString();
     }
 
-    public LocalDate getDateReceived() {
-        return null;
+    // Clone method
+    public Certificate clone() {
+        Certificate clone = new Certificate(
+                this.name,
+                this.institution,
+                this.dateReceived
+        );
+        clone.expirationDate = this.expirationDate;
+        clone.credentialId = this.credentialId;
+        clone.credentialUrl = this.credentialUrl;
+        clone.description = this.description;
+        clone.isExpirable = this.isExpirable;
+        return clone;
+    }
+
+    // Utility methods for date formatting
+    public String getDateReceivedString() {
+        return dateReceived != null ? dateReceived.toString() : "";
+    }
+
+    public String getExpirationDateString() {
+        return expirationDate != null ? expirationDate.toString() : "";
     }
 }
 ==================================================
@@ -612,43 +764,179 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\examp
 -----
 package com.example.stage.model;
 
-public class Language {
-    private String name; // Name of the language
-    private String proficiency; // Proficiency level of the language
+import java.util.Objects;
 
-    // Constructor
-    public Language(String name, String proficiency) {
-        this.name = name;
-        this.proficiency = proficiency;
+public class Language {
+    // Constants for validation
+    private static final int MIN_NAME_LENGTH = 2;
+    private static final int MAX_NAME_LENGTH = 50;
+
+    // Language proficiency levels following CEFR standards
+    public enum ProficiencyLevel {
+        A1("Beginner"),
+        A2("Elementary"),
+        B1("Intermediate"),
+        B2("Upper Intermediate"),
+        C1("Advanced"),
+        C2("Mastery");
+
+        private final String description;
+
+        ProficiencyLevel(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 
-    // Getters and Setters
+    // Private fields
+    private String name;
+    private ProficiencyLevel proficiencyLevel;
+    private boolean isNative;
+    private String certificateDetails;
+    private boolean hasOralProficiency;
+    private boolean hasWrittenProficiency;
+
+    // Constructors
+    public Language(String name, ProficiencyLevel proficiencyLevel) {
+        setName(name);
+        setProficiencyLevel(proficiencyLevel);
+    }
+
+    public Language(String name, ProficiencyLevel proficiencyLevel, boolean isNative) {
+        this(name, proficiencyLevel);
+        this.isNative = isNative;
+    }
+
+    // Getters and Setters with validation
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Language name cannot be null or empty");
+        }
+        if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException("Language name length must be between " +
+                    MIN_NAME_LENGTH + " and " + MAX_NAME_LENGTH + " characters");
+        }
+        this.name = name.trim();
     }
 
-    public String getProficiency() {
-        return proficiency;
+    public ProficiencyLevel getProficiencyLevel() {
+        return proficiencyLevel;
     }
 
-    public void setProficiency(String proficiency) {
-        this.proficiency = proficiency;
+    public void setProficiencyLevel(ProficiencyLevel proficiencyLevel) {
+        if (proficiencyLevel == null && !isNative) {
+            throw new IllegalArgumentException("Proficiency level cannot be null for non-native languages");
+        }
+        this.proficiencyLevel = proficiencyLevel;
+    }
+
+    public boolean isNative() {
+        return isNative;
+    }
+
+    public void setNative(boolean isNative) {
+        this.isNative = isNative;
+        if (isNative) {
+            this.proficiencyLevel = ProficiencyLevel.C2;
+        }
+    }
+
+    public String getCertificateDetails() {
+        return certificateDetails;
+    }
+
+    public void setCertificateDetails(String certificateDetails) {
+        this.certificateDetails = certificateDetails != null ? certificateDetails.trim() : null;
+    }
+
+    public boolean hasOralProficiency() {
+        return hasOralProficiency;
+    }
+
+    public void setHasOralProficiency(boolean hasOralProficiency) {
+        this.hasOralProficiency = hasOralProficiency;
+    }
+
+    public boolean hasWrittenProficiency() {
+        return hasWrittenProficiency;
+    }
+
+    public void setHasWrittenProficiency(boolean hasWrittenProficiency) {
+        this.hasWrittenProficiency = hasWrittenProficiency;
+    }
+
+    // Utility methods
+    public String getProficiencyDescription() {
+        if (isNative) {
+            return "Native";
+        }
+        return proficiencyLevel != null ?
+                proficiencyLevel.name() + " - " + proficiencyLevel.getDescription() :
+                "Not specified";
+    }
+
+    public boolean isValid() {
+        return name != null && !name.trim().isEmpty() &&
+                (isNative || proficiencyLevel != null);
+    }
+
+    // Override methods
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Language language = (Language) o;
+        return Objects.equals(name.toLowerCase(), language.name.toLowerCase()) &&
+                Objects.equals(proficiencyLevel, language.proficiencyLevel);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name.toLowerCase(), proficiencyLevel);
     }
 
     @Override
     public String toString() {
-        return "Language{" +
-                "name='" + name + '\'' +
-                ", proficiency='" + proficiency + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+        if (isNative) {
+            sb.append(" (Native)");
+        } else {
+            sb.append(" (").append(getProficiencyDescription()).append(")");
+        }
+        if (certificateDetails != null && !certificateDetails.isEmpty()) {
+            sb.append(" - ").append(certificateDetails);
+        }
+        return sb.toString();
     }
 
-    public String getProficiencyLevel() {
-        return null;
+    // Clone method
+    public Language clone() {
+        Language clone = new Language(this.name, this.proficiencyLevel);
+        clone.isNative = this.isNative;
+        clone.certificateDetails = this.certificateDetails;
+        clone.hasOralProficiency = this.hasOralProficiency;
+        clone.hasWrittenProficiency = this.hasWrittenProficiency;
+        return clone;
+    }
+
+    // Comparison method for sorting
+    public int compareTo(Language other) {
+        if (this.isNative != other.isNative) {
+            return this.isNative ? -1 : 1;
+        }
+        if (this.proficiencyLevel != other.proficiencyLevel &&
+                this.proficiencyLevel != null && other.proficiencyLevel != null) {
+            return other.proficiencyLevel.compareTo(this.proficiencyLevel);
+        }
+        return this.name.compareToIgnoreCase(other.name);
     }
 }
 ==================================================
@@ -658,21 +946,84 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\examp
 -----
 package com.example.stage.model;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 public class Project {
-    private String projectName;
+    // Constants for validation
+    private static final int MIN_NAME_LENGTH = 3;
+    private static final int MAX_NAME_LENGTH = 100;
+    private static final int MAX_DESCRIPTION_LENGTH = 1000;
+    private static final int MAX_URL_LENGTH = 255;
+
+
+
+    // Project status enum
+    public enum ProjectStatus {
+        IN_PROGRESS("In Progress"),
+        COMPLETED("Completed"),
+        ON_HOLD("On Hold"),
+        CANCELLED("Cancelled");
+
+        private final String displayName;
+
+        ProjectStatus(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
+    // Private fields
+    private String name;
     private String description;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String projectUrl;
+    private String githubUrl;
+    private ProjectStatus status;
+    private List<String> technologies;
+    private Set<String> roles;
+    private String teamSize;
+    private List<String> achievements;
+    private boolean isPersonalProject;
 
-    public Project(String projectName, String description) {
-        this.projectName = projectName;
-        this.description = description;
+    // Constructors
+    public Project(String name, String description) {
+        setName(name);
+        setDescription(description);
+        this.technologies = new ArrayList<>();
+        this.roles = new HashSet<>();
+        this.achievements = new ArrayList<>();
+        this.status = ProjectStatus.IN_PROGRESS;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public Project(String name, String description, LocalDate startDate, LocalDate endDate) {
+        this(name, description);
+        setStartDate(startDate);
+        setEndDate(endDate);
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    // Getters and Setters with validation
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Project name cannot be null or empty");
+        }
+        if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException("Project name length must be between " +
+                    MIN_NAME_LENGTH + " and " + MAX_NAME_LENGTH + " characters");
+        }
+        this.name = name.trim();
     }
 
     public String getDescription() {
@@ -680,20 +1031,225 @@ public class Project {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if (description == null || description.trim().isEmpty()) {
+            throw new IllegalArgumentException("Project description cannot be null or empty");
+        }
+        if (description.length() > MAX_DESCRIPTION_LENGTH) {
+            throw new IllegalArgumentException("Project description cannot exceed " +
+                    MAX_DESCRIPTION_LENGTH + " characters");
+        }
+        this.description = description.trim();
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        if (startDate == null) {
+            throw new IllegalArgumentException("Start date cannot be null");
+        }
+        if (startDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Start date cannot be in the future");
+        }
+        if (endDate != null && startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        if (endDate != null) {
+            if (endDate.isAfter(LocalDate.now())) {
+                throw new IllegalArgumentException("End date cannot be in the future");
+            }
+            if (startDate != null && endDate.isBefore(startDate)) {
+                throw new IllegalArgumentException("End date cannot be before start date");
+            }
+        }
+        this.endDate = endDate;
+        updateStatus();
+    }
+
+    public String getProjectUrl() {
+        return projectUrl;
+    }
+
+    public void setProjectUrl(String projectUrl) {
+        if (projectUrl != null) {
+            if (projectUrl.length() > MAX_URL_LENGTH) {
+                throw new IllegalArgumentException("Project URL cannot exceed " +
+                        MAX_URL_LENGTH + " characters");
+            }
+            projectUrl = projectUrl.trim();
+        }
+        this.projectUrl = projectUrl;
+    }
+
+    public String getGithubUrl() {
+        return githubUrl;
+    }
+
+    public void setGithubUrl(String githubUrl) {
+        if (githubUrl != null) {
+            if (githubUrl.length() > MAX_URL_LENGTH) {
+                throw new IllegalArgumentException("GitHub URL cannot exceed " +
+                        MAX_URL_LENGTH + " characters");
+            }
+            if (!githubUrl.contains("github.com")) {
+                throw new IllegalArgumentException("Invalid GitHub URL format");
+            }
+            githubUrl = githubUrl.trim();
+        }
+        this.githubUrl = githubUrl;
+    }
+
+    public ProjectStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProjectStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Project status cannot be null");
+        }
+        this.status = status;
+    }
+
+    public List<String> getTechnologies() {
+        return new ArrayList<>(technologies);
+    }
+
+    public void addTechnology(String technology) {
+        if (technology != null && !technology.trim().isEmpty()) {
+            technologies.add(technology.trim());
+        }
+    }
+
+    public void removeTechnology(String technology) {
+        technologies.remove(technology);
+    }
+
+    public Set<String> getRoles() {
+        return new HashSet<>(roles);
+    }
+
+    public void addRole(String role) {
+        if (role != null && !role.trim().isEmpty()) {
+            roles.add(role.trim());
+        }
+    }
+
+    public void removeRole(String role) {
+        roles.remove(role);
+    }
+
+    public String getTeamSize() {
+        return teamSize;
+    }
+
+    public void setTeamSize(String teamSize) {
+        this.teamSize = teamSize != null ? teamSize.trim() : null;
+    }
+
+    public List<String> getAchievements() {
+        return new ArrayList<>(achievements);
+    }
+
+    public void addAchievement(String achievement) {
+        if (achievement != null && !achievement.trim().isEmpty()) {
+            achievements.add(achievement.trim());
+        }
+    }
+
+    public void removeAchievement(String achievement) {
+        achievements.remove(achievement);
+    }
+
+    public boolean isPersonalProject() {
+        return isPersonalProject;
+    }
+
+    public void setPersonalProject(boolean personalProject) {
+        isPersonalProject = personalProject;
+    }
+
+    // Utility methods
+    private void updateStatus() {
+        if (endDate != null && endDate.isBefore(LocalDate.now())) {
+            status = ProjectStatus.COMPLETED;
+        } else if (startDate != null && endDate == null) {
+            status = ProjectStatus.IN_PROGRESS;
+        }
+    }
+
+    public String getDuration() {
+        if (startDate == null) {
+            return "Duration not specified";
+        }
+        LocalDate end = endDate != null ? endDate : LocalDate.now();
+        return startDate.getMonth() + " " + startDate.getYear() + " - " +
+                end.getMonth() + " " + end.getYear();
+    }
+
+    public boolean isValid() {
+        return name != null && !name.trim().isEmpty() &&
+                description != null && !description.trim().isEmpty() &&
+                startDate != null &&
+                (endDate == null || !endDate.isBefore(startDate));
+    }
+
+    // Override methods
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return Objects.equals(name, project.name) &&
+                Objects.equals(startDate, project.startDate) &&
+                Objects.equals(githubUrl, project.githubUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, startDate, githubUrl);
     }
 
     @Override
     public String toString() {
-        return "Project{" +
-                "projectName='" + projectName + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+        if (startDate != null) {
+            sb.append(" (").append(getDuration()).append(")");
+        }
+        if (!technologies.isEmpty()) {
+            sb.append("\nTechnologies: ").append(String.join(", ", technologies));
+        }
+        if (!roles.isEmpty()) {
+            sb.append("\nRoles: ").append(String.join(", ", roles));
+        }
+        return sb.toString();
     }
 
-    public String getName() {
-        return "";
-    }}
+    // Clone method
+    public Project clone() {
+        Project clone = new Project(this.name, this.description);
+        clone.startDate = this.startDate;
+        clone.endDate = this.endDate;
+        clone.projectUrl = this.projectUrl;
+        clone.githubUrl = this.githubUrl;
+        clone.status = this.status;
+        clone.technologies = new ArrayList<>(this.technologies);
+        clone.roles = new HashSet<>(this.roles);
+        clone.teamSize = this.teamSize;
+        clone.achievements = new ArrayList<>(this.achievements);
+        clone.isPersonalProject = this.isPersonalProject;
+        return clone;
+    }
+}
 ==================================================
 
 Fichier: src\main\java\com\example\stage\model\WorkExperience.java
@@ -701,38 +1257,61 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\examp
 -----
 package com.example.stage.model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Objects;
+
 public class WorkExperience {
+    // Constants for validation
+    private static final int MIN_TITLE_LENGTH = 2;
+    private static final int MAX_TITLE_LENGTH = 100;
+    private static final int MIN_COMPANY_LENGTH = 2;
+    private static final int MAX_COMPANY_LENGTH = 100;
+    private static final int MAX_DESCRIPTION_LENGTH = 1000;
+    private static final int MAX_LOCATION_LENGTH = 100;
+    private static final int MAX_ACHIEVEMENTS_LENGTH = 2000;
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+
+    // Private fields
     private String jobTitle;
     private String company;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String description;
+    private boolean isCurrentJob;
+    private String location;
+    private String achievements;
 
+    // Constructors
     public WorkExperience(String jobTitle, String company) {
-        this.jobTitle = jobTitle;
-        this.company = company;
+        setJobTitle(jobTitle);
+        setCompany(company);
     }
 
-    public WorkExperience(String jobTitle, String company, String startDate, String endDate, String description) {
-        this.jobTitle = jobTitle;
-        this.company = company;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.description = description;
+    public WorkExperience(String jobTitle, String company, LocalDate startDate, LocalDate endDate, String description) {
+        this(jobTitle, company);
+        setStartDate(startDate);
+        setEndDate(endDate);
+        setDescription(description);
     }
 
-    public WorkExperience(String jobTitle, String company, String description) {
-        this.jobTitle = jobTitle;
-        this.company = company;
-        this.description = description;
-    }
-
+    // Getters and Setters with validation
     public String getJobTitle() {
         return jobTitle;
     }
 
     public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
+        if (jobTitle == null || jobTitle.trim().isEmpty()) {
+            throw new IllegalArgumentException("Job title cannot be null or empty");
+        }
+        String trimmedTitle = jobTitle.trim();
+        if (trimmedTitle.length() < MIN_TITLE_LENGTH || trimmedTitle.length() > MAX_TITLE_LENGTH) {
+            throw new IllegalArgumentException(String.format(
+                    "Job title length must be between %d and %d characters",
+                    MIN_TITLE_LENGTH, MAX_TITLE_LENGTH));
+        }
+        this.jobTitle = trimmedTitle;
     }
 
     public String getCompany() {
@@ -740,23 +1319,66 @@ public class WorkExperience {
     }
 
     public void setCompany(String company) {
-        this.company = company;
+        if (company == null || company.trim().isEmpty()) {
+            throw new IllegalArgumentException("Company name cannot be null or empty");
+        }
+        String trimmedCompany = company.trim();
+        if (trimmedCompany.length() < MIN_COMPANY_LENGTH || trimmedCompany.length() > MAX_COMPANY_LENGTH) {
+            throw new IllegalArgumentException(String.format(
+                    "Company name length must be between %d and %d characters",
+                    MIN_COMPANY_LENGTH, MAX_COMPANY_LENGTH));
+        }
+        this.company = trimmedCompany;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDate startDate) {
+        if (startDate == null) {
+            throw new IllegalArgumentException("Start date cannot be null");
+        }
+        if (startDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Start date cannot be in the future");
+        }
+        if (endDate != null && startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public void setStartDate(String startDateStr) {
+        if (startDateStr == null || startDateStr.trim().isEmpty()) {
+            throw new IllegalArgumentException("Start date string cannot be null or empty");
+        }
+        setStartDate(LocalDate.parse(startDateStr, DATE_FORMATTER));
+    }
+
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDate endDate) {
+        if (endDate != null) {
+            if (endDate.isAfter(LocalDate.now())) {
+                throw new IllegalArgumentException("End date cannot be in the future");
+            }
+            if (startDate != null && endDate.isBefore(startDate)) {
+                throw new IllegalArgumentException("End date cannot be before start date");
+            }
+        }
         this.endDate = endDate;
+        this.isCurrentJob = (endDate == null);
+    }
+
+    public void setEndDate(String endDateStr) {
+        if (endDateStr == null || endDateStr.trim().isEmpty()) {
+            this.endDate = null;
+            this.isCurrentJob = true;
+            return;
+        }
+        setEndDate(LocalDate.parse(endDateStr, DATE_FORMATTER));
     }
 
     public String getDescription() {
@@ -764,18 +1386,143 @@ public class WorkExperience {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if (description != null) {
+            String trimmedDesc = description.trim();
+            if (trimmedDesc.length() > MAX_DESCRIPTION_LENGTH) {
+                throw new IllegalArgumentException(String.format(
+                        "Description cannot exceed %d characters", MAX_DESCRIPTION_LENGTH));
+            }
+            this.description = trimmedDesc;
+        } else {
+            this.description = null;
+        }
+    }
+
+    public boolean isCurrentJob() {
+        return isCurrentJob;
+    }
+
+    public void setCurrentJob(boolean currentJob) {
+        isCurrentJob = currentJob;
+        if (currentJob) {
+            this.endDate = null;
+        }
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        if (location != null) {
+            String trimmedLocation = location.trim();
+            if (trimmedLocation.length() > MAX_LOCATION_LENGTH) {
+                throw new IllegalArgumentException(String.format(
+                        "Location cannot exceed %d characters", MAX_LOCATION_LENGTH));
+            }
+            this.location = trimmedLocation.isEmpty() ? null : trimmedLocation;
+        } else {
+            this.location = null;
+        }
+    }
+
+    public String getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(String achievements) {
+        if (achievements != null) {
+            String trimmedAchievements = achievements.trim();
+            if (trimmedAchievements.length() > MAX_ACHIEVEMENTS_LENGTH) {
+                throw new IllegalArgumentException(String.format(
+                        "Achievements cannot exceed %d characters", MAX_ACHIEVEMENTS_LENGTH));
+            }
+            this.achievements = trimmedAchievements.isEmpty() ? null : trimmedAchievements;
+        } else {
+            this.achievements = null;
+        }
+    }
+
+    // Utility methods
+    public String getDuration() {
+        if (startDate == null) {
+            return "Unknown duration";
+        }
+
+        LocalDate end = isCurrentJob ? LocalDate.now() : endDate;
+        if (end == null) {
+            return String.format("Since %s %d", startDate.getMonth(), startDate.getYear());
+        }
+
+        long months = ChronoUnit.MONTHS.between(startDate, end);
+        long years = months / 12;
+        months = months % 12;
+
+        if (years > 0) {
+            return String.format("%d year%s%s%d month%s",
+                    years, years != 1 ? "s" : "",
+                    months > 0 ? " " : "",
+                    months, months != 1 ? "s" : "");
+        } else {
+            return String.format("%d month%s", months, months != 1 ? "s" : "");
+        }
+    }
+
+    public String getFormattedStartDate() {
+        return startDate != null ? startDate.format(DATE_FORMATTER) : "";
+    }
+
+    public String getFormattedEndDate() {
+        return endDate != null ? endDate.format(DATE_FORMATTER) : "";
+    }
+
+    public boolean isValid() {
+        return jobTitle != null && !jobTitle.trim().isEmpty() &&
+                company != null && !company.trim().isEmpty() &&
+                startDate != null &&
+                (endDate == null || !endDate.isBefore(startDate));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorkExperience that = (WorkExperience) o;
+        return Objects.equals(jobTitle, that.jobTitle) &&
+                Objects.equals(company, that.company) &&
+                Objects.equals(startDate, that.startDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jobTitle, company, startDate);
     }
 
     @Override
     public String toString() {
-        return "WorkExperience{" +
-                "jobTitle='" + jobTitle + '\'' +
-                ", company='" + company + '\'' +
-                ", startDate='" + startDate + '\'' +
-                ", endDate='" + endDate + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder()
+                .append(jobTitle)
+                .append(" at ")
+                .append(company);
+
+        if (startDate != null) {
+            sb.append(" (").append(getDuration()).append(")");
+        }
+        if (location != null && !location.isEmpty()) {
+            sb.append(" - ").append(location);
+        }
+        return sb.toString();
+    }
+
+    public WorkExperience clone() {
+        WorkExperience clone = new WorkExperience(this.jobTitle, this.company);
+        clone.startDate = this.startDate;
+        clone.endDate = this.endDate;
+        clone.description = this.description;
+        clone.isCurrentJob = this.isCurrentJob;
+        clone.location = this.location;
+        clone.achievements = this.achievements;
+        return clone;
     }
 }
 ==================================================
@@ -860,21 +1607,10 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
 -----
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.Page1Controller">
     <ImageView fitHeight="109.0" fitWidth="140.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
@@ -890,6 +1626,12 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
         </image>
     </ImageView>
 
+    <ImageView fitHeight="100.0" fitWidth="150.0" layoutX="231.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../../../images/tunisie-removebg-preview.png" />
+        </image>
+    </ImageView>
+
     <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="126.0">
         <VBox fillWidth="true" spacing="10" style="-fx-padding: 20px;">
             <!-- Language Selection -->
@@ -902,23 +1644,6 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
             <VBox spacing="10">
                 <Label fx:id="personalInformationLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Personal Information" />
                 <GridPane hgap="10" vgap="10">
-                    <Label fx:id="fullNameLabel" text="Full Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="nameField" prefHeight="22.0" prefWidth="471.0" text="Mohamed Abidi" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                    <Label fx:id="emailLabel" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="emailField" text="mohamed.abidi@example.com" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                    <Label fx:id="phoneLabel" text="Phone" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <TextField fx:id="phoneField" text="+21612345678" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-                    <Label fx:id="addressLabel" text="Address" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextArea fx:id="addressArea" text="123 Rue de Tunis, Tunis, Tunisia" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-                    <Label fx:id="linkedinLabel" text="LinkedIn" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <TextField fx:id="linkedinField" text="linkedin.com/in/mohamedabidi" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
-                    <Label fx:id="portfolioLabel" text="Portfolio" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <TextField fx:id="portfolioField" text="mohamedabidi.com" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                     <columnConstraints>
                         <ColumnConstraints maxWidth="104.0" minWidth="59.0" prefWidth="104.0" />
                         <ColumnConstraints maxWidth="473.0" minWidth="428.0" prefWidth="428.0" />
@@ -931,6 +1656,24 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
                         <RowConstraints />
                         <RowConstraints />
                     </rowConstraints>
+
+                    <Label fx:id="fullNameLabel" text="Full Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="nameField" prefHeight="22.0" prefWidth="471.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label fx:id="emailLabel" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label fx:id="phoneLabel" text="Phone" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                    <Label fx:id="addressLabel" text="Address" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextArea fx:id="addressArea" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                    <Label fx:id="linkedinLabel" text="LinkedIn" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <TextField fx:id="linkedinField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                    <Label fx:id="portfolioLabel" text="Portfolio" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <TextField fx:id="portfolioField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 </GridPane>
             </VBox>
 
@@ -938,7 +1681,7 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
             <VBox spacing="10">
                 <Label fx:id="summaryObjectiveLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Summary / Objective" />
                 <HBox spacing="10">
-                    <TextArea fx:id="summaryArea" prefHeight="40.0" prefWidth="541.0" text="Experienced software engineer with a strong background in developing scalable web applications." />
+                    <TextArea fx:id="summaryArea" prefHeight="40.0" prefWidth="541.0" />
                     <Button onAction="#showSummaryHelp" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="â“˜" />
                 </HBox>
             </VBox>
@@ -948,12 +1691,6 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
                 <Label fx:id="educationLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Education" />
                 <VBox fx:id="educationContainer" spacing="5">
                     <GridPane hgap="10" vgap="10">
-                        <Label text="Degree" GridPane.rowIndex="0" />
-                        <TextField fx:id="degreeField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label text="Institution" GridPane.rowIndex="1" />
-                        <TextField fx:id="institutionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Graduation Date" GridPane.rowIndex="2" />
-                        <DatePicker fx:id="graduationDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <columnConstraints>
                             <ColumnConstraints maxWidth="109.0" minWidth="93.0" prefWidth="106.0" />
                             <ColumnConstraints maxWidth="169.0" minWidth="153.0" prefWidth="156.0" />
@@ -963,6 +1700,13 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
                             <RowConstraints />
                             <RowConstraints />
                         </rowConstraints>
+
+                        <Label text="Degree" GridPane.rowIndex="0" />
+                        <TextField fx:id="degreeField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Institution" GridPane.rowIndex="1" />
+                        <TextField fx:id="institutionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Graduation Date" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="graduationDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                     </GridPane>
                 </VBox>
                 <Button fx:id="addEducationButton" onAction="#addEducation" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Education" />
@@ -973,21 +1717,32 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
                 <Label fx:id="workExperienceLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Work Experience" />
                 <VBox fx:id="workExperienceContainer" spacing="5">
                     <GridPane hgap="10" vgap="10">
-                        <Label text="Job Title" />
-                        <TextField fx:id="jobTitleField" GridPane.columnIndex="1" />
-                        <Label text="Company" GridPane.rowIndex="1" />
-                        <TextField fx:id="companyField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Description" GridPane.rowIndex="2" />
-                        <TextArea fx:id="descriptionArea" prefHeight="60" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <columnConstraints>
-                            <ColumnConstraints />
-                            <ColumnConstraints />
+                            <ColumnConstraints maxWidth="109.0" minWidth="93.0" prefWidth="106.0" />
+                            <ColumnConstraints maxWidth="169.0" minWidth="153.0" prefWidth="156.0" />
                         </columnConstraints>
                         <rowConstraints>
                             <RowConstraints />
                             <RowConstraints />
                             <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
                         </rowConstraints>
+
+                        <Label text="Job Title" GridPane.rowIndex="0" />
+                        <TextField fx:id="jobTitleField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Company" GridPane.rowIndex="1" />
+                        <TextField fx:id="companyField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Start Date" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="startDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label text="End Date" GridPane.rowIndex="3" />
+                        <DatePicker fx:id="endDateField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <Label text="Description" GridPane.rowIndex="4" />
+                        <TextArea fx:id="descriptionArea" prefHeight="60" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     </GridPane>
                 </VBox>
                 <Button fx:id="addWorkExperienceButton" onAction="#addWorkExperience" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Work Experience" />
@@ -1000,11 +1755,6 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
             </HBox>
         </VBox>
     </ScrollPane>
-    <ImageView fitHeight="100.0" fitWidth="150.0" layoutX="231.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
-        <image>
-            <Image url="@../../../images/tunisie-removebg-preview.png" />
-        </image>
-    </ImageView>
 </AnchorPane>
 ==================================================
 
@@ -1197,7 +1947,7 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.WelcomeController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.WelcomeController">
     <StackPane prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
         <!-- Background Rectangle -->
         <Rectangle fill="#ffffff" height="600.0" width="900.0" />
@@ -1322,27 +2072,24 @@ package com.example.stage.controller;
 import com.example.stage.model.CV;
 import com.example.stage.model.Education;
 import com.example.stage.model.WorkExperience;
+import com.example.stage.util.ResourceManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.Locale;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
+import java.util.Locale;
 public class Page1Controller {
-    // Personal Information Fields
     @FXML private TextField nameField;
     @FXML private TextField emailField;
     @FXML private TextField phoneField;
@@ -1351,13 +2098,11 @@ public class Page1Controller {
     @FXML private TextField portfolioField;
     @FXML private TextArea summaryArea;
 
-    // Education Fields
     @FXML private TextField degreeField;
     @FXML private TextField institutionField;
     @FXML private DatePicker graduationDateField;
     @FXML private VBox educationContainer;
 
-    // Work Experience Fields
     @FXML private TextField jobTitleField;
     @FXML private TextField companyField;
     @FXML private DatePicker startDateField;
@@ -1365,11 +2110,11 @@ public class Page1Controller {
     @FXML private TextArea descriptionArea;
     @FXML private VBox workExperienceContainer;
 
-    // Buttons and Labels
     @FXML private Button nextButton;
     @FXML private Button autoFillButton;
     @FXML private ComboBox<String> languageComboBox;
     @FXML private Button translateButton;
+
     @FXML private Label personalInformationLabel;
     @FXML private Label fullNameLabel;
     @FXML private Label emailLabel;
@@ -1381,12 +2126,13 @@ public class Page1Controller {
     @FXML private Label educationLabel;
     @FXML private Label workExperienceLabel;
 
-    // Constants pour la validation
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
     private static final String PHONE_REGEX = "^\\+?[0-9]{8,}$";
     private static final String LINKEDIN_REGEX = "^(https?://)?(www\\.)?linkedin\\.com/.*$";
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
     private static final int MAX_SUMMARY_LENGTH = 500;
     private static final int MAX_DESCRIPTION_LENGTH = 1000;
+
 
     @FXML
     private void initialize() {
@@ -1398,8 +2144,6 @@ public class Page1Controller {
     private void setupLanguageComboBox() {
         languageComboBox.getItems().addAll("English", "French", "German", "Arabic");
         languageComboBox.setValue("English");
-        languageComboBox.setOnAction(e -> translatePage());
-        loadTranslations(Locale.ENGLISH);
     }
 
     private void setupValidations() {
@@ -1446,58 +2190,27 @@ public class Page1Controller {
         Locale locale = switch (selectedLanguage) {
             case "French" -> Locale.FRENCH;
             case "German" -> Locale.GERMAN;
-            case "Arabic" -> Locale.forLanguageTag("ar");
+            case "Arabic" -> Locale.forLanguageTag("ar"); // Changed from new Locale("ar")
             default -> Locale.ENGLISH;
         };
-        loadTranslations(locale);
+        ResourceManager.setLocale(locale);
+        updateTranslations();
     }
+    private void updateTranslations() {
+        personalInformationLabel.setText(ResourceManager.getString("personal_information"));
+        fullNameLabel.setText(ResourceManager.getString("full_name"));
+        emailLabel.setText(ResourceManager.getString("email"));
+        phoneLabel.setText(ResourceManager.getString("phone"));
+        addressLabel.setText(ResourceManager.getString("address"));
+        linkedinLabel.setText(ResourceManager.getString("linkedin"));
+        portfolioLabel.setText(ResourceManager.getString("portfolio"));
+        summaryObjectiveLabel.setText(ResourceManager.getString("summary_objective"));
+        educationLabel.setText(ResourceManager.getString("education"));
+        workExperienceLabel.setText(ResourceManager.getString("work_experience"));
 
-    private void loadTranslations(Locale locale) {
-        ResourceBundle bundle = getBundle("messages", locale);
-        if (bundle != null) {
-            updateLabels(bundle);
-            updatePromptTexts(bundle);
-        }
-    }
-
-    private ResourceBundle getBundle(String baseName, Locale locale) {
-        String resourceName = baseName + "_" + locale.getLanguage() + ".properties";
-        String resourcePath = "/com/example/stage/" + resourceName;
-        try (InputStreamReader reader = new InputStreamReader(
-                getClass().getResourceAsStream(resourcePath),
-                StandardCharsets.UTF_8)) {
-            return reader != null ? new PropertyResourceBundle(reader) : null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
-    private void updateLabels(ResourceBundle bundle) {
-        personalInformationLabel.setText(bundle.getString("personal_information"));
-        fullNameLabel.setText(bundle.getString("full_name"));
-        emailLabel.setText(bundle.getString("email"));
-        phoneLabel.setText(bundle.getString("phone"));
-        addressLabel.setText(bundle.getString("address"));
-        linkedinLabel.setText(bundle.getString("linkedin"));
-        portfolioLabel.setText(bundle.getString("portfolio"));
-        summaryObjectiveLabel.setText(bundle.getString("summary_objective"));
-        educationLabel.setText(bundle.getString("education"));
-        workExperienceLabel.setText(bundle.getString("work_experience"));
-        nextButton.setText(bundle.getString("next"));
-        translateButton.setText(bundle.getString("translate"));
-        autoFillButton.setText(bundle.getString("auto_fill"));
-    }
-
-    private void updatePromptTexts(ResourceBundle bundle) {
-        nameField.setPromptText(bundle.getString("name_prompt"));
-        emailField.setPromptText(bundle.getString("email_prompt"));
-        phoneField.setPromptText(bundle.getString("phone_prompt"));
-        addressArea.setPromptText(bundle.getString("address_prompt"));
-        linkedinField.setPromptText(bundle.getString("linkedin_prompt"));
-        portfolioField.setPromptText(bundle.getString("portfolio_prompt"));
-        summaryArea.setPromptText(bundle.getString("summary_prompt"));
+        nextButton.setText(ResourceManager.getString("next"));
+        translateButton.setText(ResourceManager.getString("translate"));
+        autoFillButton.setText(ResourceManager.getString("auto_fill"));
     }
 
     @FXML
@@ -1508,10 +2221,18 @@ public class Page1Controller {
         educationEntry.setHgap(10);
         educationEntry.setVgap(10);
 
+        // Create fields
         TextField degreeField = new TextField(this.degreeField.getText());
         TextField institutionField = new TextField(this.institutionField.getText());
         DatePicker graduationDateField = new DatePicker(this.graduationDateField.getValue());
 
+        // Set column constraints
+        educationEntry.getColumnConstraints().addAll(
+                new ColumnConstraints(106),
+                new ColumnConstraints(156)
+        );
+
+        // Add fields
         educationEntry.add(new Label("Degree:"), 0, 0);
         educationEntry.add(degreeField, 1, 0);
         educationEntry.add(new Label("Institution:"), 0, 1);
@@ -1519,7 +2240,9 @@ public class Page1Controller {
         educationEntry.add(new Label("Graduation Date:"), 0, 2);
         educationEntry.add(graduationDateField, 1, 2);
 
-        Button removeButton = createRemoveButton(educationEntry);
+        Button removeButton = new Button("Remove");
+        removeButton.setStyle("-fx-background-color: #E31A22; -fx-text-fill: white;");
+        removeButton.setOnAction(e -> educationContainer.getChildren().remove(educationEntry));
         educationEntry.add(removeButton, 1, 3);
 
         educationContainer.getChildren().add(educationEntry);
@@ -1534,14 +2257,22 @@ public class Page1Controller {
         workExperienceEntry.setHgap(10);
         workExperienceEntry.setVgap(10);
 
+        // Create fields
         TextField jobTitleField = new TextField(this.jobTitleField.getText());
         TextField companyField = new TextField(this.companyField.getText());
         DatePicker startDateField = new DatePicker(this.startDateField.getValue());
         DatePicker endDateField = new DatePicker(this.endDateField.getValue());
         TextArea descriptionArea = new TextArea(this.descriptionArea.getText());
-        descriptionArea.setWrapText(true);
         descriptionArea.setPrefHeight(60);
+        descriptionArea.setWrapText(true);
 
+        // Set column constraints
+        workExperienceEntry.getColumnConstraints().addAll(
+                new ColumnConstraints(106),
+                new ColumnConstraints(156)
+        );
+
+        // Add fields
         workExperienceEntry.add(new Label("Job Title:"), 0, 0);
         workExperienceEntry.add(jobTitleField, 1, 0);
         workExperienceEntry.add(new Label("Company:"), 0, 1);
@@ -1553,18 +2284,13 @@ public class Page1Controller {
         workExperienceEntry.add(new Label("Description:"), 0, 4);
         workExperienceEntry.add(descriptionArea, 1, 4);
 
-        Button removeButton = createRemoveButton(workExperienceEntry);
+        Button removeButton = new Button("Remove");
+        removeButton.setStyle("-fx-background-color: #E31A22; -fx-text-fill: white;");
+        removeButton.setOnAction(e -> workExperienceContainer.getChildren().remove(workExperienceEntry));
         workExperienceEntry.add(removeButton, 1, 5);
 
         workExperienceContainer.getChildren().add(workExperienceEntry);
         clearWorkExperienceFields();
-    }
-
-    private Button createRemoveButton(GridPane entry) {
-        Button removeButton = new Button("Remove");
-        removeButton.setStyle("-fx-background-color: #E31A22; -fx-text-fill: white;");
-        removeButton.setOnAction(e -> ((VBox) entry.getParent()).getChildren().remove(entry));
-        return removeButton;
     }
 
     private boolean validateEmail() {
@@ -1687,11 +2413,22 @@ public class Page1Controller {
     }
 
     @FXML
+    private void showSummaryHelp() {
+        showAlert("Summary Help",
+                "Write a brief professional summary highlighting your key qualifications, " +
+                        "experience, and career objectives. Keep it concise and impactful.");
+    }
+
+    @FXML
     private void goToPage2() {
         if (validateAllFields()) {
             try {
+                CV cv = getData();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/stage/page2.fxml"));
                 AnchorPane page2 = loader.load();
+                Page2Controller controller = loader.getController();
+                controller.setCV(cv);
+
                 Scene scene = new Scene(page2, 900, 600);
                 Stage stage = (Stage) nextButton.getScene().getWindow();
                 stage.setScene(scene);
@@ -1701,7 +2438,6 @@ public class Page1Controller {
             }
         }
     }
-
     private boolean validateAllFields() {
         ArrayList<String> errors = new ArrayList<>();
 
@@ -1738,13 +2474,6 @@ public class Page1Controller {
         return true;
     }
 
-    @FXML
-    private void showSummaryHelp() {
-        showAlert("Summary Help",
-                "Write a brief professional summary highlighting your key qualifications, " +
-                        "experience, and career objectives. Keep it concise and impactful.");
-    }
-
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
@@ -1763,7 +2492,7 @@ public class Page1Controller {
             portfolioField.setText(cv.getPortfolio());
             summaryArea.setText(cv.getSummary());
 
-            // Charger les Ã©ducations
+            // Load education entries
             cv.getEducations().forEach(education -> {
                 degreeField.setText(education.getDegree());
                 institutionField.setText(education.getInstitution());
@@ -1771,13 +2500,15 @@ public class Page1Controller {
                 addEducation();
             });
 
-            // Charger les expÃ©riences professionnelles
+            // Load work experience entries
             cv.getWorkExperiences().forEach(experience -> {
                 jobTitleField.setText(experience.getJobTitle());
                 companyField.setText(experience.getCompany());
-                startDateField.setValue(LocalDate.parse(experience.getStartDate()));
-                if (experience.getEndDate() != null && !experience.getEndDate().isEmpty()) {
-                    endDateField.setValue(LocalDate.parse(experience.getEndDate()));
+                if (experience.getStartDate() != null) {
+                    startDateField.setValue(experience.getStartDate());
+                }
+                if (experience.getEndDate() != null) {
+                    endDateField.setValue(experience.getEndDate());
                 }
                 descriptionArea.setText(experience.getDescription());
                 addWorkExperience();
@@ -1787,15 +2518,15 @@ public class Page1Controller {
 
     public CV getData() {
         CV cv = new CV();
-        cv.setName(nameField.getText());
-        cv.setEmail(emailField.getText());
-        cv.setPhone(phoneField.getText());
-        cv.setAddress(addressArea.getText());
-        cv.setLinkedin(linkedinField.getText());
-        cv.setPortfolio(portfolioField.getText());
-        cv.setSummary(summaryArea.getText());
+        cv.setName(nameField.getText().trim());
+        cv.setEmail(emailField.getText().trim());
+        cv.setPhone(phoneField.getText().trim());
+        cv.setAddress(addressArea.getText().trim());
+        cv.setLinkedin(linkedinField.getText().trim());
+        cv.setPortfolio(portfolioField.getText().trim());
+        cv.setSummary(summaryArea.getText().trim());
 
-        // RÃ©cupÃ©rer les Ã©ducations
+        // Get education entries with validation
         educationContainer.getChildren().forEach(node -> {
             if (node instanceof GridPane) {
                 GridPane grid = (GridPane) node;
@@ -1803,16 +2534,25 @@ public class Page1Controller {
                 TextField institutionField = (TextField) getNodeByRowColumn(grid, 1, 1);
                 DatePicker graduationDatePicker = (DatePicker) getNodeByRowColumn(grid, 2, 1);
 
-                Education education = new Education(
-                        degreeField.getText(),
-                        institutionField.getText(),
-                        graduationDatePicker.getValue()
-                );
-                cv.getEducations().add(education);
+                if (degreeField != null && institutionField != null && graduationDatePicker != null) {
+                    String degree = degreeField.getText().trim();
+                    String institution = institutionField.getText().trim();
+                    LocalDate graduationDate = graduationDatePicker.getValue();
+
+                    // Only create Education object if required fields are not empty
+                    if (!degree.isEmpty() && !institution.isEmpty() && graduationDate != null) {
+                        Education education = new Education(
+                                degree,
+                                institution,
+                                graduationDate
+                        );
+                        cv.getEducations().add(education);
+                    }
+                }
             }
         });
 
-        // RÃ©cupÃ©rer les expÃ©riences professionnelles
+        // Get work experience entries
         workExperienceContainer.getChildren().forEach(node -> {
             if (node instanceof GridPane) {
                 GridPane grid = (GridPane) node;
@@ -1822,16 +2562,22 @@ public class Page1Controller {
                 DatePicker endDatePicker = (DatePicker) getNodeByRowColumn(grid, 3, 1);
                 TextArea descriptionArea = (TextArea) getNodeByRowColumn(grid, 4, 1);
 
-                WorkExperience experience = new WorkExperience(
-                        jobTitleField.getText(),
-                        companyField.getText()
-                );
-                experience.setStartDate(startDatePicker.getValue().toString());
-                if (endDatePicker.getValue() != null) {
-                    experience.setEndDate(endDatePicker.getValue().toString());
+                if (jobTitleField != null && companyField != null && startDatePicker != null) {
+                    WorkExperience experience = new WorkExperience(
+                            jobTitleField.getText().trim(),
+                            companyField.getText().trim()
+                    );
+                    if (startDatePicker.getValue() != null) {
+                        experience.setStartDate(startDatePicker.getValue());
+                    }
+                    if (endDatePicker != null && endDatePicker.getValue() != null) {
+                        experience.setEndDate(endDatePicker.getValue());
+                    }
+                    if (descriptionArea != null) {
+                        experience.setDescription(descriptionArea.getText().trim());
+                    }
+                    cv.getWorkExperiences().add(experience);
                 }
-                experience.setDescription(descriptionArea.getText());
-                cv.getWorkExperiences().add(experience);
             }
         });
 
@@ -1840,7 +2586,11 @@ public class Page1Controller {
 
     private Node getNodeByRowColumn(GridPane gridPane, int row, int column) {
         for (Node node : gridPane.getChildren()) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+            Integer rowIndex = GridPane.getRowIndex(node);
+            Integer columnIndex = GridPane.getColumnIndex(node);
+
+            if (rowIndex != null && columnIndex != null &&
+                    rowIndex == row && columnIndex == column) {
                 return node;
             }
         }
@@ -2201,35 +2951,7 @@ public class Page2Controller {
     }
 
     private void loadCVData() {
-        if (cv != null) {
-            // Load skills
-            cv.getSkills().forEach(skill -> {
-                skillField.setText(skill);
-                addSkill();
-            });
 
-            // Load projects
-            cv.getProjects().forEach(project -> {
-                projectNameField.setText(project.getName());
-                projectDescriptionArea.setText(project.getDescription());
-                addProject();
-            });
-
-            // Load certificates
-            cv.getCertificates().forEach(cert -> {
-                certificateNameField.setText(cert.getName());
-                certificateInstitutionField.setText(cert.getInstitution());
-                certificateDateField.setValue(cert.getDateReceived());
-                addCertificate();
-            });
-
-            // Load languages
-            cv.getLanguages().forEach(lang -> {
-                languageField.setText(lang.getName());
-                languageProficiencyField.setValue(lang.getProficiencyLevel());
-                addLanguage();
-            });
-        }
     }
 
     private void updateCVModel() {
@@ -2343,23 +3065,20 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\examp
 -----
 package com.example.stage.service;
 
-import com.example.stage.model.CV;
-import com.example.stage.model.Certificate;
-import com.example.stage.model.Education;
-import com.example.stage.model.Language;
-import com.example.stage.model.Project;
-import com.example.stage.model.WorkExperience;
+import com.example.stage.model.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class PDFGenerationService {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public void generateCVPDF(CV cv, String filePath) throws IOException {
+    public void generatePDF(CV cv, String filePath) throws IOException {
         PDDocument document = new PDDocument();
         PDPage page = new PDPage();
         document.addPage(page);
@@ -2467,7 +3186,10 @@ public class PDFGenerationService {
         contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (Education education : educations) {
             contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(education.getDegree() + " - " + education.getInstitution() + " (" + education.getGraduationDate() + ")");
+            String graduationDate = education.getGraduationDate() != null ?
+                    education.getGraduationDate().format(DATE_FORMATTER) : "Present";
+            contentStream.showText(education.getDegree() + " - " + education.getInstitution() +
+                    " (" + graduationDate + ")");
             contentStream.newLine();
             yOffset -= 15;
         }
@@ -2491,9 +3213,16 @@ public class PDFGenerationService {
         contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (WorkExperience workExperience : workExperiences) {
             contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(workExperience.getJobTitle() + " - " + workExperience.getCompany() + " (" + workExperience.getStartDate() + " - " + workExperience.getEndDate() + ")");
+            String endDate = workExperience.getEndDate() != null ?
+                    workExperience.getEndDate().format(DATE_FORMATTER) : "Present";
+            contentStream.showText(workExperience.getJobTitle() + " - " +
+                    workExperience.getCompany() + " (" +
+                    workExperience.getStartDate().format(DATE_FORMATTER) +
+                    " - " + endDate + ")");
             contentStream.newLineAtOffset(0, -15);
-            contentStream.showText(workExperience.getDescription());
+            if (workExperience.getDescription() != null) {
+                contentStream.showText(workExperience.getDescription());
+            }
             yOffset -= 30;
         }
         contentStream.endText();
@@ -2516,9 +3245,11 @@ public class PDFGenerationService {
         contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (Project project : projects) {
             contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(project.getProjectName());
+            contentStream.showText(project.getName());
             contentStream.newLineAtOffset(0, -15);
-            contentStream.showText(project.getDescription());
+            if (project.getDescription() != null) {
+                contentStream.showText(project.getDescription());
+            }
             yOffset -= 30;
         }
         contentStream.endText();
@@ -2541,7 +3272,11 @@ public class PDFGenerationService {
         contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (Certificate certificate : certificates) {
             contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(certificate.getName() + " - " + certificate.getInstitution() + " (" + certificate.getDate() + ")");
+            String dateReceived = certificate.getDateReceived() != null ?
+                    certificate.getDateReceived().format(DATE_FORMATTER) : "";
+            contentStream.showText(certificate.getName() + " - " +
+                    certificate.getInstitution() +
+                    (dateReceived.isEmpty() ? "" : " (" + dateReceived + ")"));
             contentStream.newLine();
             yOffset -= 15;
         }
@@ -2565,7 +3300,8 @@ public class PDFGenerationService {
         contentStream.setFont(PDType1Font.HELVETICA, 12);
         for (Language language : languages) {
             contentStream.newLineAtOffset(50, yOffset);
-            contentStream.showText(language.getName() + " - " + language.getProficiency());
+            contentStream.showText(language.getName() + " - " +
+                    language.getProficiencyLevel().getDescription());
             contentStream.newLine();
             yOffset -= 15;
         }
@@ -2594,10 +3330,6 @@ public class PDFGenerationService {
             yOffset -= 15;
         }
         contentStream.endText();
-    }
-
-    public void generatePDF(CV cv, String filePath) {
-
     }
 }
 ==================================================
@@ -2998,8 +3730,11 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\examp
 package com.example.stage.ai;
 
 import com.example.stage.model.CV;
+import java.time.format.DateTimeFormatter;
 
 public class AIPromptBuilder {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     public String buildAnalysisPrompt(CV cv) {
         StringBuilder prompt = new StringBuilder();
         prompt.append("Analyze this CV for a professional position\n\n");
@@ -3028,8 +3763,13 @@ public class AIPromptBuilder {
             prompt.append("\nEducation:\n");
             cv.getEducations().forEach(edu -> {
                 prompt.append("- ").append(edu.getDegree())
-                        .append(" from ").append(edu.getInstitution())
-                        .append(" (").append(edu.getGraduationDate()).append(")\n");
+                        .append(" from ").append(edu.getInstitution());
+                if (edu.getGraduationDate() != null) {
+                    prompt.append(" (")
+                            .append(edu.getGraduationDate().format(DATE_FORMATTER))
+                            .append(")");
+                }
+                prompt.append("\n");
             });
         }
 
@@ -3038,12 +3778,17 @@ public class AIPromptBuilder {
             prompt.append("\nWork Experience:\n");
             cv.getWorkExperiences().forEach(exp -> {
                 prompt.append("- ").append(exp.getJobTitle())
-                        .append(" at ").append(exp.getCompany())
-                        .append(" (").append(exp.getStartDate());
-                if (exp.getEndDate() != null && !exp.getEndDate().isEmpty()) {
-                    prompt.append(" - ").append(exp.getEndDate());
+                        .append(" at ").append(exp.getCompany());
+                if (exp.getStartDate() != null) {
+                    prompt.append(" (")
+                            .append(exp.getStartDate().format(DATE_FORMATTER));
+                    if (exp.getEndDate() != null) {
+                        prompt.append(" - ")
+                                .append(exp.getEndDate().format(DATE_FORMATTER));
+                    }
+                    prompt.append(")");
                 }
-                prompt.append(")\n");
+                prompt.append("\n");
                 if (exp.getDescription() != null && !exp.getDescription().isEmpty()) {
                     prompt.append("  ").append(exp.getDescription()).append("\n");
                 }
@@ -3072,7 +3817,7 @@ public class AIPromptBuilder {
             prompt.append("\nLanguages:\n");
             cv.getLanguages().forEach(lang -> {
                 prompt.append("- ").append(lang.getName())
-                        .append(": ").append(lang.getProficiencyLevel())
+                        .append(": ").append(lang.getProficiencyLevel().getDescription())
                         .append("\n");
             });
         }
@@ -3545,6 +4290,7 @@ public final class LocaleConstants {
 Fichier: src\main\resources\com\example\stage\messages_en.properties
 Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_en.properties
 -----
+# English translations
 translate=Translate
 back=Back
 skills=Skills
@@ -3572,47 +4318,98 @@ date_of_receipt=Date of Receipt
 language=Language
 proficiency_level=Proficiency Level
 next=Next
-auto_fill=autofill
+auto_fill=Auto Fill
+
+# Additional translations
+degree=Degree
+graduation_date=Graduation Date
+job_title=Job Title
+company=Company
+start_date=Start Date
+end_date=End Date
+description=Description
+add_work_experience=Add Work Experience
+
+# Validation messages
+name_required=Name is required
+email_required=Email is required
+phone_required=Phone number is required
+invalid_email=Invalid email format
+invalid_phone=Invalid phone format
+invalid_linkedin=Invalid LinkedIn URL format
+
+# Help messages
+summary_help=Write a brief overview of your professional background and career objectives
 ==================================================
 
 Fichier: src\main\resources\com\example\stage\messages_ar.properties
 Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_ar.properties
 -----
-translate=\u062A\u0631\u062C\u0645\u0629
-back=\u0631\u062C\u0648\u0639
-skills=\u0645\u0647\u0627\u0631\u0627\u062A
-projects=\u0645\u0634\u0627\u0631\u064A\u0639
-certificates=\u0634\u0647\u0627\u062F\u0627\u062A
-languages=\u0644\u063A\u0627\u062A
-generate_pdf=\u0625\u0646\u0634\u0627\u0621 PDF
-personal_information=\u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0634\u062E\u0635\u064A\u0629
-full_name=\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644
-email=\u0627\u0644\u0628\u0631\u064A\u062F \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A
-phone=\u0627\u0644\u0647\u0627\u062A\u0641
-address=\u0627\u0644\u0639\u0646\u0648\u0627\u0646
-linkedin=\u0644\u064A\u0646\u0643\u062F\u0625\u0646
-portfolio=\u0645\u0644\u0641 \u0627\u0644\u0623\u0639\u0645\u0627\u0644
-summary_objective=\u0627\u0644\u0645\u0644\u062E\u0635 / \u0627\u0644\u0647\u062F\u0641
-education=\u0627\u0644\u062A\u0639\u0644\u064A\u0645
-work_experience=\u0627\u0644\u062E\u0628\u0631\u0629 \u0627\u0644\u0639\u0645\u0644\u064A\u0629
-add_education=\u0625\u0636\u0627\u0641\u0629 \u062A\u0639\u0644\u064A\u0645
-add_experience=\u0625\u0636\u0627\u0641\u0629 \u062E\u0628\u0631\u0629
-next=Next
-auto_fill=autofill
+# Arabic translations
+translate=?????
+back=????
+skills=????????
+projects=????????
+certificates=????????
+languages=??????
+generate_pdf=????? PDF
+personal_information=????????? ???????
+full_name=????? ??????
+email=?????? ??????????
+phone=??????
+address=???????
+linkedin=????? ??
+portfolio=???????
+summary_objective=?????? / ?????
+education=???????
+work_experience=?????? ???????
+add_education=????? ?????
+add_experience=????? ????
+project_name=??? ???????
+project_description=??? ???????
+certificate_name=??? ???????
+institution=???????
+date_of_receipt=????? ????????
+language=?????
+proficiency_level=????? ???????
+next=??????
+auto_fill=??? ??????
+
+# Additional translations
+degree=???????
+graduation_date=????? ??????
+job_title=?????? ???????
+company=??????
+start_date=????? ?????
+end_date=????? ????????
+description=?????
+add_work_experience=????? ???? ?????
+
+# Validation messages
+name_required=????? ?????
+email_required=?????? ?????????? ?????
+phone_required=??? ?????? ?????
+invalid_email=???? ?????? ?????????? ??? ?????
+invalid_phone=???? ??? ?????? ??? ?????
+invalid_linkedin=???? ???? ????? ?? ??? ?????
+
+# Help messages
+summary_help=???? ???? ?????? ?? ?????? ??????? ??????? ????????
 ==================================================
 
 Fichier: src\main\resources\com\example\stage\messages_de.properties
 Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_de.properties
 -----
-translate=Ãœbersetzen
-back=ZurÃ¼ck
-skills=FÃ¤higkeiten
+# German translations
+translate=Übersetzen
+back=Zurück
+skills=Fähigkeiten
 projects=Projekte
 certificates=Zertifikate
 languages=Sprachen
 generate_pdf=PDF Erstellen
-personal_information=PersÃ¶nliche Informationen
-full_name=VollstÃ¤ndiger Name
+personal_information=Persönliche Informationen
+full_name=Vollständiger Name
 email=E-Mail
 phone=Telefon
 address=Adresse
@@ -3621,8 +4418,8 @@ portfolio=Portfolio
 summary_objective=Zusammenfassung / Ziel
 education=Bildung
 work_experience=Berufserfahrung
-add_education=Bildung HinzufÃ¼gen
-add_experience=Erfahrung HinzufÃ¼gen
+add_education=Bildung Hinzufügen
+add_experience=Erfahrung Hinzufügen
 project_name=Projektname
 project_description=Projektbeschreibung
 certificate_name=Zertifikatname
@@ -3631,45 +4428,89 @@ date_of_receipt=Empfangsdatum
 language=Sprache
 proficiency_level=Kompetenzniveau
 next=Weiter
-auto_fill=autofill
+auto_fill=Auto-Ausfüllen
+
+# Additional German translations
+degree=Abschluss
+graduation_date=Abschlussdatum
+job_title=Berufsbezeichnung
+company=Unternehmen
+start_date=Startdatum
+end_date=Enddatum
+description=Beschreibung
+add_work_experience=Berufserfahrung Hinzufügen
+
+# Validation messages
+name_required=Name ist erforderlich
+email_required=E-Mail ist erforderlich
+phone_required=Telefonnummer ist erforderlich
+invalid_email=Ungültiges E-Mail-Format
+invalid_phone=Ungültige Telefonnummer
+invalid_linkedin=Ungültige LinkedIn-URL
+
+# Help messages
+summary_help=Schreiben Sie eine kurze Übersicht über Ihren beruflichen Werdegang und Ihre Karriereziele
 ==================================================
 
 Fichier: src\main\resources\com\example\stage\messages_fr.properties
 Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_fr.properties
 -----
+# French translations
 translate=Traduire
 back=Retour
-skills=CompÃ©tences
+skills=Compétences
 projects=Projets
 certificates=Certificats
 languages=Langues
-generate_pdf=GÃ©nÃ©rer PDF
+generate_pdf=Générer PDF
 personal_information=Informations Personnelles
 full_name=Nom Complet
-email=Email
-phone=TÃ©lÃ©phone
+email=E-mail
+phone=Téléphone
 address=Adresse
 linkedin=LinkedIn
 portfolio=Portfolio
-summary_objective=RÃ©sumÃ© / Objectif
-education=Ã‰ducation
-work_experience=ExpÃ©rience Professionnelle
-add_education=Ajouter Ã‰ducation
-add_experience=Ajouter ExpÃ©rience
+summary_objective=Résumé / Objectif
+education=Formation
+work_experience=Expérience Professionnelle
+add_education=Ajouter Formation
+add_experience=Ajouter Expérience
 project_name=Nom du Projet
 project_description=Description du Projet
 certificate_name=Nom du Certificat
 institution=Institution
-date_of_receipt=Date de RÃ©ception
+date_of_receipt=Date de Réception
 language=Langue
-proficiency_level=Niveau de CompÃ©tence
+proficiency_level=Niveau de Compétence
 next=Suivant
-auto_fill=autofill
+auto_fill=Remplissage Automatique
+
+# Additional translations
+degree=Diplôme
+graduation_date=Date d'Obtention
+job_title=Poste
+company=Entreprise
+start_date=Date de Début
+end_date=Date de Fin
+description=Description
+add_work_experience=Ajouter Expérience Professionnelle
+
+# Validation messages
+name_required=Le nom est requis
+email_required=L'e-mail est requis
+phone_required=Le numéro de téléphone est requis
+invalid_email=Format d'e-mail invalide
+invalid_phone=Format de téléphone invalide
+invalid_linkedin=Format URL LinkedIn invalide
+
+# Help messages
+summary_help=Rédigez un bref aperçu de votre parcours professionnel et de vos objectifs de carrière
 ==================================================
 
 Fichier: src\main\resources\com\example\stage\messages_en.properties
 Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_en.properties
 -----
+# English translations
 translate=Translate
 back=Back
 skills=Skills
@@ -3697,7 +4538,28 @@ date_of_receipt=Date of Receipt
 language=Language
 proficiency_level=Proficiency Level
 next=Next
-auto_fill=autofill
+auto_fill=Auto Fill
+
+# Additional translations
+degree=Degree
+graduation_date=Graduation Date
+job_title=Job Title
+company=Company
+start_date=Start Date
+end_date=End Date
+description=Description
+add_work_experience=Add Work Experience
+
+# Validation messages
+name_required=Name is required
+email_required=Email is required
+phone_required=Phone number is required
+invalid_email=Invalid email format
+invalid_phone=Invalid phone format
+invalid_linkedin=Invalid LinkedIn URL format
+
+# Help messages
+summary_help=Write a brief overview of your professional background and career objectives
 ==================================================
 
 Fichier: src\main\resources\application.properties
