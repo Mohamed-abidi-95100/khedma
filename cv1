@@ -9,7 +9,35 @@ import java.util.List;
 import java.util.Objects;
 
 public class CV {
-    // Attributs privÃ©s
+    // Added field for ESPRIT specific programs
+    public enum ProgramType {
+        ENGINEERING_IT("GÃ©nie Informatique"),
+        ENGINEERING_TELECOM("GÃ©nie des TÃ©lÃ©communications"),
+        ENGINEERING_ELECTROMECH("GÃ©nie Ã‰lectromÃ©canique"),
+        ENGINEERING_CIVIL("GÃ©nie Civil"),
+        ENGINEERING_MECHATRONICS("GÃ©nie MÃ©catronique"),
+        LICENSE_BUSINESS_COMPUTING("Licence en Business Computing"),
+        LICENSE_MATH_APPLIED("Licence en MathÃ©matiques AppliquÃ©es"),
+        LICENSE_MANAGEMENT("Licence en Sciences de Gestion"),
+        MASTER_BUSINESS_ANALYTICS("Master en Business Analytics"),
+        MASTER_CCA("Master en ComptabilitÃ©, ContrÃ´le, Audit"),
+        MASTER_MDSI("Master en Management Digital et SystÃ¨mes d'Information"),
+        MASTER_MKD("Master en Marketing Digital"),
+        MASTER_FIND("Master en Finance Digitale"),
+        MASTER_GAMMA("Master en Gestion Actuarielle et ModÃ©lisation MathÃ©matique");
+
+        private final String displayName;
+
+        ProgramType(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
+    // Private fields
     private String name;
     private String email;
     private String phone;
@@ -17,7 +45,8 @@ public class CV {
     private String linkedin;
     private String portfolio;
     private String summary;
-    private String profileType;
+    private ProgramType programType;
+    private String institution; // ESPRIT or ESPRIM
     private LocalDateTime lastUpdated;
     private List<Education> educations;
     private List<WorkExperience> workExperiences;
@@ -26,7 +55,7 @@ public class CV {
     private List<Language> languages;
     private List<String> skills;
 
-    // Constructeur par dÃ©faut
+    // Constructors
     public CV() {
         this.educations = new ArrayList<>();
         this.workExperiences = new ArrayList<>();
@@ -37,16 +66,16 @@ public class CV {
         this.lastUpdated = LocalDateTime.now();
     }
 
-    // Constructeur avec paramÃ¨tres
-    public CV(String name, String email, String phone, String address) {
+    public CV(String name, String email, String phone, String address, ProgramType programType) {
         this();
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.programType = programType;
     }
 
-    // Getters et Setters
+    // Getters and Setters
     public String getName() {
         return name;
     }
@@ -110,13 +139,26 @@ public class CV {
         updateLastModified();
     }
 
-    public String getProfileType() {
-        return profileType;
+    public ProgramType getProgramType() {
+        return programType;
     }
 
-    public void setProfileType(String profileType) {
-        this.profileType = profileType;
+    public void setProgramType(ProgramType programType) {
+        this.programType = programType;
         updateLastModified();
+    }
+
+    public String getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(String institution) {
+        if (institution != null && (institution.equals("ESPRIT") || institution.equals("ESPRIM"))) {
+            this.institution = institution;
+            updateLastModified();
+        } else {
+            throw new IllegalArgumentException("Institution must be either ESPRIT or ESPRIM");
+        }
     }
 
     public LocalDateTime getLastUpdated() {
@@ -177,7 +219,7 @@ public class CV {
         updateLastModified();
     }
 
-    // MÃ©thodes pour ajouter des Ã©lÃ©ments
+    // Methods to add elements
     public void addEducation(Education education) {
         if (education != null) {
             this.educations.add(education);
@@ -220,7 +262,7 @@ public class CV {
         }
     }
 
-    // MÃ©thodes pour supprimer des Ã©lÃ©ments
+    // Methods to remove elements
     public void removeEducation(Education education) {
         if (this.educations.remove(education)) {
             updateLastModified();
@@ -257,23 +299,61 @@ public class CV {
         }
     }
 
-    // MÃ©thode utilitaire pour mettre Ã  jour la date de derniÃ¨re modification
+    // Utility method to update last modified date
     private void updateLastModified() {
         this.lastUpdated = LocalDateTime.now();
     }
 
-    // MÃ©thodes de validation
+    // Validation methods
     public boolean isValid() {
         return name != null && !name.trim().isEmpty() &&
                 email != null && !email.trim().isEmpty() &&
                 phone != null && !phone.trim().isEmpty() &&
                 address != null && !address.trim().isEmpty() &&
+                programType != null &&
+                institution != null &&
                 !educations.isEmpty() &&
                 !workExperiences.isEmpty() &&
                 !skills.isEmpty();
     }
 
-    // Override des mÃ©thodes equals et hashCode
+    public boolean meetsRequirements() {
+        boolean hasRelevantEducation = educations.stream()
+                .anyMatch(edu -> edu.getInstitution().contains("ESPRIT") ||
+                        edu.getInstitution().contains("ESPRIM"));
+
+        boolean hasRelevantSkills = false;
+        if (programType != null) {
+            switch (programType) {
+                case ENGINEERING_IT:
+                case ENGINEERING_TELECOM:
+                    hasRelevantSkills = skills.stream()
+                            .anyMatch(skill -> skill.toLowerCase().contains("programming") ||
+                                    skill.toLowerCase().contains("development") ||
+                                    skill.toLowerCase().contains("software"));
+                    break;
+                case ENGINEERING_ELECTROMECH:
+                case ENGINEERING_MECHATRONICS:
+                    hasRelevantSkills = skills.stream()
+                            .anyMatch(skill -> skill.toLowerCase().contains("mechanical") ||
+                                    skill.toLowerCase().contains("electronics") ||
+                                    skill.toLowerCase().contains("automation"));
+                    break;
+                case ENGINEERING_CIVIL:
+                    hasRelevantSkills = skills.stream()
+                            .anyMatch(skill -> skill.toLowerCase().contains("construction") ||
+                                    skill.toLowerCase().contains("structural") ||
+                                    skill.toLowerCase().contains("civil engineering"));
+                    break;
+                default:
+                    hasRelevantSkills = true;
+            }
+        }
+
+        return hasRelevantEducation && hasRelevantSkills;
+    }
+
+    // Override methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -289,7 +369,6 @@ public class CV {
         return Objects.hash(email, phone, name);
     }
 
-    // Override de toString pour afficher les informations du CV
     @Override
     public String toString() {
         return "CV{" +
@@ -297,14 +376,20 @@ public class CV {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
+                ", programType=" + (programType != null ? programType.getDisplayName() : "Not specified") +
+                ", institution='" + institution + '\'' +
                 ", numberOfEducations=" + educations.size() +
                 ", numberOfWorkExperiences=" + workExperiences.size() +
+                ", numberOfProjects=" + projects.size() +
+                ", numberOfCertificates=" + certificates.size() +
+                ", numberOfLanguages=" + languages.size() +
                 ", numberOfSkills=" + skills.size() +
                 ", lastUpdated=" + lastUpdated +
                 '}';
     }
 
-    // MÃ©thode pour crÃ©er une copie profonde du CV
+    // Clone method
+    @Override
     public CV clone() {
         CV clone = new CV();
         clone.setName(this.name);
@@ -314,7 +399,8 @@ public class CV {
         clone.setLinkedin(this.linkedin);
         clone.setPortfolio(this.portfolio);
         clone.setSummary(this.summary);
-        clone.setProfileType(this.profileType);
+        clone.setProgramType(this.programType);
+        clone.setInstitution(this.institution);
         clone.setEducations(new ArrayList<>(this.educations));
         clone.setWorkExperiences(new ArrayList<>(this.workExperiences));
         clone.setProjects(new ArrayList<>(this.projects));
@@ -335,50 +421,90 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Education {
-    // Constantes
+    // Constants for institutions
+    public static final String ESPRIT = "ESPRIT - Ã‰cole SupÃ©rieure PrivÃ©e d'IngÃ©nierie et de Technologies";
+    public static final String ESPRIM = "ESPRIM - Ã‰cole SupÃ©rieure PrivÃ©e d'IngÃ©nierie et de Management";
+    public static final String ESB = "ESPRIT School of Business";
+
+    // Validation constants
     private static final int MIN_DEGREE_LENGTH = 2;
     private static final int MAX_DEGREE_LENGTH = 100;
     private static final int MIN_INSTITUTION_LENGTH = 2;
-    private static final int MAX_INSTITUTION_LENGTH = 100;
+    private static final int MAX_INSTITUTION_LENGTH = 200;
 
-    // Attributs privÃ©s
+    // Education level enum
+    public enum EducationLevel {
+        ENGINEERING("IngÃ©nieur"),
+        LICENSE("Licence"),
+        MASTER("Master"),
+        OTHER("Autre");
+
+        private final String displayName;
+
+        EducationLevel(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
+    // Engineering specializations enum
+    public enum EngineeringSpecialization {
+        IT("GÃ©nie Informatique"),
+        TELECOM("GÃ©nie des TÃ©lÃ©communications"),
+        ELECTROMECH("GÃ©nie Ã‰lectromÃ©canique"),
+        CIVIL("GÃ©nie Civil"),
+        MECHATRONICS("GÃ©nie MÃ©catronique");
+
+        private final String displayName;
+
+        EngineeringSpecialization(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
+    // Private fields
     private String degree;
     private String institution;
+    private LocalDate startDate;
     private LocalDate graduationDate;
     private String description;
     private double gpa;
     private boolean isOngoing;
     private String location;
-    private LocalDate startDate;
+    private EducationLevel level;
+    private EngineeringSpecialization specialization;
+    private String promotionYear;
+    private String achievements;
 
-    // Constructeur par dÃ©faut
+    // Constructors
     public Education() {
         this.isOngoing = false;
     }
 
-    // Constructeur avec paramÃ¨tres essentiels
-    public Education(String degree, String institution, LocalDate graduationDate) {
+    public Education(String degree, String institution, LocalDate graduationDate, EducationLevel level) {
         this();
         setDegree(degree);
         setInstitution(institution);
         setGraduationDate(graduationDate);
+        setLevel(level);
     }
 
-    // Constructeur complet
     public Education(String degree, String institution, LocalDate startDate,
-                     LocalDate graduationDate, String description, double gpa,
-                     String location) {
-        this();
-        setDegree(degree);
-        setInstitution(institution);
+                     LocalDate graduationDate, EducationLevel level,
+                     EngineeringSpecialization specialization) {
+        this(degree, institution, graduationDate, level);
         setStartDate(startDate);
-        setGraduationDate(graduationDate);
-        setDescription(description);
-        setGpa(gpa);
-        setLocation(location);
+        setSpecialization(specialization);
     }
 
-    // Getters et Setters avec validation
+    // Getters and Setters
     public String getDegree() {
         return degree;
     }
@@ -392,6 +518,7 @@ public class Education {
                     MIN_DEGREE_LENGTH + " and " + MAX_DEGREE_LENGTH + " characters");
         }
         this.degree = degree.trim();
+        updateDescription();
     }
 
     public String getInstitution() {
@@ -407,7 +534,23 @@ public class Education {
             throw new IllegalArgumentException("Institution length must be between " +
                     MIN_INSTITUTION_LENGTH + " and " + MAX_INSTITUTION_LENGTH + " characters");
         }
+        if (!institution.equals(ESPRIT) && !institution.equals(ESPRIM) && !institution.equals(ESB)) {
+            throw new IllegalArgumentException("Institution must be one of ESPRIT's institutions");
+        }
         this.institution = institution.trim();
+        updateDescription();
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        if (startDate != null && graduationDate != null && graduationDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("Start date cannot be after graduation date");
+        }
+        this.startDate = startDate;
+        updateDescription();
     }
 
     public LocalDate getGraduationDate() {
@@ -420,6 +563,7 @@ public class Education {
         }
         this.graduationDate = graduationDate;
         this.isOngoing = (graduationDate == null || graduationDate.isAfter(LocalDate.now()));
+        updateDescription();
     }
 
     public String getDescription() {
@@ -435,10 +579,11 @@ public class Education {
     }
 
     public void setGpa(double gpa) {
-        if (gpa < 0.0 || gpa > 4.0) {
-            throw new IllegalArgumentException("GPA must be between 0.0 and 4.0");
+        if (gpa < 0.0 || gpa > 20.0) { // Using French grading system (0-20)
+            throw new IllegalArgumentException("GPA must be between 0.0 and 20.0");
         }
         this.gpa = gpa;
+        updateDescription();
     }
 
     public boolean isOngoing() {
@@ -450,6 +595,7 @@ public class Education {
         if (ongoing) {
             graduationDate = null;
         }
+        updateDescription();
     }
 
     public String getLocation() {
@@ -458,38 +604,110 @@ public class Education {
 
     public void setLocation(String location) {
         this.location = location != null ? location.trim() : null;
+        updateDescription();
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public EducationLevel getLevel() {
+        return level;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        if (startDate != null && graduationDate != null && graduationDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("Start date cannot be after graduation date");
+    public void setLevel(EducationLevel level) {
+        if (level == null) {
+            throw new IllegalArgumentException("Education level cannot be null");
         }
-        this.startDate = startDate;
+        this.level = level;
+        updateDescription();
     }
 
-    // MÃ©thodes utilitaires
+    public EngineeringSpecialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(EngineeringSpecialization specialization) {
+        if (level == EducationLevel.ENGINEERING && specialization == null) {
+            throw new IllegalArgumentException("Specialization is required for engineering level");
+        }
+        this.specialization = specialization;
+        updateDescription();
+    }
+
+    public String getPromotionYear() {
+        return promotionYear;
+    }
+
+    public void setPromotionYear(String promotionYear) {
+        this.promotionYear = promotionYear;
+        updateDescription();
+    }
+
+    public String getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(String achievements) {
+        this.achievements = achievements;
+        updateDescription();
+    }
+
+    // Utility methods
     public String getDuration() {
         if (startDate == null) {
-            return "Unknown duration";
+            return "Date non spÃ©cifiÃ©e";
         }
 
         LocalDate endDate = isOngoing ? LocalDate.now() : graduationDate;
         if (endDate == null) {
-            return "Ongoing since " + startDate.getYear();
+            return "En cours depuis " + startDate.getYear();
         }
 
         return startDate.getYear() + " - " + endDate.getYear();
     }
 
-    public boolean isCompleted() {
-        return !isOngoing && graduationDate != null && graduationDate.isBefore(LocalDate.now());
+    private void updateDescription() {
+        if (level != null && institution != null) {
+            StringBuilder desc = new StringBuilder();
+            desc.append(level.getDisplayName());
+
+            if (specialization != null) {
+                desc.append(" en ").append(specialization.getDisplayName());
+            }
+
+            desc.append(" Ã  ").append(institution);
+
+            if (startDate != null) {
+                desc.append(" (").append(getDuration()).append(")");
+            }
+
+            if (gpa > 0.0) {
+                desc.append(" - Moyenne: ").append(String.format("%.2f", gpa));
+            }
+
+            if (promotionYear != null && !promotionYear.isEmpty()) {
+                desc.append(" - Promotion ").append(promotionYear);
+            }
+
+            this.description = desc.toString();
+        }
     }
 
-    // Override des mÃ©thodes equals et hashCode
+    public boolean isValid() {
+        boolean basicValidation = degree != null && !degree.trim().isEmpty() &&
+                institution != null && !institution.trim().isEmpty() &&
+                level != null &&
+                (graduationDate != null || isOngoing) &&
+                (startDate == null || graduationDate == null || !graduationDate.isBefore(startDate));
+
+        if (!basicValidation) return false;
+
+        // Additional validation for engineering level
+        if (level == EducationLevel.ENGINEERING) {
+            return specialization != null;
+        }
+
+        return true;
+    }
+
+    // Override methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -497,53 +715,57 @@ public class Education {
         Education education = (Education) o;
         return Objects.equals(degree, education.degree) &&
                 Objects.equals(institution, education.institution) &&
-                Objects.equals(graduationDate, education.graduationDate);
+                Objects.equals(graduationDate, education.graduationDate) &&
+                Objects.equals(level, education.level) &&
+                Objects.equals(specialization, education.specialization);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(degree, institution, graduationDate);
+        return Objects.hash(degree, institution, graduationDate, level, specialization);
     }
 
-    // Override de toString
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(degree).append(" at ").append(institution);
+        sb.append(level.getDisplayName());
+        if (specialization != null) {
+            sb.append(" en ").append(specialization.getDisplayName());
+        }
+        sb.append(" Ã  ").append(institution);
+
         if (startDate != null) {
             sb.append(" (").append(getDuration()).append(")");
         }
+
         if (gpa > 0.0) {
-            sb.append(" - GPA: ").append(String.format("%.2f", gpa));
+            sb.append(" - Moyenne: ").append(String.format("%.2f", gpa));
         }
+
         if (location != null && !location.isEmpty()) {
             sb.append(" - ").append(location);
         }
+
         return sb.toString();
     }
 
-    // MÃ©thode de clonage
+    // Clone method
     @Override
     public Education clone() {
         Education clone = new Education();
         clone.degree = this.degree;
         clone.institution = this.institution;
+        clone.startDate = this.startDate;
         clone.graduationDate = this.graduationDate;
         clone.description = this.description;
         clone.gpa = this.gpa;
         clone.isOngoing = this.isOngoing;
         clone.location = this.location;
-        clone.startDate = this.startDate;
+        clone.level = this.level;
+        clone.specialization = this.specialization;
+        clone.promotionYear = this.promotionYear;
+        clone.achievements = this.achievements;
         return clone;
-    }
-
-    // MÃ©thode de validation
-    public boolean isValid() {
-        return degree != null && !degree.trim().isEmpty() &&
-                institution != null && !institution.trim().isEmpty() &&
-                (graduationDate != null || isOngoing) &&
-                (startDate == null || graduationDate == null ||
-                        !graduationDate.isBefore(startDate));
     }
 }
 ==================================================
@@ -563,6 +785,26 @@ public class Certificate {
     private static final int MIN_INSTITUTION_LENGTH = 2;
     private static final int MAX_INSTITUTION_LENGTH = 100;
 
+    // Certificate types for ESPRIT programs
+    public enum CertificateType {
+        TECHNICAL("Certification Technique"),
+        ACADEMIC("Certification AcadÃ©mique"),
+        PROFESSIONAL("Certification Professionnelle"),
+        LANGUAGE("Certification Linguistique"),
+        SOFT_SKILLS("Certification Soft Skills"),
+        ESPRIT_INTERNAL("Certification ESPRIT");
+
+        private final String displayName;
+
+        CertificateType(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
     // Private fields
     private String name;
     private String institution;
@@ -572,17 +814,26 @@ public class Certificate {
     private String credentialUrl;
     private String description;
     private boolean isExpirable;
+    private CertificateType type;
+    private double score;
+    private String level;
+    private boolean isVerified;
+    private String verificationUrl;
 
     // Constructors
-    public Certificate(String name, String institution, LocalDate dateReceived) {
+    public Certificate(String name, String institution, LocalDate dateReceived, CertificateType type) {
         setName(name);
         setInstitution(institution);
         setDateReceived(dateReceived);
+        setType(type);
+        this.isExpirable = false;
+        this.isVerified = false;
     }
 
     public Certificate(String name, String institution, LocalDate dateReceived,
-                       LocalDate expirationDate, String credentialId, String credentialUrl) {
-        this(name, institution, dateReceived);
+                       LocalDate expirationDate, String credentialId,
+                       String credentialUrl, CertificateType type) {
+        this(name, institution, dateReceived, type);
         setExpirationDate(expirationDate);
         setCredentialId(credentialId);
         setCredentialUrl(credentialUrl);
@@ -646,9 +897,9 @@ public class Certificate {
             if (dateReceived != null && expirationDate.isBefore(dateReceived)) {
                 throw new IllegalArgumentException("Expiration date cannot be before date received");
             }
+            this.isExpirable = true;
         }
         this.expirationDate = expirationDate;
-        this.isExpirable = (expirationDate != null);
     }
 
     public String getCredentialId() {
@@ -665,6 +916,9 @@ public class Certificate {
 
     public void setCredentialUrl(String credentialUrl) {
         this.credentialUrl = credentialUrl != null ? credentialUrl.trim() : null;
+        if (credentialUrl != null) {
+            this.isVerified = true;
+        }
     }
 
     public String getDescription() {
@@ -675,8 +929,53 @@ public class Certificate {
         this.description = description != null ? description.trim() : null;
     }
 
-    public boolean isExpirable() {
-        return isExpirable;
+    public CertificateType getType() {
+        return type;
+    }
+
+    public void setType(CertificateType type) {
+        if (type == null) {
+            throw new IllegalArgumentException("Certificate type cannot be null");
+        }
+        this.type = type;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        if (score < 0.0 || score > 100.0) {
+            throw new IllegalArgumentException("Score must be between 0 and 100");
+        }
+        this.score = score;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level != null ? level.trim() : null;
+    }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
+    }
+
+    public String getVerificationUrl() {
+        return verificationUrl;
+    }
+
+    public void setVerificationUrl(String verificationUrl) {
+        this.verificationUrl = verificationUrl;
+        if (verificationUrl != null && !verificationUrl.trim().isEmpty()) {
+            this.isVerified = true;
+        }
     }
 
     // Utility methods
@@ -687,18 +986,19 @@ public class Certificate {
         return expirationDate.isBefore(LocalDate.now());
     }
 
+    public String getStatus() {
+        if (!isExpirable) {
+            return "Pas d'expiration";
+        }
+        return isExpired() ? "ExpirÃ©" : "Valide";
+    }
+
     public boolean isValid() {
         return name != null && !name.trim().isEmpty() &&
                 institution != null && !institution.trim().isEmpty() &&
                 dateReceived != null &&
+                type != null &&
                 (expirationDate == null || !expirationDate.isBefore(dateReceived));
-    }
-
-    public String getStatus() {
-        if (!isExpirable) {
-            return "No Expiration";
-        }
-        return isExpired() ? "Expired" : "Valid";
     }
 
     // Override methods
@@ -721,30 +1021,52 @@ public class Certificate {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(name).append(" from ").append(institution);
-        sb.append(" (Received: ").append(dateReceived);
+        sb.append(type.getDisplayName())
+                .append(": ")
+                .append(name)
+                .append(" - ")
+                .append(institution)
+                .append(" (")
+                .append(getDateReceivedString());
+
         if (isExpirable) {
             sb.append(", ").append(getStatus());
         }
+
+        if (score > 0.0) {
+            sb.append(", Score: ").append(String.format("%.1f", score));
+        }
+
+        if (level != null && !level.isEmpty()) {
+            sb.append(", Niveau: ").append(level);
+        }
+
         if (credentialId != null) {
             sb.append(", ID: ").append(credentialId);
         }
+
         sb.append(")");
         return sb.toString();
     }
 
     // Clone method
+    @Override
     public Certificate clone() {
         Certificate clone = new Certificate(
                 this.name,
                 this.institution,
-                this.dateReceived
+                this.dateReceived,
+                this.type
         );
         clone.expirationDate = this.expirationDate;
         clone.credentialId = this.credentialId;
         clone.credentialUrl = this.credentialUrl;
         clone.description = this.description;
         clone.isExpirable = this.isExpirable;
+        clone.score = this.score;
+        clone.level = this.level;
+        clone.isVerified = this.isVerified;
+        clone.verificationUrl = this.verificationUrl;
         return clone;
     }
 
@@ -767,50 +1089,55 @@ package com.example.stage.model;
 import java.util.Objects;
 
 public class Language {
-    // Constants for validation
     private static final int MIN_NAME_LENGTH = 2;
     private static final int MAX_NAME_LENGTH = 50;
 
-    // Language proficiency levels following CEFR standards
     public enum ProficiencyLevel {
-        A1("Beginner"),
-        A2("Elementary"),
-        B1("Intermediate"),
-        B2("Upper Intermediate"),
-        C1("Advanced"),
-        C2("Mastery");
+        A1("DÃ©butant"),
+        A2("Ã‰lÃ©mentaire"),
+        B1("IntermÃ©diaire"),
+        B2("IntermÃ©diaire supÃ©rieur"),
+        C1("AvancÃ©"),
+        C2("MaÃ®trise"),
+        NATIVE("Langue maternelle");
 
-        private final String description;
+        private final String displayName;
 
-        ProficiencyLevel(String description) {
-            this.description = description;
+        ProficiencyLevel(String displayName) {
+            this.displayName = displayName;
         }
 
-        public String getDescription() {
-            return description;
+        public String getDisplayName() {
+            return displayName;
         }
     }
 
-    // Private fields
     private String name;
-    private ProficiencyLevel proficiencyLevel;
+    private ProficiencyLevel speakingLevel;
+    private ProficiencyLevel writingLevel;
+    private ProficiencyLevel readingLevel;
+    private String certification;
+    private String certificationScore;
     private boolean isNative;
-    private String certificateDetails;
-    private boolean hasOralProficiency;
-    private boolean hasWrittenProficiency;
+    private boolean isRequired;
+    private String additionalNotes;
 
-    // Constructors
-    public Language(String name, ProficiencyLevel proficiencyLevel) {
+    public Language(String name, ProficiencyLevel level) {
         setName(name);
-        setProficiencyLevel(proficiencyLevel);
+        this.speakingLevel = level;
+        this.writingLevel = level;
+        this.readingLevel = level;
+        this.isNative = (level == ProficiencyLevel.NATIVE);
     }
 
-    public Language(String name, ProficiencyLevel proficiencyLevel, boolean isNative) {
-        this(name, proficiencyLevel);
-        this.isNative = isNative;
+    public Language(String name, ProficiencyLevel speaking, ProficiencyLevel writing, ProficiencyLevel reading) {
+        setName(name);
+        this.speakingLevel = speaking;
+        this.writingLevel = writing;
+        this.readingLevel = reading;
+        this.isNative = (speaking == ProficiencyLevel.NATIVE);
     }
 
-    // Getters and Setters with validation
     public String getName() {
         return name;
     }
@@ -826,117 +1153,157 @@ public class Language {
         this.name = name.trim();
     }
 
-    public ProficiencyLevel getProficiencyLevel() {
-        return proficiencyLevel;
+    public ProficiencyLevel getSpeakingLevel() {
+        return speakingLevel;
     }
 
-    public void setProficiencyLevel(ProficiencyLevel proficiencyLevel) {
-        if (proficiencyLevel == null && !isNative) {
-            throw new IllegalArgumentException("Proficiency level cannot be null for non-native languages");
+    public void setSpeakingLevel(ProficiencyLevel speakingLevel) {
+        if (speakingLevel == null) {
+            throw new IllegalArgumentException("Speaking level cannot be null");
         }
-        this.proficiencyLevel = proficiencyLevel;
+        this.speakingLevel = speakingLevel;
+        updateNativeStatus();
+    }
+
+    public ProficiencyLevel getWritingLevel() {
+        return writingLevel;
+    }
+
+    public void setWritingLevel(ProficiencyLevel writingLevel) {
+        if (writingLevel == null) {
+            throw new IllegalArgumentException("Writing level cannot be null");
+        }
+        this.writingLevel = writingLevel;
+        updateNativeStatus();
+    }
+
+    public ProficiencyLevel getReadingLevel() {
+        return readingLevel;
+    }
+
+    public void setReadingLevel(ProficiencyLevel readingLevel) {
+        if (readingLevel == null) {
+            throw new IllegalArgumentException("Reading level cannot be null");
+        }
+        this.readingLevel = readingLevel;
+        updateNativeStatus();
+    }
+
+    public String getCertification() {
+        return certification;
+    }
+
+    public void setCertification(String certification) {
+        this.certification = certification != null ? certification.trim() : null;
+    }
+
+    public String getCertificationScore() {
+        return certificationScore;
+    }
+
+    public void setCertificationScore(String certificationScore) {
+        this.certificationScore = certificationScore != null ? certificationScore.trim() : null;
     }
 
     public boolean isNative() {
         return isNative;
     }
 
-    public void setNative(boolean isNative) {
-        this.isNative = isNative;
-        if (isNative) {
-            this.proficiencyLevel = ProficiencyLevel.C2;
-        }
+    public boolean isRequired() {
+        return isRequired;
     }
 
-    public String getCertificateDetails() {
-        return certificateDetails;
+    public void setRequired(boolean required) {
+        isRequired = required;
     }
 
-    public void setCertificateDetails(String certificateDetails) {
-        this.certificateDetails = certificateDetails != null ? certificateDetails.trim() : null;
+    public String getAdditionalNotes() {
+        return additionalNotes;
     }
 
-    public boolean hasOralProficiency() {
-        return hasOralProficiency;
+    public void setAdditionalNotes(String additionalNotes) {
+        this.additionalNotes = additionalNotes != null ? additionalNotes.trim() : null;
     }
 
-    public void setHasOralProficiency(boolean hasOralProficiency) {
-        this.hasOralProficiency = hasOralProficiency;
+    private void updateNativeStatus() {
+        this.isNative = (speakingLevel == ProficiencyLevel.NATIVE);
     }
 
-    public boolean hasWrittenProficiency() {
-        return hasWrittenProficiency;
+    public ProficiencyLevel getOverallLevel() {
+        if (isNative) return ProficiencyLevel.NATIVE;
+
+        int total = speakingLevel.ordinal() +
+                writingLevel.ordinal() +
+                readingLevel.ordinal();
+        int average = total / 3;
+
+        return ProficiencyLevel.values()[Math.min(average, ProficiencyLevel.C2.ordinal())];
     }
 
-    public void setHasWrittenProficiency(boolean hasWrittenProficiency) {
-        this.hasWrittenProficiency = hasWrittenProficiency;
-    }
-
-    // Utility methods
     public String getProficiencyDescription() {
         if (isNative) {
-            return "Native";
+            return ProficiencyLevel.NATIVE.getDisplayName();
         }
-        return proficiencyLevel != null ?
-                proficiencyLevel.name() + " - " + proficiencyLevel.getDescription() :
-                "Not specified";
+        return getOverallLevel().getDisplayName();
     }
 
-    public boolean isValid() {
-        return name != null && !name.trim().isEmpty() &&
-                (isNative || proficiencyLevel != null);
+    public boolean meetsESPRITRequirements() {
+        if (name.equalsIgnoreCase("Anglais")) {
+            return getOverallLevel().ordinal() >= ProficiencyLevel.B2.ordinal();
+        }
+        if (name.equalsIgnoreCase("FranÃ§ais")) {
+            return getOverallLevel().ordinal() >= ProficiencyLevel.C1.ordinal();
+        }
+        return true;
     }
 
-    // Override methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Language language = (Language) o;
-        return Objects.equals(name.toLowerCase(), language.name.toLowerCase()) &&
-                Objects.equals(proficiencyLevel, language.proficiencyLevel);
+        return Objects.equals(name, language.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name.toLowerCase(), proficiencyLevel);
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(name);
+
         if (isNative) {
-            sb.append(" (Native)");
+            sb.append(" (Langue maternelle)");
         } else {
-            sb.append(" (").append(getProficiencyDescription()).append(")");
+            sb.append(" (")
+                    .append("Oral: ").append(speakingLevel.getDisplayName())
+                    .append(", Ã‰crit: ").append(writingLevel.getDisplayName())
+                    .append(", Lecture: ").append(readingLevel.getDisplayName())
+                    .append(")");
         }
-        if (certificateDetails != null && !certificateDetails.isEmpty()) {
-            sb.append(" - ").append(certificateDetails);
+
+        if (certification != null) {
+            sb.append(" - ").append(certification);
+            if (certificationScore != null) {
+                sb.append(" (").append(certificationScore).append(")");
+            }
         }
+
         return sb.toString();
     }
 
-    // Clone method
+    @Override
     public Language clone() {
-        Language clone = new Language(this.name, this.proficiencyLevel);
-        clone.isNative = this.isNative;
-        clone.certificateDetails = this.certificateDetails;
-        clone.hasOralProficiency = this.hasOralProficiency;
-        clone.hasWrittenProficiency = this.hasWrittenProficiency;
+        Language clone = new Language(this.name, this.speakingLevel,
+                this.writingLevel, this.readingLevel);
+        clone.certification = this.certification;
+        clone.certificationScore = this.certificationScore;
+        clone.isRequired = this.isRequired;
+        clone.additionalNotes = this.additionalNotes;
         return clone;
-    }
-
-    // Comparison method for sorting
-    public int compareTo(Language other) {
-        if (this.isNative != other.isNative) {
-            return this.isNative ? -1 : 1;
-        }
-        if (this.proficiencyLevel != other.proficiencyLevel &&
-                this.proficiencyLevel != null && other.proficiencyLevel != null) {
-            return other.proficiencyLevel.compareTo(this.proficiencyLevel);
-        }
-        return this.name.compareToIgnoreCase(other.name);
     }
 }
 ==================================================
@@ -960,14 +1327,33 @@ public class Project {
     private static final int MAX_DESCRIPTION_LENGTH = 1000;
     private static final int MAX_URL_LENGTH = 255;
 
+    // Project types for ESPRIT programs
+    public enum ProjectType {
+        PFE("Projet de Fin d'Ã‰tudes"),
+        SUMMER_INTERNSHIP("Stage d'Ã©tÃ©"),
+        ACADEMIC("Projet AcadÃ©mique"),
+        PERSONAL("Projet Personnel"),
+        RESEARCH("Projet de Recherche"),
+        INNOVATION("Projet d'Innovation"),
+        INDUSTRIAL("Projet Industriel");
 
+        private final String displayName;
+
+        ProjectType(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
 
     // Project status enum
     public enum ProjectStatus {
-        IN_PROGRESS("In Progress"),
-        COMPLETED("Completed"),
-        ON_HOLD("On Hold"),
-        CANCELLED("Cancelled");
+        IN_PROGRESS("En cours"),
+        COMPLETED("TerminÃ©"),
+        ON_HOLD("En pause"),
+        CANCELLED("AnnulÃ©");
 
         private final String displayName;
 
@@ -988,26 +1374,29 @@ public class Project {
     private String projectUrl;
     private String githubUrl;
     private ProjectStatus status;
+    private ProjectType projectType;
     private List<String> technologies;
     private Set<String> roles;
     private String teamSize;
     private List<String> achievements;
     private boolean isPersonalProject;
+    private String companyName;
+    private String supervisor;
+    private double grade; // For academic projects
 
     // Constructors
     public Project(String name, String description) {
-        setName(name);
-        setDescription(description);
         this.technologies = new ArrayList<>();
         this.roles = new HashSet<>();
         this.achievements = new ArrayList<>();
+        setName(name);
+        setDescription(description);
         this.status = ProjectStatus.IN_PROGRESS;
     }
 
-    public Project(String name, String description, LocalDate startDate, LocalDate endDate) {
+    public Project(String name, String description, ProjectType projectType) {
         this(name, description);
-        setStartDate(startDate);
-        setEndDate(endDate);
+        this.projectType = projectType;
     }
 
     // Getters and Setters with validation
@@ -1031,14 +1420,13 @@ public class Project {
     }
 
     public void setDescription(String description) {
-        if (description == null || description.trim().isEmpty()) {
-            throw new IllegalArgumentException("Project description cannot be null or empty");
+        if (description != null) {
+            if (description.length() > MAX_DESCRIPTION_LENGTH) {
+                throw new IllegalArgumentException("Description length cannot exceed " +
+                        MAX_DESCRIPTION_LENGTH + " characters");
+            }
+            this.description = description.trim();
         }
-        if (description.length() > MAX_DESCRIPTION_LENGTH) {
-            throw new IllegalArgumentException("Project description cannot exceed " +
-                    MAX_DESCRIPTION_LENGTH + " characters");
-        }
-        this.description = description.trim();
     }
 
     public LocalDate getStartDate() {
@@ -1046,13 +1434,7 @@ public class Project {
     }
 
     public void setStartDate(LocalDate startDate) {
-        if (startDate == null) {
-            throw new IllegalArgumentException("Start date cannot be null");
-        }
-        if (startDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Start date cannot be in the future");
-        }
-        if (endDate != null && startDate.isAfter(endDate)) {
+        if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("Start date cannot be after end date");
         }
         this.startDate = startDate;
@@ -1063,16 +1445,13 @@ public class Project {
     }
 
     public void setEndDate(LocalDate endDate) {
-        if (endDate != null) {
-            if (endDate.isAfter(LocalDate.now())) {
-                throw new IllegalArgumentException("End date cannot be in the future");
-            }
-            if (startDate != null && endDate.isBefore(startDate)) {
-                throw new IllegalArgumentException("End date cannot be before start date");
-            }
+        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("End date cannot be before start date");
         }
         this.endDate = endDate;
-        updateStatus();
+        if (endDate != null && endDate.isBefore(LocalDate.now())) {
+            this.status = ProjectStatus.COMPLETED;
+        }
     }
 
     public String getProjectUrl() {
@@ -1082,12 +1461,11 @@ public class Project {
     public void setProjectUrl(String projectUrl) {
         if (projectUrl != null) {
             if (projectUrl.length() > MAX_URL_LENGTH) {
-                throw new IllegalArgumentException("Project URL cannot exceed " +
+                throw new IllegalArgumentException("Project URL length cannot exceed " +
                         MAX_URL_LENGTH + " characters");
             }
-            projectUrl = projectUrl.trim();
+            this.projectUrl = projectUrl.trim();
         }
-        this.projectUrl = projectUrl;
     }
 
     public String getGithubUrl() {
@@ -1097,15 +1475,14 @@ public class Project {
     public void setGithubUrl(String githubUrl) {
         if (githubUrl != null) {
             if (githubUrl.length() > MAX_URL_LENGTH) {
-                throw new IllegalArgumentException("GitHub URL cannot exceed " +
+                throw new IllegalArgumentException("GitHub URL length cannot exceed " +
                         MAX_URL_LENGTH + " characters");
             }
             if (!githubUrl.contains("github.com")) {
-                throw new IllegalArgumentException("Invalid GitHub URL format");
+                throw new IllegalArgumentException("Invalid GitHub URL");
             }
-            githubUrl = githubUrl.trim();
+            this.githubUrl = githubUrl.trim();
         }
-        this.githubUrl = githubUrl;
     }
 
     public ProjectStatus getStatus() {
@@ -1113,10 +1490,15 @@ public class Project {
     }
 
     public void setStatus(ProjectStatus status) {
-        if (status == null) {
-            throw new IllegalArgumentException("Project status cannot be null");
-        }
         this.status = status;
+    }
+
+    public ProjectType getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(ProjectType projectType) {
+        this.projectType = projectType;
     }
 
     public List<String> getTechnologies() {
@@ -1125,12 +1507,8 @@ public class Project {
 
     public void addTechnology(String technology) {
         if (technology != null && !technology.trim().isEmpty()) {
-            technologies.add(technology.trim());
+            this.technologies.add(technology.trim());
         }
-    }
-
-    public void removeTechnology(String technology) {
-        technologies.remove(technology);
     }
 
     public Set<String> getRoles() {
@@ -1139,12 +1517,8 @@ public class Project {
 
     public void addRole(String role) {
         if (role != null && !role.trim().isEmpty()) {
-            roles.add(role.trim());
+            this.roles.add(role.trim());
         }
-    }
-
-    public void removeRole(String role) {
-        roles.remove(role);
     }
 
     public String getTeamSize() {
@@ -1152,7 +1526,7 @@ public class Project {
     }
 
     public void setTeamSize(String teamSize) {
-        this.teamSize = teamSize != null ? teamSize.trim() : null;
+        this.teamSize = teamSize;
     }
 
     public List<String> getAchievements() {
@@ -1161,12 +1535,8 @@ public class Project {
 
     public void addAchievement(String achievement) {
         if (achievement != null && !achievement.trim().isEmpty()) {
-            achievements.add(achievement.trim());
+            this.achievements.add(achievement.trim());
         }
-    }
-
-    public void removeAchievement(String achievement) {
-        achievements.remove(achievement);
     }
 
     public boolean isPersonalProject() {
@@ -1177,29 +1547,69 @@ public class Project {
         isPersonalProject = personalProject;
     }
 
-    // Utility methods
-    private void updateStatus() {
-        if (endDate != null && endDate.isBefore(LocalDate.now())) {
-            status = ProjectStatus.COMPLETED;
-        } else if (startDate != null && endDate == null) {
-            status = ProjectStatus.IN_PROGRESS;
-        }
+    public String getCompanyName() {
+        return companyName;
     }
 
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName != null ? companyName.trim() : null;
+    }
+
+    public String getSupervisor() {
+        return supervisor;
+    }
+
+    public void setSupervisor(String supervisor) {
+        this.supervisor = supervisor != null ? supervisor.trim() : null;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        if (grade < 0.0 || grade > 20.0) {
+            throw new IllegalArgumentException("Grade must be between 0 and 20");
+        }
+        this.grade = grade;
+    }
+
+    // Utility methods
     public String getDuration() {
         if (startDate == null) {
-            return "Duration not specified";
+            return "DurÃ©e non spÃ©cifiÃ©e";
         }
-        LocalDate end = endDate != null ? endDate : LocalDate.now();
-        return startDate.getMonth() + " " + startDate.getYear() + " - " +
-                end.getMonth() + " " + end.getYear();
+
+        LocalDate endingDate = endDate != null ? endDate : LocalDate.now();
+        long months = java.time.temporal.ChronoUnit.MONTHS.between(startDate, endingDate);
+
+        if (months < 1) {
+            long days = java.time.temporal.ChronoUnit.DAYS.between(startDate, endingDate);
+            return days + " jours";
+        } else if (months < 12) {
+            return months + " mois";
+        } else {
+            long years = months / 12;
+            months = months % 12;
+            return years + " an" + (years > 1 ? "s" : "") +
+                    (months > 0 ? " et " + months + " mois" : "");
+        }
     }
 
     public boolean isValid() {
-        return name != null && !name.trim().isEmpty() &&
+        boolean basicValidation = name != null && !name.trim().isEmpty() &&
                 description != null && !description.trim().isEmpty() &&
-                startDate != null &&
-                (endDate == null || !endDate.isBefore(startDate));
+                projectType != null;
+
+        if (!basicValidation) return false;
+
+        // Additional validation for PFE projects
+        if (projectType == ProjectType.PFE) {
+            return companyName != null && !companyName.trim().isEmpty() &&
+                    supervisor != null && !supervisor.trim().isEmpty();
+        }
+
+        return true;
     }
 
     // Override methods
@@ -1210,31 +1620,39 @@ public class Project {
         Project project = (Project) o;
         return Objects.equals(name, project.name) &&
                 Objects.equals(startDate, project.startDate) &&
-                Objects.equals(githubUrl, project.githubUrl);
+                Objects.equals(projectType, project.projectType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, startDate, githubUrl);
+        return Objects.hash(name, startDate, projectType);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(name);
-        if (startDate != null) {
-            sb.append(" (").append(getDuration()).append(")");
+        sb.append(projectType != null ? projectType.getDisplayName() + ": " : "")
+                .append(name)
+                .append(" (").append(status.getDisplayName()).append(")")
+                .append("\nDurÃ©e: ").append(getDuration());
+
+        if (companyName != null && !companyName.isEmpty()) {
+            sb.append("\nEntreprise: ").append(companyName);
         }
+
         if (!technologies.isEmpty()) {
             sb.append("\nTechnologies: ").append(String.join(", ", technologies));
         }
-        if (!roles.isEmpty()) {
-            sb.append("\nRoles: ").append(String.join(", ", roles));
+
+        if (grade > 0.0) {
+            sb.append("\nNote: ").append(String.format("%.2f/20", grade));
         }
+
         return sb.toString();
     }
 
     // Clone method
+    @Override
     public Project clone() {
         Project clone = new Project(this.name, this.description);
         clone.startDate = this.startDate;
@@ -1242,11 +1660,15 @@ public class Project {
         clone.projectUrl = this.projectUrl;
         clone.githubUrl = this.githubUrl;
         clone.status = this.status;
+        clone.projectType = this.projectType;
         clone.technologies = new ArrayList<>(this.technologies);
         clone.roles = new HashSet<>(this.roles);
         clone.teamSize = this.teamSize;
         clone.achievements = new ArrayList<>(this.achievements);
         clone.isPersonalProject = this.isPersonalProject;
+        clone.companyName = this.companyName;
+        clone.supervisor = this.supervisor;
+        clone.grade = this.grade;
         return clone;
     }
 }
@@ -2037,6 +2459,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static kotlin.text.Typography.degree;
+
 public class Page1Controller {
     @FXML private TextField nameField;
     @FXML private TextField emailField;
@@ -2494,7 +2919,13 @@ public class Page1Controller {
                 }
             }
         });
-
+// In Page1Controller.java
+        Education education = new Education(
+                degree,
+                institution,
+                graduationDate,
+                Education.EducationLevel.OTHER  // Add the education level parameter
+        );
         // Get work experience entries with validation
         workExperienceContainer.getChildren().forEach(node -> {
             if (node instanceof GridPane) {
@@ -3229,7 +3660,13 @@ public class Page2Controller {
         }
         return null;
     }
-
+    // In Page2Controller.java
+    Certificate certificate = new Certificate(
+            name,
+            institution,
+            dateReceived,
+            Certificate.CertificateType.TECHNICAL  // Add the certificate type parameter
+    );
     private void logUIComponentState() {
         System.out.println("UI Component State:");
         System.out.println("skillsField: " + (skillsField != null ? "initialized" : "null"));
