@@ -4520,6 +4520,244 @@ public final class LocaleConstants {
 }
 ==================================================
 
+Fichier: pom.xml
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
+-----
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>satge</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>satge</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>21</java.version>
+        <javafx.version>21</javafx.version>
+        <junit.version>5.10.2</junit.version>
+        <spring.boot.version>3.2.3</spring.boot.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <!-- JavaFX Dependencies -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- PDF Generation -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.27</version>
+        </dependency>
+
+        <!-- UI Controls and Validation -->
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>11.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dlsc.formsfx</groupId>
+            <artifactId>formsfx-core</artifactId>
+            <version>11.6.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.synedra</groupId>
+            <artifactId>validatorfx</artifactId>
+            <version>0.5.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Database -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+
+        <!-- Security -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+
+        <!-- UI Components -->
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-javafx</artifactId>
+            <version>12.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kordamp.bootstrapfx</groupId>
+            <artifactId>bootstrapfx-core</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.hansolo</groupId>
+            <artifactId>tilesfx</artifactId>
+            <version>21.0.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Game Framework -->
+        <dependency>
+            <groupId>com.github.almasb</groupId>
+            <artifactId>fxgl</artifactId>
+            <version>17.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Spring Framework -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>6.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>${spring.boot.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- HTTP Client -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.11</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <configuration>
+                            <mainClass>com.example.stage/com.example.stage.HelloApplication</mainClass>
+                            <launcher>app</launcher>
+                            <jlinkZipName>app</jlinkZipName>
+                            <jlinkImageName>app</jlinkImageName>
+                            <noManPages>true</noManPages>
+                            <stripDebug>true</stripDebug>
+                            <noHeaderFiles>true</noHeaderFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+==================================================
+
 Fichier: src\main\resources\com\example\stage\messages_en.properties
 Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_en.properties
 -----
@@ -4579,55 +4817,59 @@ Fichier: src\main\resources\com\example\stage\messages_ar.properties
 Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\example\stage\messages_ar.properties
 -----
 # Arabic translations
-translate=?????
-back=????
-skills=????????
-projects=????????
-certificates=????????
-languages=??????
-generate_pdf=????? PDF
-personal_information=????????? ???????
-full_name=????? ??????
-email=?????? ??????????
-phone=??????
-address=???????
-linkedin=????? ??
-portfolio=???????
-summary_objective=?????? / ?????
-education=???????
-work_experience=?????? ???????
-add_education=????? ?????
-add_experience=????? ????
-project_name=??? ???????
-project_description=??? ???????
-certificate_name=??? ???????
-institution=???????
-date_of_receipt=????? ????????
-language=?????
-proficiency_level=????? ???????
-next=??????
-auto_fill=??? ??????
+translate=ØªØ±Ø¬Ù…Ø©
+back=Ø±Ø¬ÙˆØ¹
+skills=Ø§Ù„Ù…Ù‡Ø§Ø±Ø§Øª
+projects=Ø§Ù„Ù…Ø´Ø§Ø±ÙŠØ¹
+certificates=Ø§Ù„Ø´Ù‡Ø§Ø¯Ø§Øª
+languages=Ø§Ù„Ù„ØºØ§Øª
+generate_pdf=Ø¥Ù†Ø´Ø§Ø¡ PDF
+personal_information=Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø´Ø®ØµÙŠØ©
+full_name=Ø§Ù„Ø§Ø³Ù… Ø§Ù„ÙƒØ§Ù…Ù„
+email=Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ
+phone=Ø§Ù„Ù‡Ø§ØªÙ
+address=Ø§Ù„Ø¹Ù†ÙˆØ§Ù†
+linkedin=Ù„ÙŠÙ†ÙƒØ¯ Ø¥Ù†
+portfolio=Ø§Ù„Ù…Ø­ÙØ¸Ø©
+summary_objective=Ø§Ù„Ù…Ù„Ø®Øµ / Ø§Ù„Ù‡Ø¯Ù
+education=Ø§Ù„ØªØ¹Ù„ÙŠÙ…
+work_experience=Ø§Ù„Ø®Ø¨Ø±Ø© Ø§Ù„Ù…Ù‡Ù†ÙŠØ©
+add_education=Ø¥Ø¶Ø§ÙØ© ØªØ¹Ù„ÙŠÙ…
+add_experience=Ø¥Ø¶Ø§ÙØ© Ø®Ø¨Ø±Ø©
+project_name=Ø§Ø³Ù… Ø§Ù„Ù…Ø´Ø±ÙˆØ¹
+project_description=ÙˆØµÙ Ø§Ù„Ù…Ø´Ø±ÙˆØ¹
+certificate_name=Ø§Ø³Ù… Ø§Ù„Ø´Ù‡Ø§Ø¯Ø©
+institution=Ø§Ù„Ù…Ø¤Ø³Ø³Ø©
+date_of_receipt=ØªØ§Ø±ÙŠØ® Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…
+language=Ø§Ù„Ù„ØºØ©
+proficiency_level=Ù…Ø³ØªÙˆÙ‰ Ø§Ù„ÙƒÙØ§Ø¡Ø©
+next=Ø§Ù„ØªØ§Ù„ÙŠ
+auto_fill=Ù…Ù„Ø¡ ØªÙ„Ù‚Ø§Ø¦ÙŠ
 
 # Additional translations
-degree=???????
-graduation_date=????? ??????
-job_title=?????? ???????
-company=??????
-start_date=????? ?????
-end_date=????? ????????
-description=?????
-add_work_experience=????? ???? ?????
+degree=Ø§Ù„Ø´Ù‡Ø§Ø¯Ø©
+graduation_date=ØªØ§Ø±ÙŠØ® Ø§Ù„ØªØ®Ø±Ø¬
+job_title=Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„ÙˆØ¸ÙŠÙÙŠ
+company=Ø§Ù„Ø´Ø±ÙƒØ©
+start_date=ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¨Ø¯Ø¡
+end_date=ØªØ§Ø±ÙŠØ® Ø§Ù„Ø§Ù†ØªÙ‡Ø§Ø¡
+description=Ø§Ù„ÙˆØµÙ
+add_work_experience=Ø¥Ø¶Ø§ÙØ© Ø®Ø¨Ø±Ø© Ù…Ù‡Ù†ÙŠØ©
 
 # Validation messages
-name_required=????? ?????
-email_required=?????? ?????????? ?????
-phone_required=??? ?????? ?????
-invalid_email=???? ?????? ?????????? ??? ?????
-invalid_phone=???? ??? ?????? ??? ?????
-invalid_linkedin=???? ???? ????? ?? ??? ?????
+name_required=Ø§Ù„Ø§Ø³Ù… Ù…Ø·Ù„ÙˆØ¨
+email_required=Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ù…Ø·Ù„ÙˆØ¨
+phone_required=Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ Ù…Ø·Ù„ÙˆØ¨
+invalid_email=ØµÙŠØºØ© Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ ØºÙŠØ± ØµØ­ÙŠØ­Ø©
+invalid_phone=ØµÙŠØºØ© Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ ØºÙŠØ± ØµØ­ÙŠØ­Ø©
+invalid_linkedin=ØµÙŠØºØ© Ø±Ø§Ø¨Ø· Ù„ÙŠÙ†ÙƒØ¯ Ø¥Ù† ØºÙŠØ± ØµØ­ÙŠØ­Ø©
 
 # Help messages
-summary_help=???? ???? ?????? ?? ?????? ??????? ??????? ????????
+summary_help=Ø§ÙƒØªØ¨ Ù†Ø¨Ø°Ø© Ù…Ø®ØªØµØ±Ø© Ø¹Ù† Ø®Ù„ÙÙŠØªÙƒ Ø§Ù„Ù…Ù‡Ù†ÙŠØ© ÙˆØ£Ù‡Ø¯Ø§ÙÙƒ Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ©
+
+# Direction and alignment
+direction=rtl
+text.align=right
 ==================================================
 
 Fichier: src\main\resources\com\example\stage\messages_de.properties
