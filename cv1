@@ -1977,6 +1977,8 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stage.controller.Page1Controller">
     <ImageView fitHeight="109.0" fitWidth="140.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
         <image>
@@ -2052,6 +2054,11 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
             </VBox>
 
             <!-- Education Section -->
+
+            <!-- Remove this duplicate comment and section -->
+            <!-- Education Section -->
+
+            <!-- Keep only this Education Section -->
             <VBox spacing="10">
                 <Label fx:id="educationLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Education" />
                 <VBox fx:id="educationContainer" spacing="5">
@@ -2064,19 +2071,34 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
                             <RowConstraints />
                             <RowConstraints />
                             <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
                         </rowConstraints>
 
-                        <Label text="Degree" GridPane.rowIndex="0" />
-                        <TextField fx:id="degreeField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Label text="Institution" GridPane.rowIndex="1" />
-                        <TextField fx:id="institutionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Graduation Date" GridPane.rowIndex="2" />
-                        <DatePicker fx:id="graduationDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Institution" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="institutionComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="ESPRIT" />
+                                    <String fx:value="ESPRIM" />
+                                    <String fx:value="ESPRIT SCHOOL OF BUSINESS" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <Label text="Degree Level" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="degreeLevelComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Specialization" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="specializationComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label text="Graduation Date" GridPane.rowIndex="3" />
+                        <DatePicker fx:id="graduationDateField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                     </GridPane>
                 </VBox>
-                <Button fx:id="addEducationButton" onAction="#addEducation" style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Education" />
+                <Button fx:id="addEducationButton" onAction="#addEducation"
+                        style="-fx-background-color: #E31A22; -fx-text-fill: white;" text="Add Education" />
             </VBox>
-
             <!-- Work Experience Section -->
             <VBox spacing="10">
                 <Label fx:id="workExperienceLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Work Experience" />
@@ -2443,6 +2465,8 @@ import com.example.stage.model.CV;
 import com.example.stage.model.Education;
 import com.example.stage.model.WorkExperience;
 import com.example.stage.util.ResourceManager;
+import com.example.stage.validation.CVDataValidator;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -2457,12 +2481,19 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Locale;
+import java.util.*;
 
-import static kotlin.text.Typography.degree;
-
+import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+@Controller
 public class Page1Controller {
+    private final CVDataValidator cvValidator;
+
+    @Autowired
+    public Page1Controller(CVDataValidator cvValidator) {
+        this.cvValidator = cvValidator;
+    }
+
     @FXML private TextField nameField;
     @FXML private TextField emailField;
     @FXML private TextField phoneField;
@@ -2470,9 +2501,9 @@ public class Page1Controller {
     @FXML private TextField linkedinField;
     @FXML private TextField portfolioField;
     @FXML private TextArea summaryArea;
-
-    @FXML private TextField degreeField;
-    @FXML private TextField institutionField;
+    @FXML private ComboBox<String> institutionComboBox;
+    @FXML private ComboBox<String> degreeLevelComboBox;
+    @FXML private ComboBox<String> specializationComboBox;
     @FXML private DatePicker graduationDateField;
     @FXML private VBox educationContainer;
 
@@ -2512,8 +2543,77 @@ public class Page1Controller {
         setupLanguageComboBox();
         setupValidations();
         setupInitialValues();
+        setupEducationData();
+        setupComboBoxListeners();
     }
+    private void setupEducationData() {
+        // Engineering Programs (ESPRIT & ESPRIM)
+        List<String> engineeringSpecializations = Arrays.asList(
+                "GÃ©nie Informatique",
+                "GÃ©nie des TÃ©lÃ©communications",
+                "GÃ©nie Ã‰lectromÃ©canique",
+                "GÃ©nie Civil",
+                "GÃ©nie MÃ©catronique"
+        );
 
+        // Licenses (ESPRIT SCHOOL OF BUSINESS)
+        List<String> licensePrograms = Arrays.asList(
+                "Licence en Business Computing (LBC)",
+                "Licence en MathÃ©matiques AppliquÃ©es Ã  l'Analyse des DonnÃ©es et Ã  l'Aide Ã  la DÃ©cision (LMAD)",
+                "Licence en Sciences de Gestion (LSG)"
+        );
+
+        // Masters (ESPRIT SCHOOL OF BUSINESS)
+        List<String> masterPrograms = Arrays.asList(
+                "Master en Business Analytics",
+                "Master en ComptabilitÃ©, ContrÃ´le, Audit (CCA)",
+                "Master en Management Digital et SystÃ¨mes d'Information (MDSI)",
+                "Master en Marketing Digital (MKD)",
+                "Master en Finance Digitale (FIND)",
+                "Master en Gestion Actuarielle et ModÃ©lisation MathÃ©matique (GAMMA)"
+        );
+
+        // Setup data structure
+        Map<String, List<String>> espritPrograms = new HashMap<>();
+        espritPrograms.put("Cycle IngÃ©nieur", engineeringSpecializations);
+
+        Map<String, List<String>> esprimPrograms = new HashMap<>();
+        esprimPrograms.put("Cycle IngÃ©nieur", engineeringSpecializations);
+
+        Map<String, List<String>> businessSchoolPrograms = new HashMap<>();
+        businessSchoolPrograms.put("Licence", licensePrograms);
+        businessSchoolPrograms.put("Master", masterPrograms);
+
+        educationData.put("ESPRIT", espritPrograms);
+        educationData.put("ESPRIM", esprimPrograms);
+        educationData.put("ESPRIT SCHOOL OF BUSINESS", businessSchoolPrograms);
+
+        // Initialize institution ComboBox
+        institutionComboBox.getItems().addAll("ESPRIT", "ESPRIM", "ESPRIT SCHOOL OF BUSINESS");
+    }
+    private final Map<String, Map<String, List<String>>> educationData = new HashMap<>();
+
+    private void setupComboBoxListeners() {
+        institutionComboBox.setOnAction(e -> {
+            String selectedInstitution = institutionComboBox.getValue();
+            if (selectedInstitution != null) {
+                degreeLevelComboBox.getItems().clear();
+                specializationComboBox.getItems().clear();
+                degreeLevelComboBox.getItems().addAll(educationData.get(selectedInstitution).keySet());
+            }
+        });
+
+        degreeLevelComboBox.setOnAction(e -> {
+            String selectedInstitution = institutionComboBox.getValue();
+            String selectedDegreeLevel = degreeLevelComboBox.getValue();
+            if (selectedInstitution != null && selectedDegreeLevel != null) {
+                specializationComboBox.getItems().clear();
+                specializationComboBox.getItems().addAll(
+                        educationData.get(selectedInstitution).get(selectedDegreeLevel)
+                );
+            }
+        });
+    }
     private void setupLanguageComboBox() {
         languageComboBox.getItems().addAll("English", "French", "German", "Arabic");
         languageComboBox.setValue("English");
@@ -2595,8 +2695,9 @@ public class Page1Controller {
         educationEntry.setVgap(10);
 
         // Create fields
-        TextField degreeField = new TextField(this.degreeField.getText());
-        TextField institutionField = new TextField(this.institutionField.getText());
+        Label degreeLabel = new Label(specializationComboBox.getValue());
+        Label institutionLabel = new Label(institutionComboBox.getValue());
+        Label levelLabel = new Label(degreeLevelComboBox.getValue());
         DatePicker graduationDateField = new DatePicker(this.graduationDateField.getValue());
 
         // Set column constraints
@@ -2607,21 +2708,22 @@ public class Page1Controller {
 
         // Add fields
         educationEntry.add(new Label("Degree:"), 0, 0);
-        educationEntry.add(degreeField, 1, 0);
+        educationEntry.add(degreeLabel, 1, 0);
         educationEntry.add(new Label("Institution:"), 0, 1);
-        educationEntry.add(institutionField, 1, 1);
-        educationEntry.add(new Label("Graduation Date:"), 0, 2);
-        educationEntry.add(graduationDateField, 1, 2);
+        educationEntry.add(institutionLabel, 1, 1);
+        educationEntry.add(new Label("Level:"), 0, 2);
+        educationEntry.add(levelLabel, 1, 2);
+        educationEntry.add(new Label("Graduation Date:"), 0, 3);
+        educationEntry.add(graduationDateField, 1, 3);
 
         Button removeButton = new Button("Remove");
         removeButton.setStyle("-fx-background-color: #E31A22; -fx-text-fill: white;");
         removeButton.setOnAction(e -> educationContainer.getChildren().remove(educationEntry));
-        educationEntry.add(removeButton, 1, 3);
+        educationEntry.add(removeButton, 1, 4);
 
         educationContainer.getChildren().add(educationEntry);
         clearEducationFields();
     }
-
     @FXML
     private void addWorkExperience() {
         if (!validateWorkExperienceFields()) return;
@@ -2700,25 +2802,28 @@ public class Page1Controller {
     }
 
     private boolean validateEducationFields() {
-        if (degreeField.getText().trim().isEmpty()) {
-            showAlert("Validation Error", "Degree field is required.");
+        if (institutionComboBox.getValue() == null) {
+            showAlert("Validation Error", "Please select an institution");
             return false;
         }
-        if (institutionField.getText().trim().isEmpty()) {
-            showAlert("Validation Error", "Institution field is required.");
+        if (degreeLevelComboBox.getValue() == null) {
+            showAlert("Validation Error", "Please select a degree level");
+            return false;
+        }
+        if (specializationComboBox.getValue() == null) {
+            showAlert("Validation Error", "Please select a specialization");
             return false;
         }
         if (graduationDateField.getValue() == null) {
-            showAlert("Validation Error", "Graduation date is required.");
+            showAlert("Validation Error", "Graduation date is required");
             return false;
         }
         if (graduationDateField.getValue().isAfter(LocalDate.now())) {
-            showAlert("Validation Error", "Graduation date cannot be in the future.");
+            showAlert("Validation Error", "Graduation date cannot be in the future");
             return false;
         }
         return true;
     }
-
     private boolean validateWorkExperienceFields() {
         if (jobTitleField.getText().trim().isEmpty()) {
             showAlert("Validation Error", "Job title is required.");
@@ -2747,9 +2852,9 @@ public class Page1Controller {
         }
         return true;
     }
-
     @FXML
     private void autoFillForm() {
+        // Personal Information
         nameField.setText("Mohamed Abidi");
         emailField.setText("mohamed.abidi@example.com");
         phoneField.setText("+21612345678");
@@ -2758,11 +2863,18 @@ public class Page1Controller {
         portfolioField.setText("mohamedabidi.com");
         summaryArea.setText("Experienced software engineer with a strong background in developing scalable web applications.");
 
-        degreeField.setText("Computer Science Engineering");
-        institutionField.setText("ESPRIM");
-        graduationDateField.setValue(LocalDate.now().minusYears(1));
-        addEducation();
+        // Education Information
+        institutionComboBox.setValue("ESPRIM");
+        Platform.runLater(() -> {
+            degreeLevelComboBox.setValue("Cycle IngÃ©nieur");
+            Platform.runLater(() -> {
+                specializationComboBox.setValue("GÃ©nie Informatique");
+                graduationDateField.setValue(LocalDate.now().minusYears(1));
+                addEducation();
+            });
+        });
 
+        // Work Experience
         jobTitleField.setText("Software Engineer");
         companyField.setText("Tech Company");
         startDateField.setValue(LocalDate.now().minusYears(2));
@@ -2772,8 +2884,9 @@ public class Page1Controller {
     }
 
     private void clearEducationFields() {
-        degreeField.clear();
-        institutionField.clear();
+        institutionComboBox.setValue(null);
+        degreeLevelComboBox.setValue(null);
+        specializationComboBox.setValue(null);
         graduationDateField.setValue(null);
     }
 
@@ -2785,6 +2898,7 @@ public class Page1Controller {
         descriptionArea.clear();
     }
 
+
     @FXML
     private void showSummaryHelp() {
         showAlert("Summary Help",
@@ -2792,12 +2906,21 @@ public class Page1Controller {
                         "experience, and career objectives. Keep it concise and impactful.");
     }
 
+
     @FXML
     private void goToPage2() {
         if (validateAllFields()) {
             try {
                 CV cv = getData();
+                CVDataValidator.ValidationResult validationResult = cvValidator.validateCV(cv);
+
+                if (!validationResult.isValid()) {
+                    showAlert("Validation Errors", validationResult.getFormattedResult());
+                    return;
+                }
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/stage/page2.fxml"));
+                // Remove the springContext reference since it's not needed here
                 AnchorPane page2 = loader.load();
                 Page2Controller controller = loader.getController();
                 controller.setCV(cv);
@@ -2855,39 +2978,62 @@ public class Page1Controller {
         alert.showAndWait();
     }
 
-    public void setData(CV cv) {
-        if (cv != null) {
-            nameField.setText(cv.getName());
-            emailField.setText(cv.getEmail());
-            phoneField.setText(cv.getPhone());
-            addressArea.setText(cv.getAddress());
-            linkedinField.setText(cv.getLinkedin());
-            portfolioField.setText(cv.getPortfolio());
-            summaryArea.setText(cv.getSummary());
+public void setData(CV cv) {
+    if (cv != null) {
+        // Personal Information
+        nameField.setText(cv.getName());
+        emailField.setText(cv.getEmail());
+        phoneField.setText(cv.getPhone());
+        addressArea.setText(cv.getAddress());
+        linkedinField.setText(cv.getLinkedin());
+        portfolioField.setText(cv.getPortfolio());
+        summaryArea.setText(cv.getSummary());
 
-            // Load education entries
-            cv.getEducations().forEach(education -> {
-                degreeField.setText(education.getDegree());
-                institutionField.setText(education.getInstitution());
-                graduationDateField.setValue(education.getGraduationDate());
-                addEducation();
-            });
+        // Load education entries
+        cv.getEducations().forEach(education -> {
+            // First set the institution
+            institutionComboBox.setValue(education.getInstitution());
 
-            // Load work experience entries
-            cv.getWorkExperiences().forEach(experience -> {
-                jobTitleField.setText(experience.getJobTitle());
-                companyField.setText(experience.getCompany());
-                if (experience.getStartDate() != null) {
-                    startDateField.setValue(experience.getStartDate());
-                }
-                if (experience.getEndDate() != null) {
-                    endDateField.setValue(experience.getEndDate());
-                }
-                descriptionArea.setText(experience.getDescription());
-                addWorkExperience();
+            Platform.runLater(() -> {
+                String degreeLevel = determineDegreeLevel(education.getDegree());
+                degreeLevelComboBox.setValue(degreeLevel);
+
+                Platform.runLater(() -> {
+                    specializationComboBox.setValue(education.getDegree());
+                    graduationDateField.setValue(education.getGraduationDate());
+                    addEducation();
+                });
             });
-        }
+        });
+
+        // Load work experience entries
+        cv.getWorkExperiences().forEach(experience -> {
+            jobTitleField.setText(experience.getJobTitle());
+            companyField.setText(experience.getCompany());
+            if (experience.getStartDate() != null) {
+                startDateField.setValue(experience.getStartDate());
+            }
+            if (experience.getEndDate() != null) {
+                endDateField.setValue(experience.getEndDate());
+            }
+            descriptionArea.setText(experience.getDescription());
+            addWorkExperience();
+        });
     }
+}
+
+
+
+// Helper method to determine degree level from degree name
+private String determineDegreeLevel(String degree) {
+    if (degree.toLowerCase().contains("master")) {
+        return "Master";
+    } else if (degree.toLowerCase().contains("licence")) {
+        return "Licence";
+    } else {
+        return "Cycle IngÃ©nieur";
+    }
+}
 
     public CV getData() {
         CV cv = new CV();
@@ -2902,78 +3048,83 @@ public class Page1Controller {
         // Get education entries
         educationContainer.getChildren().forEach(node -> {
             if (node instanceof GridPane) {
-                GridPane grid = (GridPane) node;
-                TextField degreeField = (TextField) getNodeByRowColumn(grid, 0, 1);
-                TextField institutionField = (TextField) getNodeByRowColumn(grid, 1, 1);
-                DatePicker graduationDatePicker = (DatePicker) getNodeByRowColumn(grid, 2, 1);
-
-                if (degreeField != null && institutionField != null && graduationDatePicker != null) {
-                    String degree = degreeField.getText().trim();
-                    String institution = institutionField.getText().trim();
-                    LocalDate graduationDate = graduationDatePicker.getValue();
-
-                    if (!degree.isEmpty() && !institution.isEmpty() && graduationDate != null) {
-                        Education education = new Education(degree, institution, graduationDate);
-                        cv.addEducation(education);
-                    }
-                }
+                processEducationData(cv, (GridPane) node);
             }
         });
-// In Page1Controller.java
-        Education education = new Education(
-                degree,
-                institution,
-                graduationDate,
-                Education.EducationLevel.OTHER  // Add the education level parameter
-        );
-        // Get work experience entries with validation
+
+        // Get work experience entries
         workExperienceContainer.getChildren().forEach(node -> {
             if (node instanceof GridPane) {
-                GridPane grid = (GridPane) node;
-                TextField jobTitleField = (TextField) getNodeByRowColumn(grid, 0, 1);
-                TextField companyField = (TextField) getNodeByRowColumn(grid, 1, 1);
-                DatePicker startDatePicker = (DatePicker) getNodeByRowColumn(grid, 2, 1);
-                DatePicker endDatePicker = (DatePicker) getNodeByRowColumn(grid, 3, 1);
-                TextArea descriptionArea = (TextArea) getNodeByRowColumn(grid, 4, 1);
-
-                // Add debug logging
-                System.out.println("Processing work experience entry");
-                System.out.println("Job Title Field: " + (jobTitleField != null ? jobTitleField.getText() : "null"));
-                System.out.println("Company Field: " + (companyField != null ? companyField.getText() : "null"));
-
-                if (jobTitleField != null && companyField != null) {
-                    String jobTitle = jobTitleField.getText().trim();
-                    String company = companyField.getText().trim();
-
-                    if (!jobTitle.isEmpty() && !company.isEmpty()) {
-                        try {
-                            WorkExperience experience = new WorkExperience(jobTitle, company);
-
-                            if (startDatePicker != null && startDatePicker.getValue() != null) {
-                                experience.setStartDate(startDatePicker.getValue());
-                            }
-
-                            if (endDatePicker != null && endDatePicker.getValue() != null) {
-                                experience.setEndDate(endDatePicker.getValue());
-                            }
-
-                            if (descriptionArea != null && !descriptionArea.getText().trim().isEmpty()) {
-                                experience.setDescription(descriptionArea.getText().trim());
-                            }
-
-                            cv.addWorkExperience(experience);
-                        } catch (IllegalArgumentException e) {
-                            System.err.println("Error creating work experience: " + e.getMessage());
-                            // Optionally show an alert to the user
-                            showAlert("Error", "Invalid work experience entry: " + e.getMessage());
-                        }
-                    }
-                }
+                processWorkExperienceData(cv, (GridPane) node);
             }
         });
 
         return cv;
     }
+    private void processWorkExperienceData(CV cv, GridPane grid) {
+        TextField jobTitleField = (TextField) getNodeByRowColumn(grid, 0, 1);
+        TextField companyField = (TextField) getNodeByRowColumn(grid, 1, 1);
+        DatePicker startDatePicker = (DatePicker) getNodeByRowColumn(grid, 2, 1);
+        DatePicker endDatePicker = (DatePicker) getNodeByRowColumn(grid, 3, 1);
+        TextArea descriptionArea = (TextArea) getNodeByRowColumn(grid, 4, 1);
+
+        if (jobTitleField != null && companyField != null) {
+            String jobTitle = jobTitleField.getText().trim();
+            String company = companyField.getText().trim();
+
+            if (!jobTitle.isEmpty() && !company.isEmpty()) {
+                try {
+                    WorkExperience experience = new WorkExperience(jobTitle, company);
+
+                    if (startDatePicker != null && startDatePicker.getValue() != null) {
+                        experience.setStartDate(startDatePicker.getValue());
+                    }
+
+                    if (endDatePicker != null && endDatePicker.getValue() != null) {
+                        experience.setEndDate(endDatePicker.getValue());
+                    }
+
+                    if (descriptionArea != null && !descriptionArea.getText().trim().isEmpty()) {
+                        experience.setDescription(descriptionArea.getText().trim());
+                    }
+
+                    cv.addWorkExperience(experience);
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Error creating work experience: " + e.getMessage());
+                    showAlert("Error", "Invalid work experience entry: " + e.getMessage());
+                }
+            }
+        }
+    }
+    private void processEducationData(CV cv, GridPane grid) {
+        Label degreeLabel = (Label) getNodeByRowColumn(grid, 0, 1);
+        Label institutionLabel = (Label) getNodeByRowColumn(grid, 1, 1);
+        Label levelLabel = (Label) getNodeByRowColumn(grid, 2, 1);
+        DatePicker graduationDatePicker = (DatePicker) getNodeByRowColumn(grid, 3, 1);
+
+        if (degreeLabel != null && institutionLabel != null && levelLabel != null && graduationDatePicker != null) {
+            String degree = degreeLabel.getText().trim();
+            String institution = institutionLabel.getText().trim();
+            String level = levelLabel.getText().trim();
+            LocalDate graduationDate = graduationDatePicker.getValue();
+
+            if (!degree.isEmpty() && !institution.isEmpty() && !level.isEmpty() && graduationDate != null) {
+                try {
+                    Education education = new Education(
+                            degree,
+                            institution,
+                            graduationDate,
+                            Education.EducationLevel.valueOf(level.toUpperCase().replace(" ", "_"))
+                    );
+                    cv.addEducation(education);
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Error creating education entry: " + e.getMessage());
+                    showAlert("Error", "Invalid education entry: " + e.getMessage());
+                }
+            }
+        }
+    }
+
 
 
     private Node getNodeByRowColumn(GridPane gridPane, int row, int column) {
@@ -3011,11 +3162,8 @@ import javafx.collections.FXCollections;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.ArrayList;
 
 public class Page2Controller {
-    // FXML Injected Fields
     @FXML private VBox skillsContainer;
     @FXML private TextField skillsField;
     @FXML private VBox projectsContainer;
@@ -3037,20 +3185,15 @@ public class Page2Controller {
     @FXML private Button autoFillButton;
     @FXML private Label statusLabel;
 
-    // Constants
     private static final int MAX_SKILLS = 10;
     private static final int MAX_PROJECTS = 5;
     private static final int MAX_CERTIFICATES = 5;
     private static final int MAX_LANGUAGES = 5;
     private static final int MAX_DESCRIPTION_LENGTH = 500;
-    private static final String ERROR_STYLE = "-fx-border-color: red;";
-    private static final String NORMAL_STYLE = "";
 
-    // Services and Models
     private final PDFGenerationService pdfGenerationService;
     private CV cv;
 
-    // Constructor
     public Page2Controller() {
         this.pdfGenerationService = new PDFGenerationService();
         this.cv = new CV();
@@ -3058,20 +3201,12 @@ public class Page2Controller {
 
     @FXML
     private void initialize() {
-        System.out.println("Initializing Page2Controller");
-        try {
-            setupContainers();
-            setupLanguageProficiencyComboBox();
-            setupValidations();
-            setupProjectDescriptionLimit();
-            logUIComponentState();
-        } catch (Exception e) {
-            System.err.println("Error during initialization: " + e.getMessage());
-            e.printStackTrace();
-        }
+        setupContainers();
+        setupLanguageProficiencyComboBox();
+        setupValidations();
+        setupProjectDescriptionLimit();
     }
 
-    // Setup Methods
     private void setupContainers() {
         if (skillsContainer == null) skillsContainer = new VBox(5);
         if (projectsContainer == null) projectsContainer = new VBox(5);
@@ -3126,7 +3261,6 @@ public class Page2Controller {
         }
     }
 
-    // Add Methods
     @FXML
     private void addSkill() {
         String skill = skillsField.getText().trim();
@@ -3151,15 +3285,7 @@ public class Page2Controller {
 
     @FXML
     private void addProject() {
-        if (!validateProjectFields()) {
-            return;
-        }
-
-        if (projectsContainer.getChildren().size() >= MAX_PROJECTS) {
-            showAlert(Alert.AlertType.WARNING, "Limit Reached",
-                    "Maximum number of projects (" + MAX_PROJECTS + ") reached.");
-            return;
-        }
+        if (!validateProjectFields()) return;
 
         GridPane projectEntry = new GridPane();
         projectEntry.setHgap(10);
@@ -3185,15 +3311,7 @@ public class Page2Controller {
 
     @FXML
     private void addCertificate() {
-        if (!validateCertificateFields()) {
-            return;
-        }
-
-        if (certificatesContainer.getChildren().size() >= MAX_CERTIFICATES) {
-            showAlert(Alert.AlertType.WARNING, "Limit Reached",
-                    "Maximum number of certificates (" + MAX_CERTIFICATES + ") reached.");
-            return;
-        }
+        if (!validateCertificateFields()) return;
 
         GridPane certificateEntry = new GridPane();
         certificateEntry.setHgap(10);
@@ -3219,15 +3337,7 @@ public class Page2Controller {
 
     @FXML
     private void addLanguage() {
-        if (!validateLanguageFields()) {
-            return;
-        }
-
-        if (languagesContainer.getChildren().size() >= MAX_LANGUAGES) {
-            showAlert(Alert.AlertType.WARNING, "Limit Reached",
-                    "Maximum number of languages (" + MAX_LANGUAGES + ") reached.");
-            return;
-        }
+        if (!validateLanguageFields()) return;
 
         GridPane languageEntry = new GridPane();
         languageEntry.setHgap(10);
@@ -3248,12 +3358,80 @@ public class Page2Controller {
         clearLanguageFields();
     }
 
-    // UI Helper Methods
     private Button createRemoveButton(Node parent) {
         Button removeButton = new Button("Remove");
         removeButton.setStyle("-fx-background-color: #E31A22; -fx-text-fill: white;");
         removeButton.setOnAction(e -> ((VBox) parent.getParent()).getChildren().remove(parent));
         return removeButton;
+    }
+
+    private void updateCVModel() {
+        // Update skills
+        cv.getSkills().clear();
+        skillsContainer.getChildren().forEach(node -> {
+            if (node instanceof HBox) {
+                Label skillLabel = (Label) ((HBox) node).getChildren().get(0);
+                cv.addSkill(skillLabel.getText());
+            }
+        });
+
+        // Update projects
+        cv.getProjects().clear();
+        projectsContainer.getChildren().forEach(node -> {
+            if (node instanceof GridPane) {
+                GridPane grid = (GridPane) node;
+                Label nameLabel = (Label) getNodeByRowColumn(grid, 0, 1);
+                TextArea descArea = (TextArea) getNodeByRowColumn(grid, 1, 1);
+
+                if (nameLabel != null && descArea != null) {
+                    Project project = new Project(
+                            nameLabel.getText(),
+                            descArea.getText()
+                    );
+                    cv.addProject(project);
+                }
+            }
+        });
+
+        // Update certificates
+        cv.getCertificates().clear();
+        certificatesContainer.getChildren().forEach(node -> {
+            if (node instanceof GridPane) {
+                GridPane grid = (GridPane) node;
+                Label nameLabel = (Label) getNodeByRowColumn(grid, 0, 1);
+                Label institutionLabel = (Label) getNodeByRowColumn(grid, 1, 1);
+                Label dateLabel = (Label) getNodeByRowColumn(grid, 2, 1);
+
+                if (nameLabel != null && institutionLabel != null && dateLabel != null) {
+                    Certificate certificate = new Certificate(
+                            nameLabel.getText(),
+                            institutionLabel.getText(),
+                            LocalDate.parse(dateLabel.getText()),
+                            Certificate.CertificateType.TECHNICAL
+                    );
+                    cv.addCertificate(certificate);
+                }
+            }
+        });
+
+        // Update languages
+        cv.getLanguages().clear();
+        languagesContainer.getChildren().forEach(node -> {
+            if (node instanceof GridPane) {
+                GridPane grid = (GridPane) node;
+                Label langLabel = (Label) getNodeByRowColumn(grid, 0, 1);
+                Label profLabel = (Label) getNodeByRowColumn(grid, 1, 1);
+
+                if (langLabel != null && profLabel != null) {
+                    String proficiencyText = profLabel.getText();
+                    Language.ProficiencyLevel level = Language.ProficiencyLevel.valueOf(
+                            proficiencyText.substring(0, 2)
+                    );
+                    Language language = new Language(langLabel.getText(), level);
+                    cv.addLanguage(language);
+                }
+            }
+        });
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
@@ -3264,7 +3442,6 @@ public class Page2Controller {
         alert.showAndWait();
     }
 
-    // Validation Methods
     private boolean validateProjectFields() {
         if (projectNameField.getText().trim().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Validation Error", "Project name is required.");
@@ -3305,19 +3482,6 @@ public class Page2Controller {
         return true;
     }
 
-    private boolean validateAllFields() {
-        if (skillsContainer.getChildren().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "At least one skill is required.");
-            return false;
-        }
-        if (projectsContainer.getChildren().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "At least one project is required.");
-            return false;
-        }
-        return true;
-    }
-
-    // Clear Methods
     private void clearProjectFields() {
         projectNameField.clear();
         projectDescriptionArea.clear();
@@ -3334,22 +3498,180 @@ public class Page2Controller {
         languageProficiencyField.setValue(null);
     }
 
-    private void clearAllFields() {
-        skillsContainer.getChildren().clear();
-        skillsField.clear();
-        projectsContainer.getChildren().clear();
-        clearProjectFields();
-        certificatesContainer.getChildren().clear();
-        clearCertificateFields();
-        languagesContainer.getChildren().clear();
-        clearLanguageFields();
+    @FXML
+    private void generatePDF() {
+        try {
+            updateCVModel();
+            File outputDir = new File("output");
+            if (!outputDir.exists()) {
+                outputDir.mkdirs();
+            }
+            String filePath = "output/cv_" + System.currentTimeMillis() + ".pdf";
+            pdfGenerationService.generatePDF(cv, filePath);
+            showAlert(Alert.AlertType.INFORMATION, "Success",
+                    "CV has been generated successfully at: " + filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error",
+                    "Failed to generate PDF: " + e.getMessage());
+        }
     }
 
-    // Auto-Fill Feature
+    public void setCV(CV cv) {
+        this.cv = cv;
+        loadCVData();
+    }
+
+    private void loadCVData() {
+        if (cv == null) return;
+
+        Platform.runLater(() -> {
+            // Load skills
+            cv.getSkills().forEach(skill -> {
+                HBox skillEntry = new HBox(10);
+                Label skillLabel = new Label(skill);
+                Button removeButton = createRemoveButton(skillEntry);
+                skillEntry.getChildren().addAll(skillLabel, removeButton);
+                skillsContainer.getChildren().add(skillEntry);
+            });
+
+            // Load projects
+            cv.getProjects().forEach(project -> {
+                GridPane projectEntry = new GridPane();
+                projectEntry.setHgap(10);
+                projectEntry.setVgap(10);
+
+                Label nameLabel = new Label(project.getName());
+                TextArea descArea = new TextArea(project.getDescription());
+                descArea.setWrapText(true);
+                descArea.setPrefRowCount(2);
+                descArea.setEditable(false);
+
+                projectEntry.add(new Label("Project:"), 0, 0);
+                projectEntry.add(nameLabel, 1, 0);
+                projectEntry.add(new Label("Description:"), 0, 1);
+                projectEntry.add(descArea, 1, 1);
+
+                Button removeButton = createRemoveButton(projectEntry);
+                projectEntry.add(removeButton, 1, 2);
+
+                projectsContainer.getChildren().add(projectEntry);
+            });
+            // Load certificates
+            cv.getCertificates().forEach(certificate -> {
+                GridPane certificateEntry = createCertificateEntry(certificate);
+                certificatesContainer.getChildren().add(certificateEntry);
+            });
+
+            // Load languages
+            cv.getLanguages().forEach(language -> {
+                GridPane languageEntry = createLanguageEntry(language);
+                languagesContainer.getChildren().add(languageEntry);
+            });
+        });
+    }
+
+    private GridPane createCertificateEntry(Certificate certificate) {
+        GridPane entry = new GridPane();
+        entry.setHgap(10);
+        entry.setVgap(10);
+
+        entry.add(new Label("Certificate:"), 0, 0);
+        entry.add(new Label(certificate.getName()), 1, 0);
+        entry.add(new Label("Institution:"), 0, 1);
+        entry.add(new Label(certificate.getInstitution()), 1, 1);
+        entry.add(new Label("Date:"), 0, 2);
+        entry.add(new Label(certificate.getDateReceived().toString()), 1, 2);
+
+        Button removeButton = createRemoveButton(entry);
+        entry.add(removeButton, 1, 3);
+
+        return entry;
+    }
+
+    private GridPane createLanguageEntry(Language language) {
+        GridPane entry = new GridPane();
+        entry.setHgap(10);
+        entry.setVgap(10);
+
+        entry.add(new Label("Language:"), 0, 0);
+        entry.add(new Label(language.getName()), 1, 0);
+        entry.add(new Label("Proficiency:"), 0, 1);
+        entry.add(new Label(language.getProficiencyDescription()), 1, 1);
+
+        Button removeButton = createRemoveButton(entry);
+        entry.add(removeButton, 1, 2);
+
+        return entry;
+    }
+
+    private Node getNodeByRowColumn(GridPane gridPane, int row, int column) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    @FXML
+    public void goToPage1(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/stage/page1.fxml"));
+            AnchorPane page1 = loader.load();
+            Scene scene = new Scene(page1, 900, 600);
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                    "Could not return to previous page: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void showProjectHelp(ActionEvent actionEvent) {
+        showAlert(Alert.AlertType.INFORMATION, "Project Help",
+                "Projects should include:\n" +
+                        "- A clear, concise name\n" +
+                        "- Detailed description (max 500 characters)\n" +
+                        "- Key achievements and technologies used\n" +
+                        "- Your role and responsibilities\n\n" +
+                        "Tips:\n" +
+                        "- Use action verbs to start descriptions\n" +
+                        "- Include measurable outcomes\n" +
+                        "- Highlight technical skills used"
+        );
+    }
+
+    @FXML
+    public void showSkillsHelp(ActionEvent actionEvent) {
+        showAlert(Alert.AlertType.INFORMATION, "Skills Help",
+                "Skills tips:\n" +
+                        "- List relevant technical skills\n" +
+                        "- Include both hard and soft skills\n" +
+                        "- Be specific (e.g., 'Java' instead of 'Programming')\n" +
+                        "- List skills you're comfortable discussing\n" +
+                        "- Maximum 10 skills allowed\n\n" +
+                        "Click 'Auto Fill' to see example skills."
+        );
+    }
+
+    @FXML
+    public void translatePage(ActionEvent actionEvent) {
+        showAlert(Alert.AlertType.INFORMATION, "Translation",
+                "Translation feature coming soon!\n" +
+                        "This will allow you to translate your CV content to different languages.");
+    }
+
     @FXML
     public void autoFillForm(ActionEvent actionEvent) {
         Platform.runLater(() -> {
-            clearAllFields();
+            // Clear existing entries
+            skillsContainer.getChildren().clear();
+            projectsContainer.getChildren().clear();
+            certificatesContainer.getChildren().clear();
+            languagesContainer.getChildren().clear();
 
             // Add sample skills
             String[] sampleSkills = {
@@ -3407,275 +3729,6 @@ public class Page2Controller {
                 addLanguage();
             }
         });
-    }
-
-    // Navigation Methods
-    @FXML
-    public void goToPage1(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/stage/page1.fxml"));
-            AnchorPane page1 = loader.load();
-            Scene scene = new Scene(page1, 900, 600);
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error",
-                    "Could not return to previous page: " + e.getMessage());
-        }
-    }
-
-    // Help Methods
-    @FXML
-    public void showProjectHelp(ActionEvent actionEvent) {
-        showAlert(Alert.AlertType.INFORMATION, "Project Help",
-                "Projects should include:\n" +
-                        "- A clear, concise name\n" +
-                        "- Detailed description (max 500 characters)\n" +
-                        "- Key achievements and technologies used\n" +
-                        "- Your role and responsibilities\n\n" +
-                        "Tips:\n" +
-                        "- Use action verbs to start descriptions\n" +
-                        "- Include measurable outcomes\n" +
-                        "- Highlight technical skills used"
-        );
-    }
-
-    @FXML
-    public void showSkillsHelp(ActionEvent actionEvent) {
-        showAlert(Alert.AlertType.INFORMATION, "Skills Help",
-                "Skills tips:\n" +
-                        "- List relevant technical skills\n" +
-                        "- Include both hard and soft skills\n" +
-                        "- Be specific (e.g., 'Java' instead of 'Programming')\n" +
-                        "- List skills you're comfortable discussing\n" +
-                        "- Maximum 10 skills allowed\n\n" +
-                        "Click 'Auto Fill' to see example skills."
-        );
-    }
-
-    // PDF Generation
-    @FXML
-    private void generatePDF() {
-        if (!validateAllFields()) {
-            return;
-        }
-
-        try {
-            updateCVModel();
-            File outputDir = new File("output");
-            if (!outputDir.exists()) {
-                outputDir.mkdirs();
-            }
-            String filePath = "output/cv_" + System.currentTimeMillis() + ".pdf";
-            pdfGenerationService.generatePDF(cv, filePath);
-            showAlert(Alert.AlertType.INFORMATION, "Success",
-                    "CV has been generated successfully at: " + filePath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error",
-                    "Failed to generate PDF: " + e.getMessage());
-        }
-    }
-
-    // Translation Feature
-    @FXML
-    public void translatePage(ActionEvent actionEvent) {
-        showAlert(Alert.AlertType.INFORMATION, "Translation",
-                "Translation feature coming soon!\n" +
-                        "This will allow you to translate your CV content to different languages.");
-    }
-
-    // Model Update Methods
-    private void updateCVModel() {
-        // Update skills
-        cv.getSkills().clear();
-        skillsContainer.getChildren().forEach(node -> {
-            if (node instanceof HBox) {
-                Label skillLabel = (Label) ((HBox) node).getChildren().get(0);
-                cv.addSkill(skillLabel.getText());
-            }
-        });
-
-        // Update projects
-        cv.getProjects().clear();
-        projectsContainer.getChildren().forEach(node -> {
-            if (node instanceof GridPane) {
-                GridPane grid = (GridPane) node;
-                Label nameLabel = (Label) getNodeByRowColumn(grid, 0, 1);
-                TextArea descArea = (TextArea) getNodeByRowColumn(grid, 1, 1);
-
-                if (nameLabel != null && descArea != null) {
-                    Project project = new Project(
-                            nameLabel.getText(),
-                            descArea.getText()
-                    );
-                    cv.addProject(project);
-                }
-            }
-        });
-
-        // Update certificates
-        cv.getCertificates().clear();
-        certificatesContainer.getChildren().forEach(node -> {
-            if (node instanceof GridPane) {
-                GridPane grid = (GridPane) node;
-                Label nameLabel = (Label) getNodeByRowColumn(grid, 0, 1);
-                Label institutionLabel = (Label) getNodeByRowColumn(grid, 1, 1);
-                Label dateLabel = (Label) getNodeByRowColumn(grid, 2, 1);
-
-                if (nameLabel != null && institutionLabel != null && dateLabel != null) {
-                    Certificate certificate = new Certificate(
-                            nameLabel.getText(),
-                            institutionLabel.getText(),
-                            LocalDate.parse(dateLabel.getText())
-                    );
-                    cv.addCertificate(certificate);
-                }
-            }
-        });
-
-        // Update languages
-        cv.getLanguages().clear();
-        languagesContainer.getChildren().forEach(node -> {
-            if (node instanceof GridPane) {
-                GridPane grid = (GridPane) node;
-                Label langLabel = (Label) getNodeByRowColumn(grid, 0, 1);
-                Label profLabel = (Label) getNodeByRowColumn(grid, 1, 1);
-
-                if (langLabel != null && profLabel != null) {
-                    String proficiencyText = profLabel.getText();
-                    Language.ProficiencyLevel level = Language.ProficiencyLevel.valueOf(
-                            proficiencyText.substring(0, 2)  // Get "A1", "B2", etc.
-                    );
-                    Language language = new Language(langLabel.getText(), level);
-                    cv.addLanguage(language);
-                }
-            }
-        });
-    }
-
-    // Data Loading Methods
-    public void setCV(CV cv) {
-        this.cv = cv;
-        loadCVData();
-    }
-
-    private void loadCVData() {
-        if (cv == null) {
-            return;
-        }
-
-        Platform.runLater(() -> {
-            // Load skills
-            cv.getSkills().forEach(skill -> {
-                HBox skillEntry = new HBox(10);
-                Label skillLabel = new Label(skill);
-                Button removeButton = createRemoveButton(skillEntry);
-                skillEntry.getChildren().addAll(skillLabel, removeButton);
-                skillsContainer.getChildren().add(skillEntry);
-            });
-
-            // Load projects
-            cv.getProjects().forEach(project -> {
-                GridPane projectEntry = new GridPane();
-                projectEntry.setHgap(10);
-                projectEntry.setVgap(10);
-
-                Label nameLabel = new Label(project.getName());
-                TextArea descArea = new TextArea(project.getDescription());
-                descArea.setWrapText(true);
-                descArea.setPrefRowCount(2);
-                descArea.setEditable(false);
-
-                projectEntry.add(new Label("Project:"), 0, 0);
-                projectEntry.add(nameLabel, 1, 0);
-                projectEntry.add(new Label("Description:"), 0, 1);
-                projectEntry.add(descArea, 1, 1);
-
-                Button removeButton = createRemoveButton(projectEntry);
-                projectEntry.add(removeButton, 1, 2);
-
-                projectsContainer.getChildren().add(projectEntry);
-            });
-
-            // Load certificates and languages similarly
-            loadCertificatesAndLanguages();
-        });
-    }
-
-    private void loadCertificatesAndLanguages() {
-        // Load certificates
-        cv.getCertificates().forEach(certificate -> {
-            GridPane certificateEntry = createCertificateEntry(certificate);
-            certificatesContainer.getChildren().add(certificateEntry);
-        });
-
-        // Load languages
-        cv.getLanguages().forEach(language -> {
-            GridPane languageEntry = createLanguageEntry(language);
-            languagesContainer.getChildren().add(languageEntry);
-        });
-    }
-
-    private GridPane createCertificateEntry(Certificate certificate) {
-        GridPane entry = new GridPane();
-        entry.setHgap(10);
-        entry.setVgap(10);
-
-        entry.add(new Label("Certificate:"), 0, 0);
-        entry.add(new Label(certificate.getName()), 1, 0);
-        entry.add(new Label("Institution:"), 0, 1);
-        entry.add(new Label(certificate.getInstitution()), 1, 1);
-        entry.add(new Label("Date:"), 0, 2);
-        entry.add(new Label(certificate.getDateReceived().toString()), 1, 2);
-
-        Button removeButton = createRemoveButton(entry);
-        entry.add(removeButton, 1, 3);
-
-        return entry;
-    }
-
-    private GridPane createLanguageEntry(Language language) {
-        GridPane entry = new GridPane();
-        entry.setHgap(10);
-        entry.setVgap(10);
-
-        entry.add(new Label("Language:"), 0, 0);
-        entry.add(new Label(language.getName()), 1, 0);
-        entry.add(new Label("Proficiency:"), 0, 1);
-        entry.add(new Label(language.getProficiencyDescription()), 1, 1);
-
-        Button removeButton = createRemoveButton(entry);
-        entry.add(removeButton, 1, 2);
-
-        return entry;
-    }
-
-    private Node getNodeByRowColumn(GridPane gridPane, int row, int column) {
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                return node;
-            }
-        }
-        return null;
-    }
-    // In Page2Controller.java
-    Certificate certificate = new Certificate(
-            name,
-            institution,
-            dateReceived,
-            Certificate.CertificateType.TECHNICAL  // Add the certificate type parameter
-    );
-    private void logUIComponentState() {
-        System.out.println("UI Component State:");
-        System.out.println("skillsField: " + (skillsField != null ? "initialized" : "null"));
-        System.out.println("skillsContainer: " + (skillsContainer != null ? "initialized" : "null"));
-        System.out.println("projectNameField: " + (projectNameField != null ? "initialized" : "null"));
-        System.out.println("projectDescriptionArea: " + (projectDescriptionArea != null ? "initialized" : "null"));
-        System.out.println("certificateNameField: " + (certificateNameField != null ? "initialized" : "null"));
-        System.out.println("languageField: " + (languageField != null ? "initialized" : "null"));
-        System.out.println("languageProficiencyField: " + (languageProficiencyField != null ? "initialized" : "null"));
     }
 }
 ==================================================
@@ -3972,7 +4025,7 @@ public class PDFGenerationService {
         for (Language language : languages) {
             contentStream.newLineAtOffset(50, yOffset);
             contentStream.showText(language.getName() + " - " +
-                    language.getProficiencyLevel().getDescription());
+                    language.getProficiencyDescription());
             contentStream.newLine();
             yOffset -= 15;
         }
@@ -4488,11 +4541,10 @@ public class AIPromptBuilder {
             prompt.append("\nLanguages:\n");
             cv.getLanguages().forEach(lang -> {
                 prompt.append("- ").append(lang.getName())
-                        .append(": ").append(lang.getProficiencyLevel().getDescription())
+                        .append(": ").append(lang.getProficiencyDescription())
                         .append("\n");
             });
         }
-
         // Analysis Request
         prompt.append("\nPlease provide a detailed analysis of this CV, including:\n");
         prompt.append("1. Overall presentation and organization\n");
@@ -4967,10 +5019,17 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.3</version>
+        <relativePath/>
+    </parent>
+
     <groupId>com.example</groupId>
-    <artifactId>satge</artifactId>
+    <artifactId>stage</artifactId> <!-- Fixed artifact ID typo from 'satge' to 'stage' -->
     <version>1.0-SNAPSHOT</version>
-    <name>satge</name>
+    <name>stage</name> <!-- Fixed name to match artifact ID -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -4984,6 +5043,22 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
     </properties>
 
     <dependencies>
+        <!-- Spring Framework -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- JavaFX Dependencies -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -5010,148 +5085,9 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
             <artifactId>javafx-media</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
 
-        <!-- PDF Generation -->
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>2.0.27</version>
-        </dependency>
-
-        <!-- UI Controls and Validation -->
-        <dependency>
-            <groupId>org.controlsfx</groupId>
-            <artifactId>controlsfx</artifactId>
-            <version>11.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.dlsc.formsfx</groupId>
-            <artifactId>formsfx-core</artifactId>
-            <version>11.6.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.synedra</groupId>
-            <artifactId>validatorfx</artifactId>
-            <version>0.5.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- Database -->
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>8.0.33</version>
-        </dependency>
-
-        <!-- Security -->
-        <dependency>
-            <groupId>org.mindrot</groupId>
-            <artifactId>jbcrypt</artifactId>
-            <version>0.4</version>
-        </dependency>
-
-        <!-- UI Components -->
-        <dependency>
-            <groupId>org.kordamp.ikonli</groupId>
-            <artifactId>ikonli-javafx</artifactId>
-            <version>12.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kordamp.bootstrapfx</groupId>
-            <artifactId>bootstrapfx-core</artifactId>
-            <version>0.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.hansolo</groupId>
-            <artifactId>tilesfx</artifactId>
-            <version>21.0.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- Game Framework -->
-        <dependency>
-            <groupId>com.github.almasb</groupId>
-            <artifactId>fxgl</artifactId>
-            <version>17.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- Spring Framework -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>6.1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring.boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <version>${spring.boot.version}</version>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- HTTP Client -->
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.12.0</version>
-        </dependency>
-
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.11</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.4.14</version>
-        </dependency>
-
-        <!-- Testing -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
+        <!-- Other dependencies remain the same -->
+        <!-- ... other dependencies ... -->
     </dependencies>
 
     <build>
@@ -5169,27 +5105,48 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <compilerArgs>--enable-preview</compilerArgs>
+                    <compilerArgs>
+                        <arg>--enable-preview</arg>
+                        <arg>--add-opens</arg>
+                        <arg>java.base/java.lang=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</arg>
+                    </compilerArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <mainClass>com.example.stage.CVBuilder</mainClass>
+                    <jvmArguments>
+                        --add-opens java.base/java.lang=ALL-UNNAMED
+                        --add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                        --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                    </jvmArguments>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
-                <executions>
-                    <execution>
-                        <id>default-cli</id>
-                        <configuration>
-                            <mainClass>com.example.stage/com.example.stage.HelloApplication</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
-                            <noManPages>true</noManPages>
-                            <stripDebug>true</stripDebug>
-                            <noHeaderFiles>true</noHeaderFiles>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <mainClass>com.example.stage.CVBuilder</mainClass>
+                    <options>
+                        <option>--add-opens</option>
+                        <option>java.base/java.lang=ALL-UNNAMED</option>
+                        <option>--add-exports</option>
+                        <option>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
+                    </options>
+                </configuration>
             </plugin>
         </plugins>
     </build>
