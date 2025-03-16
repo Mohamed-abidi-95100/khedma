@@ -2483,17 +2483,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.beans.factory.annotation.Autowired;
-@Controller
 public class Page1Controller {
     private final CVDataValidator cvValidator;
 
-    @Autowired
-    public Page1Controller(CVDataValidator cvValidator) {
-        this.cvValidator = cvValidator;
-    }
 
+    public Page1Controller() {
+        this.cvValidator = new CVDataValidator();
+    }
     @FXML private TextField nameField;
     @FXML private TextField emailField;
     @FXML private TextField phoneField;
@@ -4263,22 +4259,29 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\examp
 -----
 package com.example.stage.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@ConfigurationProperties(prefix = "huggingface")
 public class HuggingFaceConfig {
+    private static final HuggingFaceConfig instance = new HuggingFaceConfig();
+
     private String apiKey = "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";
     private String apiUrl = "https://api-inference.huggingface.co/models/";
     private String modelId = "gpt2";
+
+    // Private constructor to prevent instantiation
+    private HuggingFaceConfig() {}
+
+    // Static method to get the instance
+    public static HuggingFaceConfig getInstance() {
+        return instance;
+    }
 
     public String getApiKey() {
         return apiKey;
     }
 
     public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
+        if (apiKey != null && !apiKey.trim().isEmpty()) {
+            this.apiKey = apiKey.trim();
+        }
     }
 
     public String getApiUrl() {
@@ -4286,7 +4289,9 @@ public class HuggingFaceConfig {
     }
 
     public void setApiUrl(String apiUrl) {
-        this.apiUrl = apiUrl;
+        if (apiUrl != null && !apiUrl.trim().isEmpty()) {
+            this.apiUrl = apiUrl.trim();
+        }
     }
 
     public String getModelId() {
@@ -4294,12 +4299,36 @@ public class HuggingFaceConfig {
     }
 
     public void setModelId(String modelId) {
-        this.modelId = modelId;
+        if (modelId != null && !modelId.trim().isEmpty()) {
+            this.modelId = modelId;
+        }
     }
 
     // Helper method to get the complete API URL
     public String getCompleteApiUrl() {
         return apiUrl + modelId;
+    }
+
+    // Optional: Method to load configuration from a properties file
+    public void loadConfig(String propertiesPath) {
+        try {
+            java.util.Properties props = new java.util.Properties();
+            props.load(getClass().getClassLoader().getResourceAsStream(propertiesPath));
+
+            setApiKey(props.getProperty("huggingface.api-key", apiKey));
+            setApiUrl(props.getProperty("huggingface.api-url", apiUrl));
+            setModelId(props.getProperty("huggingface.model-id", modelId));
+        } catch (Exception e) {
+            // Log error but use default values
+            System.err.println("Failed to load HuggingFace configuration: " + e.getMessage());
+        }
+    }
+
+    // Optional: Reset to default values
+    public void resetToDefaults() {
+        apiKey = "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";
+        apiUrl = "https://api-inference.huggingface.co/models/";
+        modelId = "gpt2";
     }
 }
 ==================================================
@@ -4311,12 +4340,10 @@ package com.example.stage.client;
 
 import com.example.stage.config.HuggingFaceConfig;
 import okhttp3.*;
-import org.springframework.stereotype.Component;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Component
 public class HuggingFaceClient {
     private static final Logger logger = LoggerFactory.getLogger(HuggingFaceClient.class);
     private final OkHttpClient client;
@@ -5019,17 +5046,10 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
-        <relativePath/>
-    </parent>
-
     <groupId>com.example</groupId>
-    <artifactId>stage</artifactId> <!-- Fixed artifact ID typo from 'satge' to 'stage' -->
+    <artifactId>stage</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>stage</name> <!-- Fixed name to match artifact ID -->
+    <name>stage</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -5037,28 +5057,9 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
         <java.version>21</java.version>
         <javafx.version>21</javafx.version>
         <junit.version>5.10.2</junit.version>
-        <spring.boot.version>3.2.3</spring.boot.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
 
     <dependencies>
-        <!-- Spring Framework -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-
         <!-- JavaFX Dependencies -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -5086,17 +5087,54 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- Other dependencies remain the same -->
-        <!-- ... other dependencies ... -->
+        <!-- PDF Generation -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.27</version>
+        </dependency>
+
+        <!-- UI Controls -->
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>11.2.1</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.11</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+        </dependency>
+
+        <!-- HTTP Client -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -5107,32 +5145,8 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
                     <target>${java.version}</target>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
-                        <arg>--add-opens</arg>
-                        <arg>java.base/java.lang=ALL-UNNAMED</arg>
-                        <arg>--add-exports</arg>
-                        <arg>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</arg>
                     </compilerArgs>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>
-                <configuration>
-                    <mainClass>com.example.stage.CVBuilder</mainClass>
-                    <jvmArguments>
-                        --add-opens java.base/java.lang=ALL-UNNAMED
-                        --add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
-                        --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
-                    </jvmArguments>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -5140,12 +5154,6 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>com.example.stage.CVBuilder</mainClass>
-                    <options>
-                        <option>--add-opens</option>
-                        <option>java.base/java.lang=ALL-UNNAMED</option>
-                        <option>--add-exports</option>
-                        <option>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
-                    </options>
                 </configuration>
             </plugin>
         </plugins>
