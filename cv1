@@ -2616,33 +2616,14 @@ public class Page1Controller {
     }
 
     private void setupValidations() {
-        emailField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) validateEmail();
-        });
-
-        phoneField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) validatePhone();
-        });
-
-        linkedinField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) validateLinkedIn();
-        });
-
+        // Garder uniquement la limite de caractÃ¨res
         summaryArea.textProperty().addListener((obs, old, newVal) -> {
             if (newVal.length() > MAX_SUMMARY_LENGTH) {
                 summaryArea.setText(old);
-                showAlert("Warning", "Summary cannot exceed " + MAX_SUMMARY_LENGTH + " characters.");
-            }
-        });
-
-        descriptionArea.textProperty().addListener((obs, old, newVal) -> {
-            if (newVal.length() > MAX_DESCRIPTION_LENGTH) {
-                descriptionArea.setText(old);
-                showAlert("Warning", "Description cannot exceed " + MAX_DESCRIPTION_LENGTH + " characters.");
+                showAlert("Info", "Limite de caractÃ¨res atteinte");
             }
         });
     }
-
     private void setupInitialValues() {
         nameField.setPromptText("Enter your full name");
         emailField.setPromptText("example@email.com");
@@ -2690,19 +2671,14 @@ public class Page1Controller {
         educationEntry.setHgap(10);
         educationEntry.setVgap(10);
 
-        // Create fields
+        // Create labels with the selected values
         Label degreeLabel = new Label(specializationComboBox.getValue());
         Label institutionLabel = new Label(institutionComboBox.getValue());
         Label levelLabel = new Label(degreeLevelComboBox.getValue());
-        DatePicker graduationDateField = new DatePicker(this.graduationDateField.getValue());
+        DatePicker gradDatePicker = new DatePicker(graduationDateField.getValue());
+        gradDatePicker.setEditable(false);
 
-        // Set column constraints
-        educationEntry.getColumnConstraints().addAll(
-                new ColumnConstraints(106),
-                new ColumnConstraints(156)
-        );
-
-        // Add fields
+        // Add fields to grid
         educationEntry.add(new Label("Degree:"), 0, 0);
         educationEntry.add(degreeLabel, 1, 0);
         educationEntry.add(new Label("Institution:"), 0, 1);
@@ -2710,7 +2686,7 @@ public class Page1Controller {
         educationEntry.add(new Label("Level:"), 0, 2);
         educationEntry.add(levelLabel, 1, 2);
         educationEntry.add(new Label("Graduation Date:"), 0, 3);
-        educationEntry.add(graduationDateField, 1, 3);
+        educationEntry.add(gradDatePicker, 1, 3);
 
         Button removeButton = new Button("Remove");
         removeButton.setStyle("-fx-background-color: #E31A22; -fx-text-fill: white;");
@@ -2775,78 +2751,27 @@ public class Page1Controller {
         return true;
     }
 
-    private boolean validatePhone() {
-        String phone = phoneField.getText().trim();
-        if (!phone.matches(PHONE_REGEX)) {
-            phoneField.setStyle("-fx-border-color: red;");
-            showAlert("Invalid Phone", "Please enter a valid phone number.");
-            return false;
-        }
-        phoneField.setStyle("");
-        return true;
-    }
 
-    private boolean validateLinkedIn() {
-        String linkedin = linkedinField.getText().trim();
-        if (!linkedin.isEmpty() && !linkedin.matches(LINKEDIN_REGEX)) {
-            linkedinField.setStyle("-fx-border-color: red;");
-            showAlert("Invalid LinkedIn", "Please enter a valid LinkedIn URL.");
-            return false;
-        }
-        linkedinField.setStyle("");
-        return true;
-    }
+
 
     private boolean validateEducationFields() {
-        if (institutionComboBox.getValue() == null) {
-            showAlert("Validation Error", "Please select an institution");
-            return false;
-        }
-        if (degreeLevelComboBox.getValue() == null) {
-            showAlert("Validation Error", "Please select a degree level");
-            return false;
-        }
-        if (specializationComboBox.getValue() == null) {
-            showAlert("Validation Error", "Please select a specialization");
-            return false;
-        }
-        if (graduationDateField.getValue() == null) {
-            showAlert("Validation Error", "Graduation date is required");
-            return false;
-        }
-        if (graduationDateField.getValue().isAfter(LocalDate.now())) {
-            showAlert("Validation Error", "Graduation date cannot be in the future");
+        if (institutionComboBox.getValue() == null ||
+                degreeLevelComboBox.getValue() == null ||
+                specializationComboBox.getValue() == null) {
+            showAlert("Info", "Veuillez remplir tous les champs");
             return false;
         }
         return true;
     }
     private boolean validateWorkExperienceFields() {
-        if (jobTitleField.getText().trim().isEmpty()) {
-            showAlert("Validation Error", "Job title is required.");
-            return false;
-        }
-        if (companyField.getText().trim().isEmpty()) {
-            showAlert("Validation Error", "Company name is required.");
-            return false;
-        }
-        if (startDateField.getValue() == null) {
-            showAlert("Validation Error", "Start date is required.");
-            return false;
-        }
-        if (endDateField.getValue() != null &&
-                endDateField.getValue().isBefore(startDateField.getValue())) {
-            showAlert("Validation Error", "End date cannot be before start date.");
-            return false;
-        }
-        if (startDateField.getValue().isAfter(LocalDate.now())) {
-            showAlert("Validation Error", "Start date cannot be in the future.");
-            return false;
-        }
-        if (descriptionArea.getText().trim().isEmpty()) {
-            showAlert("Validation Error", "Job description is required.");
+        if (jobTitleField.getText().trim().isEmpty() ||
+                companyField.getText().trim().isEmpty() ||
+                startDateField.getValue() == null) {
+            showAlert("Info", "Veuillez remplir tous les champs obligatoires");
             return false;
         }
         return true;
+
     }
     @FXML
     private void autoFillForm() {
@@ -2931,49 +2856,28 @@ public class Page1Controller {
         }
     }
     private boolean validateAllFields() {
-        ArrayList<String> errors = new ArrayList<>();
+        // VÃ©rification minimale
+        if (nameField.getText().trim().isEmpty() ||
+                emailField.getText().trim().isEmpty() ||
+                phoneField.getText().trim().isEmpty()) {
+            showAlert("Erreur", "Veuillez remplir les champs obligatoires");
+            return false;
+        }
 
-        if (nameField.getText().trim().isEmpty()) {
-            errors.add("Name is required");
-        }
-        if (!validateEmail()) {
-            errors.add("Invalid email format");
-        }
-        if (!validatePhone()) {
-            errors.add("Invalid phone format");
-        }
-        if (!validateLinkedIn()) {
-            errors.add("Invalid LinkedIn URL format");
-        }
-        if (addressArea.getText().trim().isEmpty()) {
-            errors.add("Address is required");
-        }
-        if (summaryArea.getText().trim().isEmpty()) {
-            errors.add("Professional summary is required");
-        }
+        // VÃ©rifier qu'il y a au moins une formation
         if (educationContainer.getChildren().isEmpty()) {
-            errors.add("At least one education entry is required");
-        }
-        if (workExperienceContainer.getChildren().isEmpty()) {
-            errors.add("At least one work experience entry is required");
-        }
-
-        if (!errors.isEmpty()) {
-            showAlert("Validation Errors", String.join("\n", errors));
+            showAlert("Erreur", "Ajoutez au moins une formation");
             return false;
         }
 
         return true;
     }
-
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
+        alert.setContentText(message);
         alert.showAndWait();
     }
-
 public void setData(CV cv) {
     if (cv != null) {
         // Personal Information
@@ -3032,30 +2936,37 @@ private String determineDegreeLevel(String degree) {
 }
 
     public CV getData() {
-        CV cv = new CV();
-        cv.setName(nameField.getText().trim());
-        cv.setEmail(emailField.getText().trim());
-        cv.setPhone(phoneField.getText().trim());
-        cv.setAddress(addressArea.getText().trim());
-        cv.setLinkedin(linkedinField.getText().trim());
-        cv.setPortfolio(portfolioField.getText().trim());
-        cv.setSummary(summaryArea.getText().trim());
+        try {
+            CV cv = new CV();
+            cv.setName(nameField.getText().trim());
+            cv.setEmail(emailField.getText().trim());
+            cv.setPhone(phoneField.getText().trim());
+            cv.setAddress(addressArea.getText().trim());
+            cv.setLinkedin(linkedinField.getText().trim());
+            cv.setPortfolio(portfolioField.getText().trim());
+            cv.setSummary(summaryArea.getText().trim());
 
-        // Get education entries
-        educationContainer.getChildren().forEach(node -> {
-            if (node instanceof GridPane) {
-                processEducationData(cv, (GridPane) node);
+            // Process education entries
+            for (Node node : educationContainer.getChildren()) {
+                if (node instanceof GridPane) {
+                    processEducationData(cv, (GridPane) node);
+                }
             }
-        });
 
-        // Get work experience entries
-        workExperienceContainer.getChildren().forEach(node -> {
-            if (node instanceof GridPane) {
-                processWorkExperienceData(cv, (GridPane) node);
+            // Process work experience entries
+            for (Node node : workExperienceContainer.getChildren()) {
+                if (node instanceof GridPane) {
+                    processWorkExperienceData(cv, (GridPane) node);
+                }
             }
-        });
 
-        return cv;
+            return cv;
+        } catch (Exception e) {
+            System.err.println("Error creating CV: " + e.getMessage());
+            e.printStackTrace();
+            showAlert("Error", "Failed to create CV: " + e.getMessage());
+            return null;
+        }
     }
     private void processWorkExperienceData(CV cv, GridPane grid) {
         TextField jobTitleField = (TextField) getNodeByRowColumn(grid, 0, 1);
@@ -3093,34 +3004,55 @@ private String determineDegreeLevel(String degree) {
         }
     }
     private void processEducationData(CV cv, GridPane grid) {
-        Label degreeLabel = (Label) getNodeByRowColumn(grid, 0, 1);
-        Label institutionLabel = (Label) getNodeByRowColumn(grid, 1, 1);
-        Label levelLabel = (Label) getNodeByRowColumn(grid, 2, 1);
-        DatePicker graduationDatePicker = (DatePicker) getNodeByRowColumn(grid, 3, 1);
+        try {
+            // Get labels from grid
+            Node degreeNode = getNodeByRowColumn(grid, 0, 1);
+            Node institutionNode = getNodeByRowColumn(grid, 1, 1);
+            Node levelNode = getNodeByRowColumn(grid, 2, 1);
+            Node dateNode = getNodeByRowColumn(grid, 3, 1);
 
-        if (degreeLabel != null && institutionLabel != null && levelLabel != null && graduationDatePicker != null) {
-            String degree = degreeLabel.getText().trim();
-            String institution = institutionLabel.getText().trim();
-            String level = levelLabel.getText().trim();
-            LocalDate graduationDate = graduationDatePicker.getValue();
+            if (degreeNode instanceof Label &&
+                    institutionNode instanceof Label &&
+                    levelNode instanceof Label &&
+                    dateNode instanceof DatePicker) {
 
-            if (!degree.isEmpty() && !institution.isEmpty() && !level.isEmpty() && graduationDate != null) {
-                try {
-                    Education education = new Education(
-                            degree,
-                            institution,
-                            graduationDate,
-                            Education.EducationLevel.valueOf(level.toUpperCase().replace(" ", "_"))
-                    );
-                    cv.addEducation(education);
-                } catch (IllegalArgumentException e) {
-                    System.err.println("Error creating education entry: " + e.getMessage());
-                    showAlert("Error", "Invalid education entry: " + e.getMessage());
+                String degree = ((Label) degreeNode).getText();
+                String institution = ((Label) institutionNode).getText();
+                String levelText = ((Label) levelNode).getText();
+                LocalDate graduationDate = ((DatePicker) dateNode).getValue();
+
+                // Convert level text to Education.EducationLevel enum
+                Education.EducationLevel level;
+                if (levelText.contains("Cycle IngÃ©nieur")) {
+                    level = Education.EducationLevel.ENGINEERING;
+                } else if (levelText.contains("Master")) {
+                    level = Education.EducationLevel.MASTER;
+                } else if (levelText.contains("Licence")) {
+                    level = Education.EducationLevel.LICENSE;
+                } else {
+                    level = Education.EducationLevel.OTHER;
                 }
+
+                // Create education object
+                Education education = new Education(degree, institution, graduationDate, level);
+
+                // Set specialization if it's engineering
+                if (level == Education.EducationLevel.ENGINEERING) {
+                    for (Education.EngineeringSpecialization spec : Education.EngineeringSpecialization.values()) {
+                        if (degree.contains(spec.getDisplayName())) {
+                            education.setSpecialization(spec);
+                            break;
+                        }
+                    }
+                }
+
+                cv.addEducation(education);
             }
+        } catch (Exception e) {
+            System.err.println("Error processing education data: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
 
 
     private Node getNodeByRowColumn(GridPane gridPane, int row, int column) {
@@ -3224,22 +3156,12 @@ public class Page2Controller {
     }
 
     private void setupValidations() {
+        // Garder uniquement la validation du nombre maximum de compÃ©tences
         if (skillsField != null) {
             skillsField.textProperty().addListener((obs, old, newVal) -> {
                 if (skillsContainer.getChildren().size() >= MAX_SKILLS) {
-                    showAlert(Alert.AlertType.WARNING, "Maximum Skills",
-                            "You can add up to " + MAX_SKILLS + " skills.");
                     skillsField.setText(old);
-                }
-            });
-        }
-
-        if (certificateDateField != null) {
-            certificateDateField.valueProperty().addListener((obs, old, newVal) -> {
-                if (newVal != null && newVal.isAfter(LocalDate.now())) {
-                    showAlert(Alert.AlertType.WARNING, "Invalid Date",
-                            "Certificate date cannot be in the future.");
-                    certificateDateField.setValue(old);
+                    showAlert("Info", "Maximum de compÃ©tences atteint");
                 }
             });
         }
@@ -3439,45 +3361,19 @@ public class Page2Controller {
     }
 
     private boolean validateProjectFields() {
-        if (projectNameField.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Project name is required.");
-            return false;
-        }
-        if (projectDescriptionArea.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Project description is required.");
-            return false;
-        }
-        return true;
+        return !projectNameField.getText().trim().isEmpty() &&
+                !projectDescriptionArea.getText().trim().isEmpty();
     }
 
     private boolean validateCertificateFields() {
-        if (certificateNameField.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Certificate name is required.");
-            return false;
-        }
-        if (certificateInstitutionField.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Institution name is required.");
-            return false;
-        }
-        if (certificateDateField.getValue() == null) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Certificate date is required.");
-            return false;
-        }
-        return true;
+        return !certificateNameField.getText().trim().isEmpty() &&
+                certificateDateField.getValue() != null;
     }
 
     private boolean validateLanguageFields() {
-        if (languageField.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Language name is required.");
-            return false;
-        }
-        if (languageProficiencyField.getValue() == null) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Language proficiency is required.");
-            return false;
-        }
-        return true;
+        return !languageField.getText().trim().isEmpty() &&
+                languageProficiencyField.getValue() != null;
     }
-
     private void clearProjectFields() {
         projectNameField.clear();
         projectDescriptionArea.clear();
@@ -3603,13 +3499,19 @@ public class Page2Controller {
 
     private Node getNodeByRowColumn(GridPane gridPane, int row, int column) {
         for (Node node : gridPane.getChildren()) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+            Integer rowIndex = GridPane.getRowIndex(node);
+            Integer columnIndex = GridPane.getColumnIndex(node);
+
+            // Handle null indices (default to 0)
+            if (rowIndex == null) rowIndex = 0;
+            if (columnIndex == null) columnIndex = 0;
+
+            if (rowIndex == row && columnIndex == column) {
                 return node;
             }
         }
         return null;
     }
-
     @FXML
     public void goToPage1(ActionEvent actionEvent) {
         try {
