@@ -2423,8 +2423,8 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
 
 ==================================================
 
-Fichier: src\main\java\com\example\stage\HelloApplication.java
-Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\HelloApplication.java
+Fichier: src\main\java\com\example\stage\CVBuilder.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\CVBuilder.java
 -----
 package com.example.stage;
 
@@ -2432,27 +2432,19 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.IOException;
+public class CVBuilder extends Application {
 
-public class HelloApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        // Load the first page FXML file
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("first-page.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-
-        // Remove window decorations (optional)
-        stage.initStyle(StageStyle.UNDECORATED);
-
-        // Set the scene and show the stage
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/stage/page1.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 900);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
 ==================================================
@@ -4077,7 +4069,25 @@ import java.util.List;
 
 public class PDFGenerationService {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    // Nouvelles constantes pour la mise en page
+    private static final float MARGIN_LEFT = 50;
+    private static final float MARGIN_RIGHT = 50;
+    private static final float SECTION_SPACING = 20;
+    private static final float LINE_SPACING = 15;
+    private static final float SUBSECTION_INDENT = 20;
 
+    // Tailles de police
+    private static final float HEADER_FONT_SIZE = 16;
+    private static final float SECTION_TITLE_FONT_SIZE = 14;
+    private static final float CONTENT_FONT_SIZE = 12;
+    private static final float SUBCONTENT_FONT_SIZE = 11;
+
+    // DÃ©finition des couleurs selon votre charte
+    private static final Color RED = new Color(227, 6, 19);      // #E30613
+    private static final Color BLACK = new Color(0, 0, 0);       // #000000
+    private static final Color WHITE = new Color(255, 255, 255); // #FFFFFF
+    private static final Color LIGHT_GRAY = new Color(211, 211, 211); // #D3D3D3
+    private static final Color LIGHT_ORANGE = new Color(255, 179, 71); // #FFB347
     public void generatePDF(CV cv, String filePath) throws IOException {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
@@ -4274,10 +4284,28 @@ public class PDFGenerationService {
         }
     }
     private int addPersonalInformation(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
+        // Constantes de couleurs
+        Color RED = new Color(227, 6, 19);      // #E30613
+        Color BLACK = new Color(0, 0, 0);       // #000000
+        Color LIGHT_GRAY = new Color(211, 211, 211); // #D3D3D3
+        Color LIGHT_ORANGE = new Color(255, 179, 71); // #FFB347
+
+        // Titre de la section en rouge
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+        contentStream.setNonStrokingColor(RED);
+        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.showText("Informations Personnelles");
+        contentStream.endText();
+        yOffset -= 20;
+
+        // Informations personnelles en noir
         contentStream.beginText();
         contentStream.setFont(PDType1Font.HELVETICA, 12);
+        contentStream.setNonStrokingColor(BLACK);
         contentStream.newLineAtOffset(50, yOffset);
 
+        // Informations de base
         if (cv.getName() != null) {
             contentStream.showText("Name: " + cv.getName());
             contentStream.newLineAtOffset(0, -15);
@@ -4307,25 +4335,34 @@ public class PDFGenerationService {
             contentStream.showText("Portfolio: " + cv.getPortfolio());
             contentStream.newLineAtOffset(0, -15);
         }
-
         contentStream.endText();
-        return yOffset - 100;
+
+        // Ajout de la date/heure et du login en gris
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA, 8);
+        contentStream.setNonStrokingColor(LIGHT_GRAY);
+
+        // Date et heure
+        contentStream.newLineAtOffset(50, yOffset - 30);
+        contentStream.showText("Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): " +
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        // Login utilisateur
+        contentStream.newLineAtOffset(0, -10);
+        contentStream.showText("Current User's Login: Mohamed-abidi-95100");
+        contentStream.endText();
+
+        return yOffset - 100; // Ajustement de l'espacement pour les sections suivantes
     }
     private void addFooter(PDDocument document, PDPage page, CV cv) throws IOException {
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
-            // Ajouter la date de gÃ©nÃ©ration
-            contentStream.beginText();
-            contentStream.setFont(PDType1Font.HELVETICA, 8);
-            contentStream.setNonStrokingColor(Color.GRAY);
-            contentStream.newLineAtOffset(50, 30);
-            contentStream.showText("GÃ©nÃ©rÃ© le " + LocalDateTime.now().format(
-                    DateTimeFormatter.ofPattern("dd/MM/yyyy Ã  HH:mm")));
-            contentStream.endText();
+            float footerY = 30;
 
-            // Ajouter le watermark ESPRIT
+            // Watermark institutionnel en rouge
             contentStream.beginText();
             contentStream.setFont(PDType1Font.HELVETICA_OBLIQUE, 8);
-            contentStream.newLineAtOffset(page.getMediaBox().getWidth() - 200, 30);
+            contentStream.setNonStrokingColor(RED);
+            contentStream.newLineAtOffset(page.getMediaBox().getWidth() - 200, footerY);
             contentStream.showText("CV " + cv.getInstitution() + " - " + cv.getProgramType().getDisplayName());
             contentStream.endText();
         }
@@ -4336,19 +4373,23 @@ public class PDFGenerationService {
             return yOffset;
         }
 
+        // Titre en rouge
         contentStream.beginText();
-        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
-        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, SECTION_TITLE_FONT_SIZE);
+        contentStream.setNonStrokingColor(RED);
+        contentStream.newLineAtOffset(MARGIN_LEFT, yOffset);
         contentStream.showText(title);
         contentStream.endText();
 
+        // Contenu en noir
         contentStream.beginText();
-        contentStream.setFont(PDType1Font.HELVETICA, 12);
-        contentStream.newLineAtOffset(50, yOffset - 15);
+        contentStream.setFont(PDType1Font.HELVETICA, CONTENT_FONT_SIZE);
+        contentStream.setNonStrokingColor(BLACK);
+        contentStream.newLineAtOffset(MARGIN_LEFT, yOffset - LINE_SPACING);
         contentStream.showText(content);
         contentStream.endText();
 
-        return yOffset - 30;
+        return (int) (yOffset - (LINE_SPACING * 2));
     }
 
     private int addEducationSection(PDPageContentStream contentStream, List<Education> educations, int yOffset) throws IOException {
@@ -4541,6 +4582,639 @@ public class PDFGenerationService {
             yOffset -= 15;
         }
         contentStream.endText();
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\service\CVGenerationService.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\service\CVGenerationService.java
+-----
+package com.example.stage.service;
+
+import com.example.stage.client.HuggingFaceClient;
+import com.example.stage.model.CV;
+import com.example.stage.validation.CVDataValidator;
+import com.example.stage.ai.AIPromptBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+
+
+public class CVGenerationService {/*
+    private static final Logger logger = LoggerFactory.getLogger(CVGenerationService.class);
+
+    private final PDFGenerationService pdfGenerationService;
+    private final HuggingFaceClient huggingFaceClient;
+    private final CVDataValidator validator;
+    private final AIPromptBuilder promptBuilder;
+
+    public CVGenerationService(PDFGenerationService pdfGenerationService,
+                               HuggingFaceClient huggingFaceClient,
+                               CVDataValidator validator,
+                               AIPromptBuilder promptBuilder) {
+        this.pdfGenerationService = pdfGenerationService;
+        this.huggingFaceClient = huggingFaceClient;
+        this.validator = validator;
+        this.promptBuilder = promptBuilder;
+    }
+
+    public void generateCV(CV cv, String filePath) throws IOException {
+        try {
+            // Validate CV data
+            CVDataValidator.ValidationResult validationResult = validator.validateCV(cv);
+            if (!validationResult.isValid()) {
+                logger.error("CV validation failed: {}", validationResult.getFormattedResult());
+                throw new IllegalArgumentException(validationResult.getFormattedResult());
+            }
+
+            // Enhance CV content using HuggingFace
+            enhanceCVContent(cv).thenAccept(enhancedCV -> {
+                try {
+                    // Generate PDF with enhanced content
+                    pdfGenerationService.generatePDF(enhancedCV, filePath);
+                    logger.info("CV successfully generated at: {}", filePath);
+                } catch (IOException e) {
+                    logger.error("Failed to generate PDF", e);
+                    throw new RuntimeException("PDF generation failed", e);
+                }
+            }).exceptionally(throwable -> {
+                logger.error("Failed to enhance CV content", throwable);
+                // Fallback to generating PDF without enhancements
+                try {
+                    pdfGenerationService.generatePDF(cv, filePath);
+                } catch (IOException e) {
+                    logger.error("Fallback PDF generation failed", e);
+                }
+                return null;
+            });
+
+        } catch (Exception e) {
+            logger.error("CV generation failed", e);
+            throw new IOException("Failed to generate CV: " + e.getMessage(), e);
+        }
+    }
+
+    private CompletableFuture<CV> enhanceCVContent(CV cv) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                // Enhance summary
+                if (cv.getSummary() != null && !cv.getSummary().isEmpty()) {
+                    String enhancedSummary = enhanceSection(cv.getSummary(), "summary", cv);
+                    cv.setSummary(enhancedSummary);
+                }
+
+                // Enhance work experience descriptions
+                cv.getWorkExperiences().forEach(exp -> {
+                    if (exp.getDescription() != null && !exp.getDescription().isEmpty()) {
+                        try {
+                            String enhancedDesc = enhanceSection(
+                                    exp.getDescription(),
+                                    "work_experience",
+                                    cv
+                            );
+                            exp.setDescription(enhancedDesc);
+                        } catch (Exception e) {
+                            logger.warn("Failed to enhance work experience description", e);
+                        }
+                    }
+                });
+
+                // Enhance project descriptions
+                cv.getProjects().forEach(project -> {
+                    if (project.getDescription() != null && !project.getDescription().isEmpty()) {
+                        try {
+                            String enhancedDesc = enhanceSection(
+                                    project.getDescription(),
+                                    "project",
+                                    cv
+                            );
+                            project.setDescription(enhancedDesc);
+                        } catch (Exception e) {
+                            logger.warn("Failed to enhance project description", e);
+                        }
+                    }
+                });
+
+                return cv;
+            } catch (Exception e) {
+                logger.error("Failed to enhance CV content", e);
+                return cv; // Return original CV if enhancement fails
+            }
+        });
+    }
+
+    private String enhanceSection(String content, String sectionType, CV cv) throws IOException {
+        String prompt = buildEnhancementPrompt(content, sectionType, cv);
+        return huggingFaceClient.generateText(prompt);
+    }
+
+    private String buildEnhancementPrompt(String content, String sectionType, CV cv) {
+        StringBuilder promptBuilder = new StringBuilder();
+        promptBuilder.append("AmÃ©liorez ce contenu de CV pour un profil ")
+                .append(cv.getProgramType().getDisplayName())
+                .append(" dans la section ")
+                .append(sectionType)
+                .append(":\n\n")
+                .append(content)
+                .append("\n\nConsignes spÃ©cifiques:");
+
+        switch (sectionType) {
+            case "summary":
+                promptBuilder.append("\n- Utiliser un ton professionnel")
+                        .append("\n- Mettre en avant les compÃ©tences clÃ©s")
+                        .append("\n- Maximiser l'impact en 3-4 phrases");
+                break;
+            case "work_experience":
+                promptBuilder.append("\n- Utiliser des verbes d'action")
+                        .append("\n- Quantifier les rÃ©alisations")
+                        .append("\n- Mettre en avant les technologies utilisÃ©es");
+                break;
+            case "project":
+                promptBuilder.append("\n- DÃ©crire les dÃ©fis techniques")
+                        .append("\n- Mentionner les technologies")
+                        .append("\n- Souligner les rÃ©sultats obtenus");
+                break;
+        }
+
+        return promptBuilder.toString();
+    }
+*/}
+==================================================
+
+Fichier: src\main\java\com\example\stage\validation\CVDataValidator.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\validation\CVDataValidator.java
+-----
+package com.example.stage.validation;
+
+import com.example.stage.model.*;
+
+import java.time.LocalDate;
+import java.util.*;
+
+public class CVDataValidator {
+    // Constants de validation
+    private static final int MIN_EDUCATION_ENTRIES = 1;
+    private static final int MIN_SKILLS = 3;
+    private static final int MIN_LANGUAGES = 2; // FranÃ§ais et Anglais minimum pour ESPRIT
+    private static final double MIN_GPA = 10.0; // Sur 20
+    private static final int MAX_PROJECTS = 6;
+    private static final int MAX_WORK_EXPERIENCES = 8;
+
+    // CompÃ©tences requises par type de programme
+    private static final Map<CV.ProgramType, Set<String>> REQUIRED_SKILLS;
+    static {
+        Map<CV.ProgramType, Set<String>> map = new HashMap<>();
+        map.put(CV.ProgramType.ENGINEERING_IT, new HashSet<>(Arrays.asList(
+                "Java", "SQL", "Programming", "Algorithm"
+        )));
+        map.put(CV.ProgramType.ENGINEERING_TELECOM, new HashSet<>(Arrays.asList(
+                "Networking", "Protocols", "Telecommunications"
+        )));
+        REQUIRED_SKILLS = Collections.unmodifiableMap(map);
+    }
+
+    public ValidationResult validateCV(CV cv) {
+        List<String> errors = new ArrayList<>();
+        List<String> warnings = new ArrayList<>();
+
+        // Validation des donnÃ©es de base
+        validateBasicInfo(cv, errors);
+        validateEducation(cv, errors, warnings);
+        validateWorkExperience(cv, warnings);
+        validateSkills(cv, errors, warnings);
+        validateProjects(cv, warnings);
+        validateLanguages(cv, errors, warnings);
+        validateCertificates(cv, warnings);
+
+        return new ValidationResult(errors.isEmpty(), errors, warnings);
+    }
+
+    private void validateBasicInfo(CV cv, List<String> errors) {
+        if (cv.getName() == null || cv.getName().trim().isEmpty()) {
+            errors.add("Le nom complet est obligatoire");
+        }
+
+        if (cv.getEmail() == null || !cv.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            errors.add("L'adresse email est invalide");
+        }
+
+        if (cv.getPhone() == null || !cv.getPhone().matches("^\\+?[0-9]{8,}$")) {
+            errors.add("Le numÃ©ro de tÃ©lÃ©phone est invalide");
+        }
+
+        if (cv.getLinkedin() != null && !cv.getLinkedin().isEmpty() &&
+                !cv.getLinkedin().matches("^https?://(?:www\\.)?linkedin\\.com/.*$")) {
+            errors.add("L'URL LinkedIn est invalide");
+        }
+    }
+
+    private void validateEducation(CV cv, List<String> errors, List<String> warnings) {
+        List<Education> educations = cv.getEducations();
+
+        if (educations.size() < MIN_EDUCATION_ENTRIES) {
+            errors.add("Au moins une formation est requise");
+            return;
+        }
+
+        for (Education edu : educations) {
+            if (!edu.getInstitution().equals(Education.ESPRIT) &&
+                    !edu.getInstitution().equals(Education.ESPRIM) &&
+                    !edu.getInstitution().equals(Education.ESB)) {
+                warnings.add("Formation non-ESPRIT dÃ©tectÃ©e: " + edu.getInstitution());
+            }
+
+            if (edu.getGpa() < MIN_GPA) {
+                warnings.add("Moyenne infÃ©rieure Ã  " + MIN_GPA + " pour " + edu.getDegree());
+            }
+
+            if (edu.getStartDate() != null && edu.getGraduationDate() != null &&
+                    edu.getGraduationDate().isBefore(edu.getStartDate())) {
+                errors.add("Dates de formation invalides pour " + edu.getDegree());
+            }
+        }
+    }
+
+    private void validateWorkExperience(CV cv, List<String> warnings) {
+        List<WorkExperience> experiences = cv.getWorkExperiences();
+
+        if (experiences.size() > MAX_WORK_EXPERIENCES) {
+            warnings.add("Nombre d'expÃ©riences professionnelles trop Ã©levÃ© (max " +
+                    MAX_WORK_EXPERIENCES + ")");
+        }
+
+        for (WorkExperience exp : experiences) {
+            if (exp.getStartDate() != null && exp.getEndDate() != null &&
+                    exp.getEndDate().isBefore(exp.getStartDate())) {
+                warnings.add("Dates d'expÃ©rience invalides pour " + exp.getJobTitle());
+            }
+
+            if (exp.getDescription() == null || exp.getDescription().trim().isEmpty()) {
+                warnings.add("Description manquante pour " + exp.getJobTitle());
+            }
+        }
+    }
+
+    private void validateSkills(CV cv, List<String> errors, List<String> warnings) {
+        List<String> skills = cv.getSkills();
+
+        if (skills.size() < MIN_SKILLS) {
+            errors.add("Au moins " + MIN_SKILLS + " compÃ©tences sont requises");
+        }
+
+        CV.ProgramType programType = cv.getProgramType();
+        if (programType != null && REQUIRED_SKILLS.containsKey(programType)) {
+            Set<String> requiredSkills = REQUIRED_SKILLS.get(programType);
+            Set<String> cvSkills = new HashSet<>(skills);
+
+            for (String skill : requiredSkills) {
+                if (cvSkills.stream().noneMatch(s ->
+                        s.toLowerCase().contains(skill.toLowerCase()))) {
+                    warnings.add("CompÃ©tence recommandÃ©e manquante: " + skill);
+                }
+            }
+        }
+    }
+
+    private void validateProjects(CV cv, List<String> warnings) {
+        List<Project> projects = cv.getProjects();
+
+        if (projects.size() > MAX_PROJECTS) {
+            warnings.add("Nombre de projets trop Ã©levÃ© (max " + MAX_PROJECTS + ")");
+        }
+
+        for (Project project : projects) {
+            if (project.getDescription() == null ||
+                    project.getDescription().trim().isEmpty()) {
+                warnings.add("Description manquante pour le projet " + project.getName());
+            }
+        }
+    }
+
+    private void validateLanguages(CV cv, List<String> errors, List<String> warnings) {
+        List<Language> languages = cv.getLanguages();
+
+        if (languages.size() < MIN_LANGUAGES) {
+            errors.add("Au moins " + MIN_LANGUAGES + " langues sont requises");
+        }
+
+        boolean hasFrench = false;
+        boolean hasEnglish = false;
+
+        for (Language lang : languages) {
+            if ("FranÃ§ais".equalsIgnoreCase(lang.getName())) {
+                hasFrench = true;
+            }
+            if ("Anglais".equalsIgnoreCase(lang.getName())) {
+                hasEnglish = true;
+            }
+        }
+
+        if (!hasFrench) {
+            errors.add("Le franÃ§ais est requis");
+        }
+        if (!hasEnglish) {
+            errors.add("L'anglais est requis");
+        }
+    }
+
+    private void validateCertificates(CV cv, List<String> warnings) {
+        List<Certificate> certificates = cv.getCertificates();
+
+        for (Certificate cert : certificates) {
+            if (cert.isExpired()) {
+                warnings.add("Certificat expirÃ©: " + cert.getName());
+            }
+        }
+    }
+
+    public static class ValidationResult {
+        private final boolean isValid;
+        private final List<String> errors;
+        private final List<String> warnings;
+
+        public ValidationResult(boolean isValid, List<String> errors, List<String> warnings) {
+            this.isValid = isValid;
+            this.errors = new ArrayList<>(errors);
+            this.warnings = new ArrayList<>(warnings);
+        }
+
+        public boolean isValid() {
+            return isValid;
+        }
+
+        public List<String> getErrors() {
+            return Collections.unmodifiableList(errors);
+        }
+
+        public List<String> getWarnings() {
+            return Collections.unmodifiableList(warnings);
+        }
+
+        public String getFormattedResult() {
+            StringBuilder sb = new StringBuilder();
+            if (!errors.isEmpty()) {
+                sb.append("Erreurs:\n");
+                errors.forEach(e -> sb.append("- ").append(e).append("\n"));
+            }
+            if (!warnings.isEmpty()) {
+                sb.append("\nAvertissements:\n");
+                warnings.forEach(w -> sb.append("- ").append(w).append("\n"));
+            }
+            return sb.toString();
+        }
+    }
+}
+==================================================
+
+Fichier: src\main\java\com\example\stage\model\Skill.java
+Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\model\Skill.java
+-----
+package com.example.stage.model;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+public class Skill {
+    // Constants for validation
+    private static final int MIN_NAME_LENGTH = 2;
+    private static final int MAX_NAME_LENGTH = 50;
+
+    public enum SkillLevel {
+        BEGINNER("DÃ©butant", 1),
+        INTERMEDIATE("IntermÃ©diaire", 2),
+        ADVANCED("AvancÃ©", 3),
+        EXPERT("Expert", 4);
+
+        private final String displayName;
+        private final int value;
+
+        SkillLevel(String displayName, int value) {
+            this.displayName = displayName;
+            this.value = value;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public enum SkillCategory {
+        PROGRAMMING_LANGUAGE("Langage de Programmation"),
+        FRAMEWORK("Framework"),
+        DATABASE("Base de donnÃ©es"),
+        CLOUD("Cloud Computing"),
+        DEVOPS("DevOps"),
+        NETWORKING("RÃ©seaux"),
+        SECURITY("SÃ©curitÃ©"),
+        ANALYSIS("Analyse"),
+        DESIGN("Conception"),
+        PROJECT_MANAGEMENT("Gestion de Projet"),
+        SOFT_SKILL("CompÃ©tence Comportementale"),
+        OTHER("Autre");
+
+        private final String displayName;
+
+        SkillCategory(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
+    private String name;
+    private SkillLevel level;
+    private SkillCategory category;
+    private List<String> certifications;
+    private List<String> projects;
+    private LocalDateTime lastUsed;
+    private int yearsOfExperience;
+    private boolean isHighlighted;
+    private String description;
+
+    // Constructors
+    public Skill(String name, SkillLevel level, SkillCategory category) {
+        this.certifications = new ArrayList<>();
+        this.projects = new ArrayList<>();
+        setName(name);
+        setLevel(level);
+        setCategory(category);
+        this.lastUsed = LocalDateTime.now();
+    }
+
+    // Getters and Setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Skill name cannot be null or empty");
+        }
+        if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException("Skill name length must be between " +
+                    MIN_NAME_LENGTH + " and " + MAX_NAME_LENGTH + " characters");
+        }
+        this.name = name.trim();
+    }
+
+    public SkillLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(SkillLevel level) {
+        if (level == null) {
+            throw new IllegalArgumentException("Skill level cannot be null");
+        }
+        this.level = level;
+    }
+
+    public SkillCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(SkillCategory category) {
+        if (category == null) {
+            throw new IllegalArgumentException("Skill category cannot be null");
+        }
+        this.category = category;
+    }
+
+    public List<String> getCertifications() {
+        return new ArrayList<>(certifications);
+    }
+
+    public void addCertification(String certification) {
+        if (certification != null && !certification.trim().isEmpty()) {
+            this.certifications.add(certification.trim());
+        }
+    }
+
+    public List<String> getProjects() {
+        return new ArrayList<>(projects);
+    }
+
+    public void addProject(String project) {
+        if (project != null && !project.trim().isEmpty()) {
+            this.projects.add(project.trim());
+        }
+    }
+
+    public LocalDateTime getLastUsed() {
+        return lastUsed;
+    }
+
+    public void setLastUsed(LocalDateTime lastUsed) {
+        if (lastUsed != null && !lastUsed.isAfter(LocalDateTime.now())) {
+            this.lastUsed = lastUsed;
+        }
+    }
+
+    public int getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    public void setYearsOfExperience(int yearsOfExperience) {
+        if (yearsOfExperience < 0) {
+            throw new IllegalArgumentException("Years of experience cannot be negative");
+        }
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    public boolean isHighlighted() {
+        return isHighlighted;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        isHighlighted = highlighted;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description != null ? description.trim() : null;
+    }
+
+    // Utility methods
+    public boolean isRelevantForProgram(CV.ProgramType programType) {
+        if (programType == null) return true;
+
+        switch (programType) {
+            case ENGINEERING_IT:
+            case ENGINEERING_TELECOM:
+                return category == SkillCategory.PROGRAMMING_LANGUAGE ||
+                        category == SkillCategory.FRAMEWORK ||
+                        category == SkillCategory.DATABASE;
+            case ENGINEERING_MECHATRONICS:
+                return category == SkillCategory.PROGRAMMING_LANGUAGE ||
+                        category == SkillCategory.ANALYSIS;
+            // Add more cases as needed
+            default:
+                return true;
+        }
+    }
+
+    public String getFormattedExperience() {
+        if (yearsOfExperience == 0) {
+            return "< 1 an";
+        }
+        return yearsOfExperience + " an" + (yearsOfExperience > 1 ? "s" : "");
+    }
+
+    // Override methods
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Skill skill = (Skill) o;
+        return Objects.equals(name, skill.name) && category == skill.category;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, category);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name)
+                .append(" (").append(level.getDisplayName()).append(")")
+                .append(" - ").append(category.getDisplayName());
+
+        if (yearsOfExperience > 0) {
+            sb.append(" - ").append(getFormattedExperience());
+        }
+
+        if (!certifications.isEmpty()) {
+            sb.append(" - CertifiÃ©");
+        }
+
+        return sb.toString();
+    }
+
+    // Clone method
+    @Override
+    public Skill clone() {
+        Skill clone = new Skill(this.name, this.level, this.category);
+        clone.certifications = new ArrayList<>(this.certifications);
+        clone.projects = new ArrayList<>(this.projects);
+        clone.lastUsed = this.lastUsed;
+        clone.yearsOfExperience = this.yearsOfExperience;
+        clone.isHighlighted = this.isHighlighted;
+        clone.description = this.description;
+        return clone;
     }
 }
 ==================================================
