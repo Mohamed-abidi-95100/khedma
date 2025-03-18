@@ -2194,6 +2194,7 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\resources\com\
                 <Label fx:id="skillsLabel" style="-fx-font-weight: bold; -fx-text-fill: #E31A22;" text="Skills" GridPane.columnSpan="2" GridPane.rowIndex="0" />
 
                 <!-- Add this right after the skills section header -->
+
                 <VBox fx:id="skillContainerList" spacing="5" GridPane.columnSpan="2" GridPane.rowIndex="1">
                     <HBox spacing="10">
                         <TextField fx:id="skillsField" promptText="Enter a skill"/>
@@ -2464,6 +2465,7 @@ package com.example.stage.controller;
 import com.example.stage.model.CV;
 import com.example.stage.model.Education;
 import com.example.stage.model.WorkExperience;
+import com.example.stage.util.NavigationManager;
 import com.example.stage.util.ResourceManager;
 import com.example.stage.validation.CVDataValidator;
 import javafx.application.Platform;
@@ -2481,6 +2483,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -2832,14 +2836,89 @@ public class Page1Controller {
     @FXML
     private void goToPage2() {
         try {
-            // VÃ©rification minimale uniquement des champs de la page 1
-            if (nameField.getText().trim().isEmpty()) {
-                showAlert("Info", "Le nom est requis");
+            // 1. Validation complÃ¨te des champs
+            if (!validateRequiredFields()) {
                 return;
             }
 
-            // CrÃ©er le CV avec les donnÃ©es de la page 1
+            // 2. Validation du format des donnÃ©es
+            if (!validateDataFormat()) {
+                return;
+            }
+
+            // 3. CrÃ©ation du CV avec les donnÃ©es validÃ©es
+            CV cv = createCV();
+            if (cv == null) {
+                showAlert("Erreur", "Impossible de crÃ©er le CV avec les donnÃ©es fournies");
+                return;
+            }
+
+            // 4. Navigation vers Page 2 via NavigationManager
+            Stage stage = (Stage) nextButton.getScene().getWindow();
+            NavigationManager.navigateToPage2(stage, cv);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur de navigation: " + e.getMessage());
+            System.err.println("Erreur dÃ©taillÃ©e: " + e.getMessage());
+        }
+    }
+
+    private boolean validateRequiredFields() {
+        StringBuilder errorMessage = new StringBuilder();
+
+        // VÃ©rification des champs obligatoires
+        if (nameField.getText().trim().isEmpty()) {
+            errorMessage.append("- Le nom est requis\n");
+        }
+        if (emailField.getText().trim().isEmpty()) {
+            errorMessage.append("- L'email est requis\n");
+        }
+        if (phoneField.getText().trim().isEmpty()) {
+            errorMessage.append("- Le numÃ©ro de tÃ©lÃ©phone est requis\n");
+        }
+        if (educationContainer.getChildren().isEmpty()) {
+            errorMessage.append("- Au moins une formation est requise\n");
+        }
+
+        if (errorMessage.length() > 0) {
+            showAlert("Champs Requis", "Veuillez remplir les champs suivants:\n" + errorMessage.toString());
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateDataFormat() {
+        StringBuilder errorMessage = new StringBuilder();
+
+        // Validation du format email
+        if (!emailField.getText().trim().matches(EMAIL_REGEX)) {
+            errorMessage.append("- Format d'email invalide\n");
+        }
+
+        // Validation du format tÃ©lÃ©phone
+        if (!phoneField.getText().trim().matches(PHONE_REGEX)) {
+            errorMessage.append("- Format de tÃ©lÃ©phone invalide\n");
+        }
+
+        // Validation du lien LinkedIn si fourni
+        if (!linkedinField.getText().trim().isEmpty() &&
+                !linkedinField.getText().trim().matches(LINKEDIN_REGEX)) {
+            errorMessage.append("- Format de lien LinkedIn invalide\n");
+        }
+
+        if (errorMessage.length() > 0) {
+            showAlert("Format Invalide", "Veuillez corriger les erreurs suivantes:\n" + errorMessage.toString());
+            return false;
+        }
+        return true;
+    }
+
+    private CV createCV() {
+        try {
             CV cv = new CV();
+
+            // Informations personnelles
             cv.setName(nameField.getText().trim());
             cv.setEmail(emailField.getText().trim());
             cv.setPhone(phoneField.getText().trim());
@@ -2848,35 +2927,35 @@ public class Page1Controller {
             cv.setPortfolio(portfolioField.getText().trim());
             cv.setSummary(summaryArea.getText().trim());
 
-            // Ajouter les formations
+            // Formations
             for (Node node : educationContainer.getChildren()) {
                 if (node instanceof GridPane) {
                     processEducationData(cv, (GridPane) node);
                 }
             }
 
-            // Ajouter les expÃ©riences
+            // ExpÃ©riences professionnelles
             for (Node node : workExperienceContainer.getChildren()) {
                 if (node instanceof GridPane) {
                     processWorkExperienceData(cv, (GridPane) node);
                 }
             }
 
-            // Navigation vers Page 2
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/stage/page2.fxml"));
-            Parent page2 = loader.load();
-            Page2Controller controller = loader.getController();
-            controller.setCV(cv);
+            // Log pour dÃ©bogage
+            System.out.println("CV crÃ©Ã© avec succÃ¨s pour : " + cv.getName());
+            System.out.println("Date et heure de crÃ©ation (UTC): " +
+                    LocalDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            System.out.println("Utilisateur : " + System.getProperty("user.name"));
 
-            Scene scene = new Scene(page2, 600, 900);
-            Stage stage = (Stage) nextButton.getScene().getWindow();
-            stage.setScene(scene);
+            return cv;
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Erreur", "Erreur de navigation");
+            showAlert("Erreur", "Erreur lors de la crÃ©ation du CV: " + e.getMessage());
+            return null;
         }
     }
+
     private boolean validateAllFields() {
         // VÃ©rification minimale
         if (nameField.getText().trim().isEmpty() ||
@@ -2900,62 +2979,62 @@ public class Page1Controller {
         alert.setContentText(message);
         alert.showAndWait();
     }
-public void setData(CV cv) {
-    if (cv != null) {
-        // Personal Information
-        nameField.setText(cv.getName());
-        emailField.setText(cv.getEmail());
-        phoneField.setText(cv.getPhone());
-        addressArea.setText(cv.getAddress());
-        linkedinField.setText(cv.getLinkedin());
-        portfolioField.setText(cv.getPortfolio());
-        summaryArea.setText(cv.getSummary());
+    public void setData(CV cv) {
+        if (cv != null) {
+            // Personal Information
+            nameField.setText(cv.getName());
+            emailField.setText(cv.getEmail());
+            phoneField.setText(cv.getPhone());
+            addressArea.setText(cv.getAddress());
+            linkedinField.setText(cv.getLinkedin());
+            portfolioField.setText(cv.getPortfolio());
+            summaryArea.setText(cv.getSummary());
 
-        // Load education entries
-        cv.getEducations().forEach(education -> {
-            // First set the institution
-            institutionComboBox.setValue(education.getInstitution());
-
-            Platform.runLater(() -> {
-                String degreeLevel = determineDegreeLevel(education.getDegree());
-                degreeLevelComboBox.setValue(degreeLevel);
+            // Load education entries
+            cv.getEducations().forEach(education -> {
+                // First set the institution
+                institutionComboBox.setValue(education.getInstitution());
 
                 Platform.runLater(() -> {
-                    specializationComboBox.setValue(education.getDegree());
-                    graduationDateField.setValue(education.getGraduationDate());
-                    addEducation();
+                    String degreeLevel = determineDegreeLevel(education.getDegree());
+                    degreeLevelComboBox.setValue(degreeLevel);
+
+                    Platform.runLater(() -> {
+                        specializationComboBox.setValue(education.getDegree());
+                        graduationDateField.setValue(education.getGraduationDate());
+                        addEducation();
+                    });
                 });
             });
-        });
 
-        // Load work experience entries
-        cv.getWorkExperiences().forEach(experience -> {
-            jobTitleField.setText(experience.getJobTitle());
-            companyField.setText(experience.getCompany());
-            if (experience.getStartDate() != null) {
-                startDateField.setValue(experience.getStartDate());
-            }
-            if (experience.getEndDate() != null) {
-                endDateField.setValue(experience.getEndDate());
-            }
-            descriptionArea.setText(experience.getDescription());
-            addWorkExperience();
-        });
+            // Load work experience entries
+            cv.getWorkExperiences().forEach(experience -> {
+                jobTitleField.setText(experience.getJobTitle());
+                companyField.setText(experience.getCompany());
+                if (experience.getStartDate() != null) {
+                    startDateField.setValue(experience.getStartDate());
+                }
+                if (experience.getEndDate() != null) {
+                    endDateField.setValue(experience.getEndDate());
+                }
+                descriptionArea.setText(experience.getDescription());
+                addWorkExperience();
+            });
+        }
     }
-}
 
 
 
-// Helper method to determine degree level from degree name
-private String determineDegreeLevel(String degree) {
-    if (degree.toLowerCase().contains("master")) {
-        return "Master";
-    } else if (degree.toLowerCase().contains("licence")) {
-        return "Licence";
-    } else {
-        return "Cycle IngÃ©nieur";
+    // Helper method to determine degree level from degree name
+    private String determineDegreeLevel(String degree) {
+        if (degree.toLowerCase().contains("master")) {
+            return "Master";
+        } else if (degree.toLowerCase().contains("licence")) {
+            return "Licence";
+        } else {
+            return "Cycle IngÃ©nieur";
+        }
     }
-}
 
     public CV getData() {
         try {
@@ -3042,6 +3121,32 @@ private String determineDegreeLevel(String degree) {
                 String institution = ((Label) institutionNode).getText();
                 String levelText = ((Label) levelNode).getText();
                 LocalDate graduationDate = ((DatePicker) dateNode).getValue();
+                cv.setInstitution(institution);
+
+                // DÃ©finir le type de programme en fonction du degrÃ©
+                if (degree.contains("GÃ©nie Informatique")) {
+                    cv.setProgramType(CV.ProgramType.ENGINEERING_IT);
+                } else if (degree.contains("GÃ©nie des TÃ©lÃ©communications")) {
+                    cv.setProgramType(CV.ProgramType.ENGINEERING_TELECOM);
+                } else if (degree.contains("GÃ©nie Ã‰lectromÃ©canique")) {
+                    cv.setProgramType(CV.ProgramType.ENGINEERING_ELECTROMECH);
+                } else if (degree.contains("GÃ©nie MÃ©catronique")) {
+                    cv.setProgramType(CV.ProgramType.ENGINEERING_MECHATRONICS);
+                } else if (degree.contains("GÃ©nie Civil")) {
+                    cv.setProgramType(CV.ProgramType.ENGINEERING_CIVIL);
+                } else if (degree.contains("Business Computing")) {
+                    cv.setProgramType(CV.ProgramType.LICENSE_BUSINESS_COMPUTING);
+                } else if (degree.contains("MathÃ©matiques AppliquÃ©es")) {
+                    cv.setProgramType(CV.ProgramType.LICENSE_MATH_APPLIED);
+                } else if (degree.contains("Business Analytics")) {
+                    cv.setProgramType(CV.ProgramType.MASTER_BUSINESS_ANALYTICS);
+                } else if (degree.contains("MDSI")) {
+                    cv.setProgramType(CV.ProgramType.MASTER_MDSI);
+                } else if (degree.contains("CCA")) {
+                    cv.setProgramType(CV.ProgramType.MASTER_CCA);
+                } else if (degree.contains("FIND")) {
+                    cv.setProgramType(CV.ProgramType.MASTER_FIND);
+                }
 
                 // Convert level text to Education.EducationLevel enum
                 Education.EducationLevel level;
@@ -3076,7 +3181,6 @@ private String determineDegreeLevel(String degree) {
         }
     }
 
-
     private Node getNodeByRowColumn(GridPane gridPane, int row, int column) {
         for (Node node : gridPane.getChildren()) {
             Integer rowIndex = GridPane.getRowIndex(node);
@@ -3100,6 +3204,8 @@ package com.example.stage.controller;
 import com.example.stage.model.*;
 import com.example.stage.service.PDFGenerationService;
 import com.example.stage.util.ResourceManager;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -3114,9 +3220,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
+import javafx.util.Duration;
+
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class Page2Controller {
@@ -3129,7 +3240,7 @@ public class Page2Controller {
     @FXML private VBox projectsContainer;
     @FXML private VBox certificatesContainer;
     @FXML private VBox languagesContainer;
-
+    @FXML private Label timeUserLabel;
     @FXML private TextField projectNameField;
     @FXML private TextArea projectDescriptionArea;
     @FXML private TextField certificateNameField;
@@ -3144,7 +3255,6 @@ public class Page2Controller {
     @FXML private Button translateButton;
     @FXML private Button autoFillButton;
     @FXML private Label statusLabel;
-
     private static final int MAX_SKILLS = 10;
     private static final int MAX_PROJECTS = 5;
     private static final int MAX_CERTIFICATES = 5;
@@ -3158,6 +3268,10 @@ public class Page2Controller {
         this.pdfGenerationService = new PDFGenerationService();
         this.cv = new CV();
     }
+    public void setCV(CV cv) {
+        this.cv = cv;
+        loadCVData();
+    }
 
     @FXML
     private void initialize() {
@@ -3167,7 +3281,14 @@ public class Page2Controller {
         setupProjectDescriptionLimit();
         setupSkillField();
         updateTranslations();
+
+
+
+
     }
+
+
+
     private void setupLanguageComboBox() {
         if (languageComboBox != null) {
             languageComboBox.getItems().addAll("English", "French", "German", "Arabic");
@@ -3427,66 +3548,78 @@ public class Page2Controller {
         cv.getSkills().clear();
         skillsContainer.getChildren().forEach(node -> {
             if (node instanceof HBox) {
-                Label skillLabel = (Label) ((HBox) node).getChildren().get(0);
-                cv.addSkill(skillLabel.getText());
+                HBox skillEntry = (HBox) node;
+                skillEntry.getChildren().stream()
+                        .filter(child -> child instanceof Label)
+                        .map(child -> (Label) child)
+                        .findFirst()
+                        .ifPresent(label -> cv.addSkill(label.getText()));
             }
         });
 
         // Update projects
         cv.getProjects().clear();
         projectsContainer.getChildren().forEach(node -> {
-            if (node instanceof GridPane) {
-                GridPane grid = (GridPane) node;
-                Label nameLabel = (Label) getNodeByRowColumn(grid, 0, 1);
-                TextArea descArea = (TextArea) getNodeByRowColumn(grid, 1, 1);
+            if (node instanceof VBox) {
+                VBox projectEntry = (VBox) node;
+                HBox header = (HBox) projectEntry.getChildren().get(0);
+                Label nameLabel = (Label) header.getChildren().get(0);
+                TextArea descArea = (TextArea) projectEntry.getChildren().get(1);
 
-                if (nameLabel != null && descArea != null) {
-                    Project project = new Project(
-                            nameLabel.getText(),
-                            descArea.getText()
-                    );
-                    cv.addProject(project);
-                }
+                Project project = new Project(
+                        nameLabel.getText(),
+                        descArea.getText()
+                );
+                cv.addProject(project);
             }
         });
 
         // Update certificates
         cv.getCertificates().clear();
         certificatesContainer.getChildren().forEach(node -> {
-            if (node instanceof GridPane) {
-                GridPane grid = (GridPane) node;
-                Label nameLabel = (Label) getNodeByRowColumn(grid, 0, 1);
-                Label institutionLabel = (Label) getNodeByRowColumn(grid, 1, 1);
-                Label dateLabel = (Label) getNodeByRowColumn(grid, 2, 1);
+            if (node instanceof VBox) {
+                VBox certEntry = (VBox) node;
+                HBox header = (HBox) certEntry.getChildren().get(0);
+                VBox certInfo = (VBox) header.getChildren().get(0);
 
-                if (nameLabel != null && institutionLabel != null && dateLabel != null) {
-                    Certificate certificate = new Certificate(
-                            nameLabel.getText(),
-                            institutionLabel.getText(),
-                            LocalDate.parse(dateLabel.getText()),
-                            Certificate.CertificateType.TECHNICAL
-                    );
-                    cv.addCertificate(certificate);
-                }
+                Label nameLabel = (Label) certInfo.getChildren().get(0);
+                Label institutionLabel = (Label) certInfo.getChildren().get(1);
+                Label dateLabel = (Label) certInfo.getChildren().get(2);
+
+                String name = nameLabel.getText();
+                String institution = institutionLabel.getText().replace("Institution: ", "");
+                String dateText = dateLabel.getText().replace("Date: ", "");
+                LocalDate date = LocalDate.parse(dateText);
+
+                Certificate certificate = new Certificate(
+                        name,
+                        institution,
+                        date,
+                        Certificate.CertificateType.TECHNICAL
+                );
+                cv.addCertificate(certificate);
             }
         });
 
         // Update languages
         cv.getLanguages().clear();
         languagesContainer.getChildren().forEach(node -> {
-            if (node instanceof GridPane) {
-                GridPane grid = (GridPane) node;
-                Label langLabel = (Label) getNodeByRowColumn(grid, 0, 1);
-                Label profLabel = (Label) getNodeByRowColumn(grid, 1, 1);
+            if (node instanceof HBox) {
+                HBox langEntry = (HBox) node;
+                VBox langInfo = (VBox) langEntry.getChildren().get(0);
 
-                if (langLabel != null && profLabel != null) {
-                    String proficiencyText = profLabel.getText();
-                    Language.ProficiencyLevel level = Language.ProficiencyLevel.valueOf(
-                            proficiencyText.substring(0, 2)
-                    );
-                    Language language = new Language(langLabel.getText(), level);
-                    cv.addLanguage(language);
-                }
+                Label langLabel = (Label) langInfo.getChildren().get(0);
+                Label profLabel = (Label) langInfo.getChildren().get(1);
+
+                String languageName = langLabel.getText();
+                String proficiency = profLabel.getText().replace("Level: ", "");
+
+                // Extraire le niveau de compÃ©tence (A1, A2, B1, B2, C1, C2)
+                String level = proficiency.substring(0, 2);
+                Language.ProficiencyLevel profLevel = Language.ProficiencyLevel.valueOf(level);
+
+                Language language = new Language(languageName, profLevel);
+                cv.addLanguage(language);
             }
         });
     }
@@ -3533,26 +3666,30 @@ public class Page2Controller {
     private void generatePDF() {
         try {
             updateCVModel();
+
+            // CrÃ©er le dossier output s'il n'existe pas
             File outputDir = new File("output");
             if (!outputDir.exists()) {
                 outputDir.mkdirs();
             }
-            String filePath = "output/cv_" + System.currentTimeMillis() + ".pdf";
+
+            // CrÃ©er un nom de fichier unique avec le nom d'utilisateur et timestamp
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+            String userName = cv.getName().replaceAll("[^a-zA-Z0-9]", "_");
+            String fileName = String.format("cv_%s_%s.pdf", userName, timestamp);
+            String filePath = "output" + File.separator + fileName;
+
             pdfGenerationService.generatePDF(cv, filePath);
-            showAlert(Alert.AlertType.INFORMATION, "Success",
-                    "CV has been generated successfully at: " + filePath);
+
+            showAlert(Alert.AlertType.INFORMATION, "SuccÃ¨s",
+                    "CV gÃ©nÃ©rÃ© avec succÃ¨s!\nChemin du fichier:\n" + new File(filePath).getAbsolutePath());
+
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error",
-                    "Failed to generate PDF: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur",
+                    "Ã‰chec de la gÃ©nÃ©ration du PDF: " + e.getMessage());
         }
     }
-
-    public void setCV(CV cv) {
-        this.cv = cv;
-        loadCVData();
-    }
-
     private void loadCVData() {
         if (cv == null) return;
 
@@ -3920,53 +4057,222 @@ Fichier: src\main\java\com\example\stage\service\PDFGenerationService.java
 Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\src\main\java\com\example\stage\service\PDFGenerationService.java
 -----
 package com.example.stage.service;
-
 import com.example.stage.model.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import java.awt.Color;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import com.example.stage.model.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 public class PDFGenerationService {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public void generatePDF(CV cv, String filePath) throws IOException {
-        PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
-        document.addPage(page);
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage(PDRectangle.A4);
+            document.addPage(page);
 
-        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-            contentStream.setLeading(14.5f);
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                // Ajouter l'en-tÃªte avec logo
+                addHeaderWithLogo(document, page, cv);
 
-            // Add header
-            contentStream.beginText();
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
-            contentStream.newLineAtOffset(50, 750);
-            contentStream.showText("Curriculum Vitae");
-            contentStream.endText();
-            contentStream.addRect(50, 745, 500, 1);
-            contentStream.stroke();
+                int yOffset = 750;  // Position de dÃ©part depuis le haut
 
-            int yOffset = 730;
+                // Informations personnelles
+                yOffset = addPersonalInformation(contentStream, cv, yOffset);
 
-            yOffset = addPersonalInformation(contentStream, cv, yOffset);
-            yOffset = addSection(contentStream, "Summary", cv.getSummary(), yOffset);
-            yOffset = addEducationSection(contentStream, cv.getEducations(), yOffset);
-            yOffset = addWorkExperienceSection(contentStream, cv.getWorkExperiences(), yOffset);
-            yOffset = addProjectsSection(contentStream, cv.getProjects(), yOffset);
-            yOffset = addCertificatesSection(contentStream, cv.getCertificates(), yOffset);
-            yOffset = addLanguagesSection(contentStream, cv.getLanguages(), yOffset);
-            addSkillsSection(contentStream, cv.getSkills(), yOffset);
+                // RÃ©sumÃ© si disponible
+                if (cv.getSummary() != null && !cv.getSummary().isEmpty()) {
+                    yOffset = addSection(contentStream, "RÃ©sumÃ©", cv.getSummary(), yOffset);
+                }
+
+                // Sections spÃ©cifiques selon le type de programme
+                addProfileSpecificSections(contentStream, cv, yOffset);
+
+                // Ã‰ducation
+                yOffset = addEducationSection(contentStream, cv.getEducations(), yOffset);
+
+                // ExpÃ©rience professionnelle
+                yOffset = addWorkExperienceSection(contentStream, cv.getWorkExperiences(), yOffset);
+
+                // Projets
+                yOffset = addProjectsSection(contentStream, cv.getProjects(), yOffset);
+
+                // Certifications
+                yOffset = addCertificatesSection(contentStream, cv.getCertificates(), yOffset);
+
+                // Langues
+                yOffset = addLanguagesSection(contentStream, cv.getLanguages(), yOffset);
+
+                // CompÃ©tences
+                addSkillsSection(contentStream, cv.getSkills(), yOffset);
+            }
+
+            // Ajout du pied de page
+            addFooter(document, page, cv);
+
+            document.save(filePath);
+        }
+    }
+    private void addHeaderWithLogo(PDDocument document, PDPage page, CV cv) throws IOException {
+        // VÃ©rifier si l'institution est null
+        if (cv.getInstitution() == null) {
+            throw new IllegalArgumentException("L'institution ne peut pas Ãªtre null");
         }
 
-        document.save(filePath);
-        document.close();
+        PDImageXObject logo;
+        switch (cv.getInstitution()) {
+            case "ESPRIT":
+                logo = PDImageXObject.createFromFile("src/main/resources/images/esprit-removebg-preview.png", document);
+                break;
+            case "ESPRIM":
+                logo = PDImageXObject.createFromFile("src/main/resources/images/esprim.png", document);
+                break;
+            case "ESPRIT SCHOOL OF BUSINESS":
+                logo = PDImageXObject.createFromFile("src/main/resources/images/esb-removebg-preview.png", document);
+                break;
+            default:
+                throw new IllegalArgumentException("Institution non reconnue: " + cv.getInstitution());
+        }
+
+        // Ajouter le logo
+        try (PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
+            float scale = 0.3f;
+            contentStream.drawImage(logo, 50, page.getMediaBox().getHeight() - 120,
+                    logo.getWidth() * scale, logo.getHeight() * scale);
+        }
+    }
+    private void addMechanicalEngineeringSection(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
+        // Pour le moment, utiliser la section par dÃ©faut
+        addDefaultSection(contentStream, cv, yOffset);
     }
 
+    private void addCivilEngineeringSection(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
+        // Pour le moment, utiliser la section par dÃ©faut
+        addDefaultSection(contentStream, cv, yOffset);
+    }
+
+    private void addTechnicalBusinessSection(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
+        // Pour le moment, utiliser la section par dÃ©faut
+        addDefaultSection(contentStream, cv, yOffset);
+    }
+
+    private void addBusinessAnalyticsSection(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
+        // Pour le moment, utiliser la section par dÃ©faut
+        addDefaultSection(contentStream, cv, yOffset);
+    }
+
+    private void addFinanceSection(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
+        // Pour le moment, utiliser la section par dÃ©faut
+        addDefaultSection(contentStream, cv, yOffset);
+    }
+
+    private void addDefaultSection(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
+        // Section vide pour le moment
+    }
+
+    private void addITEngineeringSection(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
+        // Grouper les compÃ©tences par catÃ©gorie
+        Map<String, List<String>> skillCategories = new HashMap<>();
+        skillCategories.put("Langages de programmation", new ArrayList<>());
+        skillCategories.put("Frameworks & Technologies", new ArrayList<>());
+        skillCategories.put("Base de donnÃ©es", new ArrayList<>());
+        skillCategories.put("DevOps & Outils", new ArrayList<>());
+
+        // Trier les compÃ©tences
+        for (String skill : cv.getSkills()) {
+            if (skill.toLowerCase().contains("java") || skill.toLowerCase().contains("python") ||
+                    skill.toLowerCase().contains("c++") || skill.toLowerCase().contains("javascript")) {
+                skillCategories.get("Langages de programmation").add(skill);
+            } else if (skill.toLowerCase().contains("spring") || skill.toLowerCase().contains("angular") ||
+                    skill.toLowerCase().contains("react") || skill.toLowerCase().contains("node")) {
+                skillCategories.get("Frameworks & Technologies").add(skill);
+            } else if (skill.toLowerCase().contains("sql") || skill.toLowerCase().contains("mongodb") ||
+                    skill.toLowerCase().contains("oracle")) {
+                skillCategories.get("Base de donnÃ©es").add(skill);
+            } else {
+                skillCategories.get("DevOps & Outils").add(skill);
+            }
+        }
+
+        // Afficher les compÃ©tences par catÃ©gorie
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+        contentStream.newLineAtOffset(50, yOffset);
+        contentStream.showText("CompÃ©tences Techniques");
+        contentStream.endText();
+        yOffset -= 20;
+
+        for (Map.Entry<String, List<String>> category : skillCategories.entrySet()) {
+            if (!category.getValue().isEmpty()) {
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.newLineAtOffset(70, yOffset);
+                contentStream.showText(category.getKey() + ":");
+                contentStream.endText();
+                yOffset -= 15;
+
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, 11);
+                contentStream.newLineAtOffset(90, yOffset);
+                contentStream.showText(String.join(", ", category.getValue()));
+                contentStream.endText();
+                yOffset -= 20;
+            }
+        }
+
+        // Mettre en Ã©vidence les projets techniques
+        if (!cv.getProjects().isEmpty()) {
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+            contentStream.newLineAtOffset(50, yOffset);
+            contentStream.showText("Projets Techniques Significatifs");
+            contentStream.endText();
+            yOffset -= 20;
+
+            for (Project project : cv.getProjects()) {
+                if (project.getProjectType() == Project.ProjectType.PFE ||
+                        project.getProjectType() == Project.ProjectType.ACADEMIC) {
+
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                    contentStream.newLineAtOffset(70, yOffset);
+                    contentStream.showText(project.getName());
+                    contentStream.endText();
+                    yOffset -= 15;
+
+                    if (!project.getTechnologies().isEmpty()) {
+                        contentStream.beginText();
+                        contentStream.setFont(PDType1Font.HELVETICA, 11);
+                        contentStream.newLineAtOffset(90, yOffset);
+                        contentStream.showText("Technologies : " + String.join(", ", project.getTechnologies()));
+                        contentStream.endText();
+                        yOffset -= 15;
+                    }
+
+                    if (project.getDescription() != null) {
+                        contentStream.beginText();
+                        contentStream.setFont(PDType1Font.HELVETICA, 11);
+                        contentStream.newLineAtOffset(90, yOffset);
+                        contentStream.showText(project.getDescription());
+                        contentStream.endText();
+                        yOffset -= 20;
+                    }
+                }
+            }
+        }
+    }
     private int addPersonalInformation(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
         contentStream.beginText();
         contentStream.setFont(PDType1Font.HELVETICA, 12);
@@ -3974,36 +4280,55 @@ public class PDFGenerationService {
 
         if (cv.getName() != null) {
             contentStream.showText("Name: " + cv.getName());
-            contentStream.newLine();
+            contentStream.newLineAtOffset(0, -15);
         }
 
         if (cv.getEmail() != null) {
             contentStream.showText("Email: " + cv.getEmail());
-            contentStream.newLine();
+            contentStream.newLineAtOffset(0, -15);
         }
 
         if (cv.getPhone() != null) {
             contentStream.showText("Phone: " + cv.getPhone());
-            contentStream.newLine();
+            contentStream.newLineAtOffset(0, -15);
         }
 
         if (cv.getAddress() != null) {
             contentStream.showText("Address: " + cv.getAddress());
-            contentStream.newLine();
+            contentStream.newLineAtOffset(0, -15);
         }
 
         if (cv.getLinkedin() != null) {
             contentStream.showText("LinkedIn: " + cv.getLinkedin());
-            contentStream.newLine();
+            contentStream.newLineAtOffset(0, -15);
         }
 
         if (cv.getPortfolio() != null) {
             contentStream.showText("Portfolio: " + cv.getPortfolio());
-            contentStream.newLine();
+            contentStream.newLineAtOffset(0, -15);
         }
 
         contentStream.endText();
-        return yOffset - 80;
+        return yOffset - 100;
+    }
+    private void addFooter(PDDocument document, PDPage page, CV cv) throws IOException {
+        try (PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)) {
+            // Ajouter la date de gÃ©nÃ©ration
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA, 8);
+            contentStream.setNonStrokingColor(Color.GRAY);
+            contentStream.newLineAtOffset(50, 30);
+            contentStream.showText("GÃ©nÃ©rÃ© le " + LocalDateTime.now().format(
+                    DateTimeFormatter.ofPattern("dd/MM/yyyy Ã  HH:mm")));
+            contentStream.endText();
+
+            // Ajouter le watermark ESPRIT
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA_OBLIQUE, 8);
+            contentStream.newLineAtOffset(page.getMediaBox().getWidth() - 200, 30);
+            contentStream.showText("CV " + cv.getInstitution() + " - " + cv.getProgramType().getDisplayName());
+            contentStream.endText();
+        }
     }
 
     private int addSection(PDPageContentStream contentStream, String title, String content, int yOffset) throws IOException {
@@ -4110,6 +4435,36 @@ public class PDFGenerationService {
         }
         contentStream.endText();
         return yOffset - 15;
+    }
+
+    private void addProfileSpecificSections(PDPageContentStream contentStream, CV cv, int yOffset) throws IOException {
+        switch (cv.getProgramType()) {
+            case ENGINEERING_IT:
+            case ENGINEERING_TELECOM:
+                addITEngineeringSection(contentStream, cv, yOffset);
+                break;
+            case ENGINEERING_ELECTROMECH:
+            case ENGINEERING_MECHATRONICS:
+                addMechanicalEngineeringSection(contentStream, cv, yOffset);
+                break;
+            case ENGINEERING_CIVIL:
+                addCivilEngineeringSection(contentStream, cv, yOffset);
+                break;
+            case LICENSE_BUSINESS_COMPUTING:
+            case LICENSE_MATH_APPLIED:
+                addTechnicalBusinessSection(contentStream, cv, yOffset);
+                break;
+            case MASTER_BUSINESS_ANALYTICS:
+            case MASTER_MDSI:
+                addBusinessAnalyticsSection(contentStream, cv, yOffset);
+                break;
+            case MASTER_CCA:
+            case MASTER_FIND:
+                addFinanceSection(contentStream, cv, yOffset);
+                break;
+            default:
+                addDefaultSection(contentStream, cv, yOffset);
+        }
     }
 
     private int addCertificatesSection(PDPageContentStream contentStream, List<Certificate> certificates, int yOffset) throws IOException {
@@ -5248,7 +5603,11 @@ Chemin complet: C:\Users\Sh-Pc\Desktop\HomeFORNOW\KHEDMA\pom.xml
             <artifactId>logback-classic</artifactId>
             <version>1.4.14</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.27</version>
+        </dependency>
         <!-- HTTP Client -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
